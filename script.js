@@ -7,15 +7,6 @@ var random = function() {
     return Math.random() - 0.5;
 };
 
-// Returns time passed in mini-seconds
-var getTime = function() {
-    var min = +$('#min').text();
-    var sec = +$('#sec').text();
-    var ms = +$('#ms').text();
-    alert(6000 * min + 100 * sec + ms);
-    return 6000 * min + 100 * sec + ms;
-};
-
 // Starts the minutes of the clock
 var startMin = function() {
     minID = setInterval(function(){
