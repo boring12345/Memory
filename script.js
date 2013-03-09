@@ -13,9 +13,6 @@ var startMin = function() {
         var previous = +$('#min').text();
         var next = previous === 59 ? 0 : previous + 1;
         $('#min').text(next > 9 ? next : '0' + next);
-        if (next === 60)
-            // endGame();
-            alert('Game Over!');
     }, 60000);
 };
 
@@ -28,20 +25,11 @@ var startSec = function() {
     }, 1000);
 };
 
-// Starts the mini-seconds of the clock
-var startMS = function() {
-    msID = setInterval(function(){
-        var previous = +$('#ms').text();
-        var next = previous === 99 ? '0' : previous + 1;
-        $('#ms').text(next > 9 ? next : '0' + next);
-    }, 10);
-};
-
-// Stops clock and sets time to 0
-var stopClock = function() {
-    $('#min').text('0'), clearInterval(minID);
-    $('#sec').text('00'), clearInterval(secID);
-    $('#ms').text('00'), clearInterval(msID);
+// Optional parameter, if true, resets the clock
+var stopClock = function(bool) {
+    if (bool)
+        $('#min').text('00'), $('#sec').text('00');
+    clearInterval(minID), clearInterval(secID);
 };
 
 // Optional parameter, if true, stops the clock
@@ -49,4 +37,21 @@ var startClock = function(bool) {
     if (bool)
         stopClock();
     startMS(), startSec(), startMin();
+};
+
+// To add players using jQuery
+var addPlayers = function() {
+    for (var i = 1; i < 5; i += 1)
+        $('#game_info_frame').append($('<div id="player' + i + '_frame" class="player_frame">Player ' + i + '</div>'));
+};
+
+// To add images using jQuery
+var addImages = function() {
+    $('#game_board_frame').append($('<div class="game_board_spacer"></div>'))
+    for (var i = 1; i < 25; i += 1) {
+        var div = '<div id="card_' + i + '" class="card_frame"><a target="_blank"><img src="code.png" alt="code"></a></div>';
+        $('#game_board_frame').append($(div));
+        if (i % 6 === 0)
+            $('#game_board_frame').append($('<div class="game_board_spacer"></div>'))
+    }
 };
