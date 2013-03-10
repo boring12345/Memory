@@ -1,6 +1,6 @@
 // Global variables
 var array = [], // The array of images
-    minID, secID, msID; // The unique IDs of setInterval
+    minID, secID; // The unique IDs of setInterval
 
 // Used for sorting array randomly
 var random = function() {
