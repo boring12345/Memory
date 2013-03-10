@@ -49,9 +49,14 @@ var addPlayers = function() {
 var addImages = function() {
     $('#game_board_frame').append($('<div class="game_board_spacer"></div>'))
     for (var i = 1; i < 25; i += 1) {
-        var div = '<div id="card_' + i + '" class="card_frame"><a target="_blank"><img src="code.png" alt="code"></a></div>';
+        var div = '<div id="card_' + i + '" class="card_frame"><a target="_blank"><img src="badges/code.png" alt="code"></a></div>';
         $('#game_board_frame').append($(div));
         if (i % 6 === 0)
             $('#game_board_frame').append($('<div class="game_board_spacer"></div>'))
     }
 };
+
+$(document).ready(function(){
+    addPlayers();
+    addImages();    
+});
