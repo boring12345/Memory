@@ -6,3 +6,5 @@ Please make changes in the beta branch only, so please check, whether you are ad
 
 PS: The peterkahl stuff was my fault. I am not Peter Kahl, I just used this mail address:
 https://help.github.com/articles/keeping-your-email-address-private
+
+-- This branch is currently closed! --
