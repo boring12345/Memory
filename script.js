@@ -56,33 +56,13 @@ var addImages = function() {
     }
 };
 
-
+//Image Constructor it contains the image src and the jQuery selector
 function Image(number,src){
     this.src = "badges/"+src;
     this.place = "#card_"+number+ " img";
 }
 
-
-$(document).ready(function(){
-    addPlayers();
-    addImages();
-
-    var cards = ["23andmeAPI.png", "AddressBook.png", "BitlyAPI.png", "Blackjack.png", "Blackjack2.png", "Blackjack3.png", "BoxAPI.png", "CashRegister.png"/*, "Code.png"*/,
-    "DiceGame.png", "DiceGame2.png", "DwollaAPI.png", "EasyPostAPI.png", "Fifty.png", "FireBaseAPI.png", "First.png", "FiveHundred.png", "FizzBuzz.png", "WePayAPI.png",
-    "FizzBuzz2.png", "Functions.png", "HelloNewYork.png", "HTML5.png", "IfElse.png", "IntroObjects.png", "IntroObjects2.png", "JavascriptAPI.png", "YouTubeAPI.png",
-    "JavascriptIntro.png", "JQuery.png", "KittenAPI.png", "LoyaltyAPI.png", "MandrillAPI.png", "MashapeAPI.png", "OAuth2API.png", "Olympics.png", "OneHundred.png",
-    "OneThousand.png", "OrderInAPI.png", "ParseAPI.png", "PHP.png", "Primitives.png", "Python.png", "PythonAPI.png", "ReviewFunctions.png", "Ruby.png", "RubyAPI.png",
-    "SendGridAPI.png", "SkyDriveAPI.png", "SoundCloudAPI.png", "Startup.png", "Ten.png", "TwentyFive.png", "TwilioAPI.png", "TwitterAPI.png", "TwoHundred.png"];
-    
-    var cardsToHide = [];  
-    var cardsHidden = [];
-
-    for(i=0;i<12;i++){
-	var chosen =Math.floor(Math.random()*cards.length);
-	cardsToHide.push(cards[chosen]);
-	cards.splice(chosen,1);
-    }
-    //------ hkapur97's duplicator------
+//------ hkapur97's shuffle-duplicator--------------
     var random = function() {
         return Math.random() - 0.5;
     };
@@ -90,16 +70,36 @@ $(document).ready(function(){
     var duplicate = function(array) {
         return array.concat(array).sort(random);
     };
-    //----------------------------------
-    cardsToHide = duplicate(cardsToHide);
+//--------------------------------------------------
+
+//creates the array of hidden cards
+function HideCards(){
+    var cards = ["23andmeAPI.png", "AddressBook.png", "BitlyAPI.png", "Blackjack.png", "Blackjack2.png", "Blackjack3.png", "BoxAPI.png", "CashRegister.png"/*, "Code.png"*/,
+    "DiceGame.png", "DiceGame2.png", "DwollaAPI.png", "EasyPostAPI.png", "Fifty.png", "FireBaseAPI.png", "First.png", "FiveHundred.png", "FizzBuzz.png", "WePayAPI.png",
+    "FizzBuzz2.png", "Functions.png", "HelloNewYork.png", "HTML5.png", "IfElse.png", "IntroObjects.png", "IntroObjects2.png", "JavascriptAPI.png", "YouTubeAPI.png",
+    "JavascriptIntro.png", "JQuery.png", "KittenAPI.png", "LoyaltyAPI.png", "MandrillAPI.png", "MashapeAPI.png", "OAuth2API.png", "Olympics.png", "OneHundred.png",
+    "OneThousand.png", "OrderInAPI.png", "ParseAPI.png", "PHP.png", "Primitives.png", "Python.png", "PythonAPI.png", "ReviewFunctions.png", "Ruby.png", "RubyAPI.png",
+    "SendGridAPI.png", "SkyDriveAPI.png", "SoundCloudAPI.png", "Startup.png", "Ten.png", "TwentyFive.png", "TwilioAPI.png", "TwitterAPI.png", "TwoHundred.png"]; 
+    var cardsToHide = []; 
+    for(i=0;i<12;i++){
+	var chosen =Math.floor(Math.random()*cards.length);
+	cardsToHide.push(cards[chosen]);
+	cards.splice(chosen,1);
+    }    
+    return cardsToHide = duplicate(cardsToHide); 
+}
+
+$(document).ready(function(){
+    addPlayers();
+    addImages();
+
+    var cardsHidden = [];
+    var cardsToHide = HideCards();
     
-
-
     for(var i =1;i<25;i++){
 	cardsHidden[i-1]= new Image(i,cardsToHide[i-1]);
     }
-
-
+    //toggles between code.png and the hidden card
     $(".card_frame").click(function() {
 	var id = this.id.split("card_").splice(1);
 	var card = cardsHidden[id-1];
