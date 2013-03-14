@@ -39,6 +39,8 @@ var startClock = function(bool) {
     startMS(), startSec(), startMin();
 };
 
+
+
 // To add players using jQuery
 var addPlayers = function() {
     for (var i = 1; i < 5; i += 1)
@@ -58,8 +60,13 @@ var addImages = function() {
 
 //Image Constructor it contains the image src and the jQuery selector
 function Image(number,src){
-    this.src = "badges/"+src;
-    this.place = "#card_"+number+ " img";
+    this.getSrc = function(){
+        return "badges/"+src;
+    }
+    this.getPlace =  function(){
+        return "#card_"+number+ " img";
+    }
+    this.hidden = true;
 }
 
 //------ hkapur97's shuffle-duplicator--------------
@@ -99,7 +106,7 @@ function HideCards(){
 
 $(document).ready(function(){
     addPlayers();
-    addImages();    
+    addImages(); 
     var cardsHidden = [];
 
     //get new Cards by pressing start button    
@@ -114,7 +121,10 @@ $(document).ready(function(){
     $(".card_frame").click(function() {
 	var id = this.id.split("card_").splice(1);
 	var card = cardsHidden[id-1];
-        var src = ($(card.place).attr("src") === "badges/code.png")? card.src: "badges/code.png";
-        $(card.place).attr("src", src);
+        //if( not more then two not hidden cards) 
+	//var src = card.hidden ? card.getSrc() : "badges/code.png";
+        $(card.getPlace()).attr("src", card.getSrc());
+	card.hidden = false;
+	//else $cards.attr("src", "badges/code.png");
     });
 });
