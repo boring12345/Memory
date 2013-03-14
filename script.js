@@ -81,24 +81,35 @@ function HideCards(){
     "OneThousand.png", "OrderInAPI.png", "ParseAPI.png", "PHP.png", "Primitives.png", "Python.png", "PythonAPI.png", "ReviewFunctions.png", "Ruby.png", "RubyAPI.png",
     "SendGridAPI.png", "SkyDriveAPI.png", "SoundCloudAPI.png", "Startup.png", "Ten.png", "TwentyFive.png", "TwilioAPI.png", "TwitterAPI.png", "TwoHundred.png"]; 
     var cardsToHide = []; 
+    var cardsHidden = []
     for(i=0;i<12;i++){
 	var chosen =Math.floor(Math.random()*cards.length);
 	cardsToHide.push(cards[chosen]);
 	cards.splice(chosen,1);
+    }
+    cardsToHide = duplicate(cardsToHide);
+    for(var i =1;i<25;i++){
+	cardsHidden[i-1]= new Image(i,cardsToHide[i-1]);
     }    
-    return cardsToHide = duplicate(cardsToHide); 
+    return cardsHidden;
 }
+
+
+
 
 $(document).ready(function(){
     addPlayers();
-    addImages();
-
+    addImages();    
     var cardsHidden = [];
-    var cardsToHide = HideCards();
-    
-    for(var i =1;i<25;i++){
-	cardsHidden[i-1]= new Image(i,cardsToHide[i-1]);
-    }
+
+    //get new Cards by pressing start button    
+    $("#start").click(function(){
+        cardsHidden = HideCards(); 
+    });
+  
+    //jQuery selector for all cards
+    var $cards = $(".card_frame");
+
     //toggles between code.png and the hidden card
     $(".card_frame").click(function() {
 	var id = this.id.split("card_").splice(1);
