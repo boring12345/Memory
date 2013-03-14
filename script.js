@@ -115,7 +115,7 @@ $(document).ready(function(){
     });
   
     //jQuery selector for all cards
-    var $cards = $(".card_frame");
+    var $cards = $("img");
 
     //toggles between code.png and the hidden card
     $(".card_frame").click(function() {
