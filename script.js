@@ -60,11 +60,12 @@ var addImages = function() {
 
 //Image Constructor it contains the image src and the jQuery selector
 function Image(number,src){
+	this.id = "#card_"+number;
     this.getSrc = function(){
         return "badges/"+src;
     }
     this.getPlace =  function(){
-        return "#card_"+number+ " img";
+        return this.id+ " img";
     }
     this.hidden = true;
 }
@@ -103,7 +104,7 @@ function HideCards(){
 
 function hiddenCounter(array){ //counts how many cards are hidden
 	var counter = 0;	
-	for(var i=0;i<array.length;i++){
+	for(var i in array){
 		if(!array[i].hidden){
 			counter++;
 		}
@@ -112,9 +113,10 @@ function hiddenCounter(array){ //counts how many cards are hidden
 }
 
 $(document).ready(function(){
-    addPlayers();
-    addImages(); 
+	addImages();
+	addPlayers();
     var cardsHidden = [];
+	var cardsShown = [];
 
     //get new Cards by pressing start button    
     $("#start").click(function(){
@@ -132,12 +134,20 @@ $(document).ready(function(){
     	if(counter<2){ 
         	$(card.getPlace()).attr("src", card.getSrc());
 			card.hidden = false;
+			cardsShown.push(card);
 		}
-		if(hiddenCounter(cardsHidden) == 2){
+		if(hiddenCounter(cardsHidden)== 2){
+			cardsShown.push(card);
+			if(cardsShown[0].getSrc() == cardsShown[1].getSrc()){//checks if the two cards match
+				cardsShown.forEach(function(value,index){
+					$(cardsShown[index].id).hide(250); //what's best to remove them? Maybe add a class and vanish via css to keep the order?
+				});
+			}
 			setTimeout(function(){
 				$(".card_frame img").attr("src","badges/code.png");			
 				cardsHidden.forEach(function(value,index){
 					cardsHidden[index].hidden = true;
+					cardsShown = [];
 				});
 			},800);
 		}
