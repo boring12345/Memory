@@ -125,12 +125,13 @@ $(document).ready(function(){
     var $cards = $("img");
 
     //toggles between code.png and the hidden card
-    $(".card_frame").click(function() {
+    $(".card_frame").click(function(){
 		var counter = hiddenCounter(cardsHidden);
 		var id = this.id.split("card_").splice(1);
 		var card = cardsHidden[id-1];
     	if(counter<2){ 
         	$(card.getPlace()).attr("src", card.getSrc());
+			card.hidden = false;
 		}
 		if(hiddenCounter(cardsHidden) == 2){
 			setTimeout(function(){
@@ -139,9 +140,6 @@ $(document).ready(function(){
 			cardsHidden.forEach(function(value,index){
 				cardsHidden[index].hidden = true;
 			});
-		}
-		else{
-			card.hidden = false;
 		}
     });
 });
