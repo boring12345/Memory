@@ -135,11 +135,11 @@ $(document).ready(function(){
 		}
 		if(hiddenCounter(cardsHidden) == 2){
 			setTimeout(function(){
-				$(".card_frame img").attr("src","badges/code.png");
+				$(".card_frame img").attr("src","badges/code.png");			
+				cardsHidden.forEach(function(value,index){
+					cardsHidden[index].hidden = true;
+				});
 			},800);
-			cardsHidden.forEach(function(value,index){
-				cardsHidden[index].hidden = true;
-			});
 		}
     });
 });
