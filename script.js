@@ -90,19 +90,26 @@ function HideCards(){
     var cardsToHide = []; 
     var cardsHidden = []
     for(i=0;i<12;i++){
-	var chosen =Math.floor(Math.random()*cards.length);
-	cardsToHide.push(cards[chosen]);
-	cards.splice(chosen,1);
+		var chosen =Math.floor(Math.random()*cards.length);
+		cardsToHide.push(cards[chosen]);
+		cards.splice(chosen,1);
     }
     cardsToHide = duplicate(cardsToHide);
     for(var i =1;i<25;i++){
-	cardsHidden[i-1]= new Image(i,cardsToHide[i-1]);
+		cardsHidden[i-1]= new Image(i,cardsToHide[i-1]);
     }    
     return cardsHidden;
 }
 
-
-
+function hiddenCounter(array){ //counts how many cards are hidden
+	var counter = 0;	
+	for(var i=0;i<array.length;i++){
+		if(!array[i].hidden){
+			counter++;
+		}
+	}
+	return counter;
+}
 
 $(document).ready(function(){
     addPlayers();
@@ -119,12 +126,22 @@ $(document).ready(function(){
 
     //toggles between code.png and the hidden card
     $(".card_frame").click(function() {
-	var id = this.id.split("card_").splice(1);
-	var card = cardsHidden[id-1];
-        //if( not more then two not hidden cards) 
-	//var src = card.hidden ? card.getSrc() : "badges/code.png";
-        $(card.getPlace()).attr("src", card.getSrc());
-	card.hidden = false;
-	//else $cards.attr("src", "badges/code.png");
+		var counter = hiddenCounter(cardsHidden);
+		var id = this.id.split("card_").splice(1);
+		var card = cardsHidden[id-1];
+    	if(counter<2){ 
+        	$(card.getPlace()).attr("src", card.getSrc());
+		}
+		if(hiddenCounter(cardsHidden) == 2){
+			setTimeout(function(){
+				$(".card_frame img").attr("src","badges/code.png");
+			},800);
+			cardsHidden.forEach(function(value,index){
+				cardsHidden[index].hidden = true;
+			});
+		}
+		else{
+			card.hidden = false;
+		}
     });
 });
