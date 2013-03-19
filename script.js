@@ -1,12 +1,8 @@
-// Global variables
-var array = [], // The array of images
-    minID, secID; // The unique IDs of setInterval
-
-// Used for sorting array randomly
-var random = function() {
-    return Math.random() - 0.5;
-};
-
+// Global variables 
+// Is there a way to avoid such things?
+    var cardsHidden = [];
+	var cardsShown = [];
+/* 
 // Starts the minutes of the clock
 var startMin = function() {
     minID = setInterval(function(){
@@ -38,7 +34,7 @@ var startClock = function(bool) {
         stopClock();
     startMS(), startSec(), startMin();
 };
-
+*/
 
 
 // To add players using jQuery
@@ -115,19 +111,18 @@ function hiddenCounter(array){ //counts how many cards are hidden
 $(document).ready(function(){
 	addImages();
 	addPlayers();
-    var cardsHidden = [];
-	var cardsShown = [];
-
     //get new Cards by pressing start button    
     $("#start").click(function(){
         cardsHidden = HideCards(); 
     });
-  
-    //jQuery selector for all cards
+	//jQuery selector for all cards
     var $cards = $("img");
+});
+  
+
 
     //toggles between code.png and the hidden card
-    $(".card_frame").click(function(){
+    $(document).on('click',".card_frame",function(){
 		var counter = hiddenCounter(cardsHidden);
 		var id = this.id.split("card_").splice(1);
 		var card = cardsHidden[id-1];
@@ -152,4 +147,4 @@ $(document).ready(function(){
 			},800);
 		}
     });
-});
+
