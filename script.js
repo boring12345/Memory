@@ -1,7 +1,6 @@
 //------------------------------------ Global variables-------------------------------
 // Is there a way to avoid such things?
     var cardsHidden = [];
-    var cardsShown = [];
     var pairsFound = 0;
     var noc = 12; // number of cards
     var nop = 4  //number of players
@@ -149,15 +148,18 @@ $(document).on('click',".card_frame",function(){
     if(counter<2){ 
        	$(card.getPlace()).attr("src", card.getSrc());
 		card.hidden = false;
-		cardsShown.push(card);
 	}
 	if(hiddenCounter(cardsHidden)== 2){
-		cardsShown.push(card);
-		if(cardsShown[0].getSrc() == cardsShown[1].getSrc()){//match?
-			cardsShown.forEach(function(value,index){
-				$(cardsShown[index].id).hide(250); //what's best to remove them? Maybe add a class and vanish via css to keep the order?
-			});
-			pairsFound++;
+		var array = [];
+		cardsHidden.forEach(function(value,index){
+				if(!cardsHidden[index].hidden){
+					array.push(cardsHidden[index]);	
+				}
+		});
+		if(array[0].getSrc() ==array[1].getSrc()){
+			$(array[0].id).hide(250); //what's best to remove them? Maybe add a class and vanish via css to keep the order?
+			$(array[1].id).hide(250);
+			pairsFound++; // Why is this triggered if you click too fast?
 			reset();
 		}
 		setTimeout(function(){
