@@ -122,29 +122,29 @@ $(document).ready(function(){
 
 
     //toggles between code.png and the hidden card
-    $(document).on('click',".card_frame",function(){
-		var counter = hiddenCounter(cardsHidden);
-		var id = this.id.split("card_").splice(1);
-		var card = cardsHidden[id-1];
-    	if(counter<2){ 
-        	$(card.getPlace()).attr("src", card.getSrc());
-			card.hidden = false;
-			cardsShown.push(card);
+$(document).on('click',".card_frame",function(){
+	var counter = hiddenCounter(cardsHidden);
+	var id = this.id.split("card_").splice(1);
+	var card = cardsHidden[id-1];
+    if(counter<2){ 
+       	$(card.getPlace()).attr("src", card.getSrc());
+		card.hidden = false;
+		cardsShown.push(card);
+	}
+	if(hiddenCounter(cardsHidden)== 2){
+		cardsShown.push(card);
+		if(cardsShown[0].getSrc() == cardsShown[1].getSrc()){//checks if the two cards match
+			cardsShown.forEach(function(value,index){
+				$(cardsShown[index].id).hide(250); //what's best to remove them? Maybe add a class and vanish via css to keep the order?
+			});
 		}
-		if(hiddenCounter(cardsHidden)== 2){
-			cardsShown.push(card);
-			if(cardsShown[0].getSrc() == cardsShown[1].getSrc()){//checks if the two cards match
-				cardsShown.forEach(function(value,index){
-					$(cardsShown[index].id).hide(250); //what's best to remove them? Maybe add a class and vanish via css to keep the order?
-				});
-			}
-			setTimeout(function(){
-				$(".card_frame img").attr("src","badges/code.png");			
-				cardsHidden.forEach(function(value,index){
-					cardsHidden[index].hidden = true;
-					cardsShown = [];
-				});
-			},800);
-		}
-    });
+		setTimeout(function(){
+			$(".card_frame img").attr("src","badges/code.png");			
+			cardsHidden.forEach(function(value,index){
+				cardsHidden[index].hidden = true;
+				cardsShown = [];
+			});
+		},800);
+	}
+});
 
