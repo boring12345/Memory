@@ -1,7 +1,8 @@
 // Global variables 
 // Is there a way to avoid such things?
     var cardsHidden = [];
-	var cardsShown = [];
+    var cardsShown = [];
+    var pairsFound = 0;
 /* 
 // Starts the minutes of the clock
 var startMin = function() {
@@ -108,6 +109,17 @@ function hiddenCounter(array){ //counts how many cards are hidden
 	return counter;
 }
 
+function reset(){
+	if(pairsFound == 13){
+		if(confirm('Congratulations! You won.\nWould you like to play again?')){
+    		pairsFound = 0,cardsHidden = [],cardsShown = [];
+		   	$('#game_board_frame').empty()
+			addImages();
+			cardsHidden = HideCards();
+		}
+	}
+}
+
 $(document).ready(function(){
 	addImages();
 	addPlayers();
@@ -115,6 +127,7 @@ $(document).ready(function(){
     $("#start").click(function(){
         cardsHidden = HideCards(); 
     });
+	alert("press start");
 	//jQuery selector for all cards
     var $cards = $("img");
 });
@@ -136,6 +149,10 @@ $(document).on('click',".card_frame",function(){
 		if(cardsShown[0].getSrc() == cardsShown[1].getSrc()){//checks if the two cards match
 			cardsShown.forEach(function(value,index){
 				$(cardsShown[index].id).hide(250); //what's best to remove them? Maybe add a class and vanish via css to keep the order?
+				alert(pairsFound);
+				pairsFound++;
+						alert(pairsFound);
+				reset();
 			});
 		}
 		setTimeout(function(){
