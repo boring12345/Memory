@@ -1,9 +1,12 @@
-// Global variables 
+//------------------------------------ Global variables-------------------------------
 // Is there a way to avoid such things?
     var cardsHidden = [];
     var cardsShown = [];
     var pairsFound = 0;
-/* 
+    var noc = 12; // number of cards
+    var nop = 4  //number of players
+
+/*--------------------------------------Clock (not used yet)--------------------------- 
 // Starts the minutes of the clock
 var startMin = function() {
     minID = setInterval(function(){
@@ -37,37 +40,37 @@ var startClock = function(bool) {
 };
 */
 
-
+//********************************************** Building the game frame **************************************************************
 // To add players using jQuery
 var addPlayers = function() {
-    for (var i = 1; i < 5; i += 1)
+    for (var i = 1; i < nop+1; i += 1)
         $('#game_info_frame').append($('<div id="player' + i + '_frame" class="player_frame">Player ' + i + '</div>'));
 };
 
 // To add images using jQuery
 var addImages = function() {
     $('#game_board_frame').append($('<div class="game_board_spacer"></div>'))
-    for (var i = 1; i < 25; i++) {
+    for (var i = 1; i < 2*noc+1; i++) {
         var div = '<div id="card_' + i + '" class="card_frame"><a target="_blank"><img src="badges/code.png" alt="code"></a></div>';
         $('#game_board_frame').append($(div));
         if (i % 6 === 0)
             $('#game_board_frame').append($('<div class="game_board_spacer"></div>'))
     }
 };
-
-//Image Constructor it contains the image src and the jQuery selector
+//+++++++++++++++++++++++++++++++++++++++++++ Preparing the cards ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//------------------------------------------- Image Constructor ---------------------------------------------------------------------- 
 function Image(number,src){
-	this.id = "#card_"+number;
-    this.getSrc = function(){
+	this.id = "#card_"+number; //id of the card_frame
+    this.getSrc = function(){ 
         return "badges/"+src;
     }
-    this.getPlace =  function(){
+    this.getPlace =  function(){ //the image inside the card_frame of id 
         return this.id+ " img";
     }
-    this.hidden = true;
+    this.hidden = true; 
 }
 
-//------ hkapur97's shuffle-duplicator--------------
+//--------------------------------------------- hkapur97's shuffle-duplicator----------------------------------------------------------
     var random = function() {
         return Math.random() - 0.5;
     };
@@ -75,7 +78,7 @@ function Image(number,src){
     var duplicate = function(array) {
         return array.concat(array).sort(random);
     };
-//--------------------------------------------------
+//---------------------------------------------- Hide some cards ------------------------------------------------------------------------
 
 //creates the array of hidden cards
 function HideCards(){
@@ -87,17 +90,22 @@ function HideCards(){
     "SendGridAPI.png", "SkyDriveAPI.png", "SoundCloudAPI.png", "Startup.png", "Ten.png", "TwentyFive.png", "TwilioAPI.png", "TwitterAPI.png", "TwoHundred.png"]; 
     var cardsToHide = []; 
     var cardsHidden = []
-    for(i=0;i<12;i++){
+    for(i=0;i<noc;i++){
 		var chosen =Math.floor(Math.random()*cards.length);
 		cardsToHide.push(cards[chosen]);
 		cards.splice(chosen,1);
     }
     cardsToHide = duplicate(cardsToHide);
-    for(var i =1;i<25;i++){
+    for(var i =1;i<noc*2+1;i++){
 		cardsHidden[i-1]= new Image(i,cardsToHide[i-1]);
     }    
-    return cardsHidden;
+    return cardsHidden; 
 }
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//*****************************************************************************************************************************************
+
+
+//---------------------------------------- Check functions --------------------------------------------------------------------------------
 
 function hiddenCounter(array){ //counts how many cards are hidden
 	var counter = 0;	
@@ -109,16 +117,17 @@ function hiddenCounter(array){ //counts how many cards are hidden
 	return counter;
 }
 
-function reset(){
+function reset(){// Game over!?
 	if(pairsFound == 12){
 		if(confirm('Congratulations! You won.\nWould you like to play again?')){
     		pairsFound = 0,cardsHidden = [],cardsShown = [];
 		   	$('#game_board_frame').empty()
 			addImages();
-			cardsHidden = HideCards();
+			alert("press start to play again");
 		}
 	}
 }
+//-------------------------------------------------------------------------------------------------------------------------------------------------
 
 $(document).ready(function(){
 	addImages();
@@ -128,8 +137,6 @@ $(document).ready(function(){
         cardsHidden = HideCards(); 
     });
 	alert("press start");
-	//jQuery selector for all cards
-    var $cards = $("img");
 });
   
 
@@ -146,7 +153,7 @@ $(document).on('click',".card_frame",function(){
 	}
 	if(hiddenCounter(cardsHidden)== 2){
 		cardsShown.push(card);
-		if(cardsShown[0].getSrc() == cardsShown[1].getSrc()){//checks if the two cards match
+		if(cardsShown[0].getSrc() == cardsShown[1].getSrc()){//match?
 			cardsShown.forEach(function(value,index){
 				$(cardsShown[index].id).hide(250); //what's best to remove them? Maybe add a class and vanish via css to keep the order?
 			});
