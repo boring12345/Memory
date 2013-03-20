@@ -110,7 +110,7 @@ function hiddenCounter(array){ //counts how many cards are hidden
 }
 
 function reset(){
-	if(pairsFound == 13){
+	if(pairsFound == 12){
 		if(confirm('Congratulations! You won.\nWould you like to play again?')){
     		pairsFound = 0,cardsHidden = [],cardsShown = [];
 		   	$('#game_board_frame').empty()
@@ -149,11 +149,9 @@ $(document).on('click',".card_frame",function(){
 		if(cardsShown[0].getSrc() == cardsShown[1].getSrc()){//checks if the two cards match
 			cardsShown.forEach(function(value,index){
 				$(cardsShown[index].id).hide(250); //what's best to remove them? Maybe add a class and vanish via css to keep the order?
-				alert(pairsFound);
-				pairsFound++;
-						alert(pairsFound);
-				reset();
 			});
+			pairsFound++;
+			reset();
 		}
 		setTimeout(function(){
 			$(".card_frame img").attr("src","badges/code.png");			
