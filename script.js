@@ -119,7 +119,7 @@ function hiddenCounter(array){ //counts how many cards are hidden
 function reset(){// Game over!?
 	if(pairsFound == 12){
 		if(confirm('Congratulations! You won.\nWould you like to play again?')){
-    		pairsFound = 0,cardsHidden = [],cardsShown = [];
+    		pairsFound = 0,cardsHidden = [];
 		   	$('#game_board_frame').empty()
 			addImages();
 			alert("press start to play again");
@@ -166,7 +166,6 @@ $(document).on('click',".card_frame",function(){
 			$(".card_frame img").attr("src","badges/code.png");			
 			cardsHidden.forEach(function(value,index){
 				cardsHidden[index].hidden = true;
-				cardsShown = [];
 			});
 		},800);
 	}
