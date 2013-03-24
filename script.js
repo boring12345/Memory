@@ -50,7 +50,7 @@ var addPlayers = function() {
 var addImages = function() {
     $('#game_board_frame').append($('<div class="game_board_spacer"></div>'))
     for (var i = 1; i < 2*noc+1; i++) {
-        var div = '<div id="card_' + i + '" class="card_frame"><a target="_blank"><img src="badges/code.png" alt="code"></a></div>';
+        var div = '<div id="card_' + i + '" class="card_frame"><a target="_blank"><img src="Badges/Code.png" alt="code"></a></div>';
         $('#game_board_frame').append($(div));
         if (i % 6 === 0)
             $('#game_board_frame').append($('<div class="game_board_spacer"></div>'))
@@ -61,7 +61,7 @@ var addImages = function() {
 function Image(number,src){
 	this.id = "#card_"+number; //id of the card_frame
     this.getSrc = function(){ 
-        return "badges/"+src;
+        return "Badges/"+src;
     }
     this.getPlace =  function(){ //the image inside the card_frame of id 
         return this.id+ " img";
@@ -163,7 +163,7 @@ $(document).on('click',".card_frame",function(){
 			reset();
 		}
 		setTimeout(function(){
-			$(".card_frame img").attr("src","badges/code.png");			
+			$(".card_frame img").attr("src","Badges/Code.png");			
 			cardsHidden.forEach(function(value,index){
 				cardsHidden[index].hidden = true;
 			});
