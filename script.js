@@ -78,10 +78,19 @@ function Image(number,src){
         return array.concat(array).sort(random);
     };
 //---------------------------------------------- Hide some cards ------------------------------------------------------------------------
+/* 	var jsCards 	= ["Blackjack2.png", "Blackjack3.png", "Blackjack.png", "DiceGame.png", "DiceGame2.png", "FizzBuzz2.png", "FizzBuzz.png", "Functions.png", "HelloNewYork.png",
+					"IfElse.png", "IntroObjects2.png", "IntroObjects.png", "JavascriptAPI.png", "JavascriptIntro.png", "LoyaltyAPI.png", "Olympics.png", "Primitives.png",
+					"ReviewFunctions.png", "Startup.png", "YouTubeAPI.png"];  // Use the Code.png here
+	var pointCards 	= ["Fifty.png", "First.png", "FiveHundred.png", "LoyaltyAPI.png", "OneHundred.png", "OneThousand.png", "Ten.png", "TwentyFive.png",
+					"TwoHundred.png"];  // Use the JQuery.png here
+	var pythonCards = [];  // Use the Python.png here
+	var rubyCards	= ["TwitterAPI.png", "BoxAPI.png"];  // Use the Ruby.png here
+// This is still a work in progress, as there are still some images in our folder missing. Please start to enable the possibility to add cards (concerning jQuery). :-)
+*/
 
 //creates the array of hidden cards
 function HideCards(){
-    var cards = ["23andmeAPI.png", "AddressBook.png", "BitlyAPI.png", "Blackjack.png", "Blackjack2.png", "Blackjack3.png", "BoxAPI.png", "CashRegister.png"/*, "Code.png"*/,
+    var cards = ["23andmeAPI.png", "AddressBook.png", "BitlyAPI.png", "Blackjack.png", "Blackjack2.png", "Blackjack3.png", "BoxAPI.png", "CashRegister.png",
     "DiceGame.png", "DiceGame2.png", "DwollaAPI.png", "EasyPostAPI.png", "Fifty.png", "FireBaseAPI.png", "First.png", "FiveHundred.png", "FizzBuzz.png", "WePayAPI.png",
     "FizzBuzz2.png", "Functions.png", "HelloNewYork.png", "HTML5.png", "IfElse.png", "IntroObjects.png", "IntroObjects2.png", "JavascriptAPI.png", "YouTubeAPI.png",
     "JavascriptIntro.png", "JQuery.png", "KittenAPI.png", "LoyaltyAPI.png", "MandrillAPI.png", "MashapeAPI.png", "OAuth2API.png", "Olympics.png", "OneHundred.png",
