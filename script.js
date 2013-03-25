@@ -157,17 +157,23 @@ $(document).on('click',".card_frame",function(){
 				}
 		});
 		if(array[0].getSrc() ==array[1].getSrc()){
+			console.log("hit");
 			$(array[0].id).hide(250); //what's best to remove them? Maybe add a class and vanish via css to keep the order?
 			$(array[1].id).hide(250);
-			pairsFound++; // Why is this triggered if you click too fast?
-			reset();
-		}
-		setTimeout(function(){
-			$(".card_frame img").attr("src","Badges/Code.png");			
-			cardsHidden.forEach(function(value,index){
+			cardsHidden.forEach(function(value,index){ //to avoid scoring points in the 800ms fade out
 				cardsHidden[index].hidden = true;
 			});
-		},800);
+			pairsFound++;
+			reset();
+		}
+		else{
+			setTimeout(function(){
+				$(".card_frame img").attr("src","Badges/Code.png");			
+				cardsHidden.forEach(function(value,index){
+					cardsHidden[index].hidden = true;
+				});
+			},800);
+		}
 	}
 });
 
