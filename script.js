@@ -171,8 +171,8 @@ $(document).on('click',".card_frame",function(){
 		});
 		if(array[0].getSrc() ==array[1].getSrc()){
 			console.log("hit");
-			$(array[0].getPlace()).hide(250); //what's best to remove them? Maybe add a class and vanish via css to keep the order?
-			$(array[1].getPlace()).hide(250);
+			$(array[0].getPlace()).fadeTo("normal",0); //what's best to remove them? Maybe add a class and vanish via css to keep the order?
+			$(array[1].getPlace()).fadeTo("normal",0);
 			cardsHidden.forEach(function(value,index){ //to avoid scoring points in the 800ms fade out
 				cardsHidden[index].hidden = true;
 			});
