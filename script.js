@@ -3,7 +3,9 @@
     var cardsHidden = [];
     var pairsFound = 0;
     var noc = 12; // number of cards
-    var nop = 4  //number of players
+    var nop = 4;  //number of players
+    var playerList = [];
+    var currentPlayer = 1;
     var all =["23andmeAPI.png", "AddressBook.png", "BitlyAPI.png", "Blackjack.png", "Blackjack2.png", "Blackjack3.png", "BoxAPI.png", "CashRegister.png",
     	     "DiceGame.png", "DiceGame2.png", "DwollaAPI.png", "EasyPostAPI.png", "Fifty.png", "FireBaseAPI.png", "First.png", "FiveHundred.png", "FizzBuzz.png", "WePayAPI.png",
     	     "FizzBuzz2.png", "Functions.png", "HelloNewYork.png", "HTML5.png", "IfElse.png", "IntroObjects.png", "IntroObjects2.png", "JavascriptAPI.png", "YouTubeAPI.png",
@@ -58,8 +60,17 @@ var startClock = function(bool) {
 //********************************************** Building the game frame **************************************************************
 // To add players using jQuery
 var addPlayers = function() {
-    for (var i = 1; i < nop+1; i += 1)
+    for (var i = 1; i < nop+1; i += 1) {
         $('#game_info_frame').append($('<div id="player' + i + '_frame" class="player_frame">Player ' + i + '</div>'));
+        $('#player' + i + '_frame').append('<br>Turns taken:<span id="player' +i+ '_score" </span>'); 
+        $('#player' + i + '_frame').append('<br>Pairs Matched:<span id="player' +i+ '_matched" </span>');        
+        playerList.push(0);
+    }    
+};
+
+var nextPlayer = function() {
+    currentPlayer++;
+    if (currentPlayer > playerList.length) { currentPlayer = 1;}
 };
 
 // To add images using jQuery
@@ -154,7 +165,7 @@ $(document).ready(function(){
 
 
     //toggles between code.png and the hidden card
-$(document).on('click',".card_frame",function(){
+$(document).on('click',".card_frame",function(){    
 	var counter = hiddenCounter(cardsHidden);
 	var id = this.id.split("card_").splice(1);
 	var card = cardsHidden[id-1];
@@ -164,6 +175,9 @@ $(document).on('click',".card_frame",function(){
 	}
 	if(hiddenCounter(cardsHidden)== 2){
 		var array = [];
+        var turns = $('#player'+currentPlayer+'_score').html(); 
+        turns++;
+        $('#player'+currentPlayer+'_score').html(" "+turns); 
 		cardsHidden.forEach(function(value,index){
 				if(!cardsHidden[index].hidden){
 					array.push(cardsHidden[index]);	
@@ -171,11 +185,15 @@ $(document).on('click',".card_frame",function(){
 		});
 		if(array[0].getSrc() ==array[1].getSrc()){
 			console.log("hit");
+            var pairsMatched = $('#player'+currentPlayer+'_matched').html(); 
+            pairsMatched++;
+            $('#player'+currentPlayer+'_matched').html(" "+pairsMatched); 
 			$(array[0].getPlace()).fadeTo("normal",0);
 			$(array[1].getPlace()).fadeTo("normal",0);
 			cardsHidden.forEach(function(value,index){ //to avoid scoring points in the 800ms fade out
 				cardsHidden[index].hidden = true;
-			});
+			});            
+
 			pairsFound++;
 			reset();
 		}
@@ -186,6 +204,8 @@ $(document).on('click',".card_frame",function(){
 					cardsHidden[index].hidden = true;
 				});
 			},800);
+        nextPlayer();
+        console.log(currentPlayer);            
 		}
 	}
 });
