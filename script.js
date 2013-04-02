@@ -203,10 +203,10 @@ $(document).on('click',".card_frame",function(){
 				cardsHidden.forEach(function(value,index){
 					cardsHidden[index].hidden = true;
 				});
-			},800);
-        nextPlayer();
-        console.log(currentPlayer);            
+			},800);         
 		}
+        nextPlayer();
+        console.log(currentPlayer);   
 	}
 });
 
