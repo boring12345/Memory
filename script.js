@@ -2,7 +2,6 @@
 // Is there a way to avoid such things?
     var cardsHidden = [];
     var pairsFound = 0;
-    var playerList = [];
     var currentPlayer = 1;
     var all = ["23andmeAPI.png", "AddressBook.png", "BitlyAPI.png", "Blackjack.png", "Blackjack2.png", "Blackjack3.png", "BoxAPI.png", "CashRegister.png",
     	      "DiceGame.png", "DiceGame2.png", "DwollaAPI.png", "EasyPostAPI.png", "EvernoteAPI.png", "Fifty.png", "FireBaseAPI.png", "First.png", "FiveHundred.png", "FizzBuzz.png", "WePayAPI.png",
@@ -57,11 +56,10 @@ var startClock = function(bool) {
 //********************************************** Building the game frame **************************************************************
 // To add players using jQuery
 var addPlayers = function(nop) {
-    for (var i = 1; i < nop+1; i += 1) {
+    for (var i = 1; i < nop+1; i++) {
         $('#game_info_frame').append($('<div id="player' + i + '_frame" class="player_frame">Player ' + i + '</div>'));
         $('#player' + i + '_frame').append('<br>Turns taken:<span id="player' +i+ '_score" </span>'); 
         $('#player' + i + '_frame').append('<br>Pairs Matched:<span id="player' +i+ '_matched" </span>');        
-        playerList.push(0);
     }    
 };
 
@@ -133,7 +131,8 @@ function reset(noc){// Game over!?
 	if(pairsFound == noc){
 		if(confirm('Congratulations! You won.\nWould you like to play again?')){
     		pairsFound = 0,cardsHidden = [];
-		   	$('#game_board_frame').empty()
+		   	$('#game_board_frame').empty();
+			$('#game_info_frame').empty();
 			alert("press start to play again");
 		}
 	}
@@ -142,24 +141,25 @@ function reset(noc){// Game over!?
 
 var nextPlayer = function(){
     currentPlayer++;
-    if (currentPlayer > playerList.length) { currentPlayer = 1;}
+    if (currentPlayer > parseInt($("nop").val())) { currentPlayer = 1;}
 };
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 
 $(document).ready(function(){	
-	var player = parseInt(prompt("How many players do we have today?"));
-	player = player>4?4:player;
-	addPlayers(player);
-   	$("#start").click(function(){//get new Cards by pressing start button    
-		var chooseSet = parseInt(prompt("0:all,1:JS,2:PC,3:Py,4:Ru"),10); //Just for the moment	
+	//var player = parseInt(prompt("How many players do we have today?"));
+	//player = player>4?4:player;
+   	$("#start").click(function(){//get new Cards by pressing start button 
+		var player = parseInt($("#nop").val());
+		addPlayers(player);	
+		var chooseSet = $("#set").val();//parseInt(prompt("0:all,1:JS,2:PC,3:Py,4:Ru"),10);	
     	upCard = setUpCard[chooseSet]; 
     	cards  = set[chooseSet].slice();
 		var noc = cards.length>=12 ? 12:cards.length;
 		addImages(noc);
         cardsHidden = HideCards(noc);
     });
-	alert("press start");
+	alert("Get your settings ready. Press start to begin!");
 });
   
 

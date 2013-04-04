@@ -11,7 +11,7 @@
 		<script type="text/javascript" src="script.js"></script>
 		<link rel="icon" href="favicon.ico"/>
 	</head>
-	<body>
+	<body>		
 		<div id="game_title_wrapper">
 			<h1 id="game_title">Codecademy Memory</h1>
 		</div>
@@ -24,7 +24,23 @@
 			</div>
 			<div id="control_frame">
 				<button id="start" value="Start">Start</button>
-				<button id="quit" value="Quit">Quit</button>		
+				<button id="quit" value="Quit">Quit</button>
+				
+				<label>Number of Players:</label>
+				<select id="nop">
+               	   	  <option value="1" selected>1</option>
+					  <option value="2">2</option>
+					  <option value="3">3</option>
+				      <option value="4">4</option>
+			    </select>
+			    <label>Set:</label>
+				<select id="set">
+               	   	  <option value="0" selected>all</option>
+					  <option value="1">JavaScript</option>
+					  <option value="2">Pointcards</option>
+				      <option value="3">Python</option>
+				      <option value="4">Ruby</option>
+           		</select>
 			</div>
 		</div>
 	</body>
