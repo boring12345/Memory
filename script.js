@@ -142,22 +142,21 @@ function reset(){// Game over!?
 		if(confirm('Congratulations! You won.\nWould you like to play again?')){
     		pairsFound = 0,cardsHidden = [];
 		   	$('#game_board_frame').empty()
-			addImages();
 			alert("press start to play again");
 		}
 	}
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 
-$(document).ready(function(){
-	var chooseSet = parseInt(prompt("0:all,1:JS,2:PC,3:Py,4:Ru"),10); //Just for the moment 
-    	upCard = setUpCard[chooseSet]; //WARNING: At the moment all Sets with > 12 cards will cause bugs, as no duplicates are allowed!
-    	cards  = set[chooseSet];
-	addImages();
+$(document).ready(function(){	
 	addPlayers();
     //get new Cards by pressing start button    
     $("#start").click(function(){
-        cardsHidden = HideCards(); 
+	var chooseSet = parseInt(prompt("0:all,1:JS,2:PC,3:Py,4:Ru"),10); //Just for the moment 
+    	upCard = setUpCard[chooseSet]; //WARNING: At the moment all Sets with > 12 cards will cause bugs, as no duplicates are allowed!
+    	cards  = set[chooseSet].slice();
+	addImages();
+        cardsHidden = HideCards();
     });
 	alert("press start");
 });
