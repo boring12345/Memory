@@ -149,6 +149,7 @@ var nextPlayer = function(){
 
 $(document).ready(function(){	
 	var player = parseInt(prompt("How many players do we have today?"));
+	player = player>4?4:player;
 	addPlayers(player);
    	$("#start").click(function(){//get new Cards by pressing start button    
 		var chooseSet = parseInt(prompt("0:all,1:JS,2:PC,3:Py,4:Ru"),10); //Just for the moment	
