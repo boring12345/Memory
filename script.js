@@ -2,8 +2,6 @@
 // Is there a way to avoid such things?
     var cardsHidden = [];
     var pairsFound = 0;
-    var noc = 12; // number of cards
-    var nop = 4;  //number of players
     var playerList = [];
     var currentPlayer = 1;
     var all =["23andmeAPI.png", "AddressBook.png", "BitlyAPI.png", "Blackjack.png", "Blackjack2.png", "Blackjack3.png", "BoxAPI.png", "CashRegister.png",
@@ -18,7 +16,7 @@
     var pointCards= ["Fifty.png", "First.png", "FiveHundred.png", "LoyaltyAPI.png", "OneHundred.png", "OneThousand.png", "Ten.png", "TwentyFive.png",
 		    "TwoHundred.png"];  // Use the JQuery.png here
     var pythonCards = ["Python.png"];  // Use the Python.png here
-    var rubyCards= ["TwitterAPI.png", "BoxAPI.png"];  // Use the Ruby.png here
+    var rubyCards= ["TwitterAPI.png", "BoxAPI.png",/*"Ruby.png"*/];  // Use the Ruby.png here
     var set = [all,jsCards,pointCards,pythonCards,rubyCards];
     var setUpCard = ["Code.png","Code.png","JQuery.png","Python.png","Ruby.png"]
     var upCard;// =setUpCard[chooseSet];
@@ -59,7 +57,7 @@ var startClock = function(bool) {
 
 //********************************************** Building the game frame **************************************************************
 // To add players using jQuery
-var addPlayers = function() {
+var addPlayers = function(nop) {
     for (var i = 1; i < nop+1; i += 1) {
         $('#game_info_frame').append($('<div id="player' + i + '_frame" class="player_frame">Player ' + i + '</div>'));
         $('#player' + i + '_frame').append('<br>Turns taken:<span id="player' +i+ '_score" </span>'); 
@@ -68,13 +66,8 @@ var addPlayers = function() {
     }    
 };
 
-var nextPlayer = function() {
-    currentPlayer++;
-    if (currentPlayer > playerList.length) { currentPlayer = 1;}
-};
-
 // To add images using jQuery
-var addImages = function() {
+var addImages = function(noc) {
     $('#game_board_frame').append($('<div class="game_board_spacer"></div>'))
     for (var i = 1; i < 2*noc+1; i++) {
         var div = '<div id="card_' + i + '" class="card_frame"><a target="_blank"><img src="Badges/'+upCard+'" alt="code"></a></div>';
@@ -107,7 +100,7 @@ function Image(number,src){
 //---------------------------------------------- Hide some cards ------------------------------------------------------------------------
 
 //creates the array of hidden cards
-function HideCards(){
+function HideCards(noc){
     var cardsToHide = []; 
     var cardsHidden = []
     for(i=0;i<noc;i++){
@@ -137,8 +130,8 @@ function hiddenCounter(array){ //counts how many cards are hidden
 	return counter;
 }
 
-function reset(){// Game over!?
-	if(pairsFound == 12){
+function reset(noc){// Game over!?
+	if(pairsFound == noc){
 		if(confirm('Congratulations! You won.\nWould you like to play again?')){
     		pairsFound = 0,cardsHidden = [];
 		   	$('#game_board_frame').empty()
@@ -146,17 +139,25 @@ function reset(){// Game over!?
 		}
 	}
 }
+
+
+var nextPlayer = function(){
+    currentPlayer++;
+    if (currentPlayer > playerList.length) { currentPlayer = 1;}
+};
+
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 
 $(document).ready(function(){	
-	addPlayers();
-    //get new Cards by pressing start button    
-    $("#start").click(function(){
-	var chooseSet = parseInt(prompt("0:all,1:JS,2:PC,3:Py,4:Ru"),10); //Just for the moment 
-    	upCard = setUpCard[chooseSet]; //WARNING: At the moment all Sets with > 12 cards will cause bugs, as no duplicates are allowed!
+	var player = parseInt(prompt("How many players do we have today?"));
+	addPlayers(player);
+   	$("#start").click(function(){//get new Cards by pressing start button    
+		var chooseSet = parseInt(prompt("0:all,1:JS,2:PC,3:Py,4:Ru"),10); //Just for the moment	
+    	upCard = setUpCard[chooseSet]; 
     	cards  = set[chooseSet].slice();
-	addImages();
-        cardsHidden = HideCards();
+		var noc = cards.length>=12 ? 12:cards.length;
+		addImages(noc);
+        cardsHidden = HideCards(noc);
     });
 	alert("press start");
 });
@@ -194,7 +195,7 @@ $(document).on('click',".card_frame",function(){
 			});            
 
 			pairsFound++;
-			reset();
+			reset(cardsHidden.length/2);
 		}
 		else{
 			setTimeout(function(){
