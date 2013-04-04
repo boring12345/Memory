@@ -98,7 +98,8 @@ function Image(number,src){
     this.getPlace =  function(){ //the image inside the card_frame of id 
         return this.id+ " img";
     }
-    this.hidden = true; 
+    this.hidden = true;
+    this.fadedOut = false;	
 }
 
 //--------------------------------------------- hkapur97's shuffle-duplicator----------------------------------------------------------
@@ -167,6 +168,7 @@ $(document).ready(function(){
 	//player = player>4?4:player;
    	$("#start").click(start);
 	$("#quit").click(function(){
+			pairsFound = 0,cardsHidden = [];
 			$('#game_board_frame').empty();
 			$('#game_info_frame').empty();
 	});
@@ -180,12 +182,12 @@ $(document).on('click',".card_frame",function(){
 	var counter = hiddenCounter(cardsHidden);
 	var id = this.id.split("card_").splice(1);
 	var card = cardsHidden[id-1];
-    if(counter<2){ 
+    if(counter<2 && !card.fadedOut){ 
        	$(card.getPlace()).attr("src", card.getSrc());
 		card.hidden = false;
 		lock = false;
 	}
-	if(hiddenCounter(cardsHidden) == 2 && !lock){
+	if(counter == 2 && !lock){ // or hiddenCounter(cardsHidden) == 2
 		var array = [];
         var turns = $('#player'+currentPlayer+'_score').html(); 
         turns++;
@@ -200,8 +202,10 @@ $(document).on('click',".card_frame",function(){
             var pairsMatched = $('#player'+currentPlayer+'_matched').html(); 
             pairsMatched++;
             $('#player'+currentPlayer+'_matched').html(" "+pairsMatched); 
-			$(array[0].getPlace()).fadeTo("normal",0);
-			$(array[1].getPlace()).fadeTo("normal",0);
+			array.forEach(function(value,index){
+				$(array[index].getPlace()).fadeTo("normal",0);		
+				array[index].fadedOut = true;
+			});
 			cardsHidden.forEach(function(value,index){ //to avoid scoring points in the 800ms fade out
 				cardsHidden[index].hidden = true;
 			});            
@@ -215,7 +219,7 @@ $(document).on('click',".card_frame",function(){
 				cardsHidden.forEach(function(value,index){
 					cardsHidden[index].hidden = true;
 				});
-			},800);         
+			},200);         
 		}
         nextPlayer();
 		lock = true;
