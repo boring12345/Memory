@@ -3,6 +3,7 @@
     var cardsHidden = [];
     var pairsFound = 0;
     var currentPlayer = 1;
+    var lock = false; //to only allow 3 card clicks per players turn
     var all = ["23andmeAPI.png", "AddressBook.png", "BitlyAPI.png", "Blackjack.png", "Blackjack2.png", "Blackjack3.png", "BoxAPI.png", "CashRegister.png",
     	      "DiceGame.png", "DiceGame2.png", "DwollaAPI.png", "EasyPostAPI.png", "EvernoteAPI.png", "Fifty.png", "FireBaseAPI.png", "First.png", "FiveHundred.png",
 			  "FizzBuzz.png", "WePayAPI.png", "FizzBuzz2.png", "Functions.png", "GiltAPI.png", "HelloNewYork.png", "HTML5.png", "HTML5old.png", "IfElse.png",
@@ -86,7 +87,7 @@ var start = function(){//get new Cards by pressing start button
 		var noc = cards.length>=12 ? 12:cards.length;
 		addImages(noc);
         cardsHidden = HideCards(noc);
-    }
+};
 //+++++++++++++++++++++++++++++++++++++++++++ Preparing the cards ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //------------------------------------------- Image Constructor ---------------------------------------------------------------------- 
 function Image(number,src){
@@ -182,8 +183,9 @@ $(document).on('click',".card_frame",function(){
     if(counter<2){ 
        	$(card.getPlace()).attr("src", card.getSrc());
 		card.hidden = false;
+		lock = false;
 	}
-	if(hiddenCounter(cardsHidden)== 2){
+	if(hiddenCounter(cardsHidden) == 2 && !lock){
 		var array = [];
         var turns = $('#player'+currentPlayer+'_score').html(); 
         turns++;
@@ -208,7 +210,7 @@ $(document).on('click',".card_frame",function(){
 			reset(cardsHidden.length/2);
 		}
 		else{
-			setTimeout(function(){
+			setTimeout(function(){ // maybe search for a smoother fade out
 				$(".card_frame img").attr("src","Badges/"+upCard);			
 				cardsHidden.forEach(function(value,index){
 					cardsHidden[index].hidden = true;
@@ -216,7 +218,8 @@ $(document).on('click',".card_frame",function(){
 			},800);         
 		}
         nextPlayer();
-        console.log(currentPlayer);   
+		lock = true;
+        //console.log(currentPlayer);   
 	}
 });
 
