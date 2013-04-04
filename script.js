@@ -76,6 +76,17 @@ var addImages = function(noc) {
             $('#game_board_frame').append($('<div class="game_board_spacer"></div>'))
     }
 };
+
+var start = function(){//get new Cards by pressing start button 
+		var player = parseInt($("#nop").val());
+		addPlayers(player);	
+		var chooseSet = $("#set").val();//parseInt(prompt("0:all,1:JS,2:PC,3:Py,4:Ru"),10);	
+    	upCard = setUpCard[chooseSet]; 
+    	cards  = set[chooseSet].slice();
+		var noc = cards.length>=12 ? 12:cards.length;
+		addImages(noc);
+        cardsHidden = HideCards(noc);
+    }
 //+++++++++++++++++++++++++++++++++++++++++++ Preparing the cards ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //------------------------------------------- Image Constructor ---------------------------------------------------------------------- 
 function Image(number,src){
@@ -132,11 +143,12 @@ function hiddenCounter(array){ //counts how many cards are hidden
 
 function reset(noc){// Game over!?
 	if(pairsFound == noc){
+		pairsFound = 0,cardsHidden = [];
+		$('#game_board_frame').empty();
+		$('#game_info_frame').empty();
+		//alert("press start to play again");
 		if(confirm('Congratulations! You won.\nWould you like to play again?')){
-    		pairsFound = 0,cardsHidden = [];
-		   	$('#game_board_frame').empty();
-			$('#game_info_frame').empty();
-			alert("press start to play again");
+    		start();	
 		}
 	}
 }
@@ -152,16 +164,7 @@ var nextPlayer = function(){
 $(document).ready(function(){	
 	//var player = parseInt(prompt("How many players do we have today?"));
 	//player = player>4?4:player;
-   	$("#start").click(function(){//get new Cards by pressing start button 
-		var player = parseInt($("#nop").val());
-		addPlayers(player);	
-		var chooseSet = $("#set").val();//parseInt(prompt("0:all,1:JS,2:PC,3:Py,4:Ru"),10);	
-    	upCard = setUpCard[chooseSet]; 
-    	cards  = set[chooseSet].slice();
-		var noc = cards.length>=12 ? 12:cards.length;
-		addImages(noc);
-        cardsHidden = HideCards(noc);
-    });
+   	$("#start").click(start);
 	$("#quit").click(function(){
 			$('#game_board_frame').empty();
 			$('#game_info_frame').empty();
