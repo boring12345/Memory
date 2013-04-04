@@ -144,7 +144,7 @@ function reset(noc){// Game over!?
 
 var nextPlayer = function(){
     currentPlayer++;
-    if (currentPlayer > parseInt($("nop").val())) { currentPlayer = 1;}
+    if (currentPlayer > parseInt($("#nop").val())) { currentPlayer = 1;}
 };
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------
