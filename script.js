@@ -1,10 +1,10 @@
 //------------------------------------ Global variables-------------------------------
 // Is there a way to avoid such things?
+	var minID,secID;
     var cardsHidden = [];
     var pairsFound = 0;
     var currentPlayer = 1;
-	var gameIsRunning = false;
-    var lock = false; //to only allow 3 card clicks per players turn
+	var gameIsRunning = false, lock = false; //to only allow 3 card clicks per players turn
     var all = ["23andmeAPI.png", "AddressBook.png", "BitlyAPI.png", "Blackjack.png", "Blackjack2.png", "Blackjack3.png", "BoxAPI.png", "CashRegister.png",
     	      "DiceGame.png", "DiceGame2.png", "DwollaAPI.png", "EasyPostAPI.png", "EvernoteAPI.png", "Fifty.png", "FireBaseAPI.png", "First.png", "FiveHundred.png",
 			  "FizzBuzz.png", "WePayAPI.png", "FizzBuzz2.png", "Functions.png", "GiltAPI.png", "HelloNewYork.png", "HTML5.png", "HTML5old.png", "IfElse.png",
@@ -22,9 +22,8 @@
    					"SendGridAPI.png", "TwilioAPI.png", "TwitterAPI.png", "WePayAPI.png"]; 
     var set = [all,jsCards,pointCards,pythonCards,rubyCards];
     var setUpCard = ["Code.png","Code.png","JQuery.png","Python.png","Ruby.png"]
-    var upCard;// =setUpCard[chooseSet];
-    var cards =[];// set[chooseSet];
-/*--------------------------------------Clock (not used yet)--------------------------- 
+    var upCard, cards =[];// set[chooseSet];
+///*--------------------------------------Clock (not used yet)--------------------------- 
 // Starts the minutes of the clock
 var startMin = function() {
     minID = setInterval(function(){
@@ -46,7 +45,7 @@ var startSec = function() {
 // Optional parameter, if true, resets the clock
 var stopClock = function(bool) {
     if (bool)
-        $('#min').text('00'), $('#sec').text('00');
+        $('#min').text('00'),$(".seperator").text(" : "), $('#sec').text('00');
     clearInterval(minID), clearInterval(secID);
 };
 
@@ -54,9 +53,9 @@ var stopClock = function(bool) {
 var startClock = function(bool) {
     if (bool)
         stopClock();
-    startMS(), startSec(), startMin();
+    /*startMS(),*/ startSec(), startMin();
 };
-*/
+//*/
 
 //********************************************** Building the game frame **************************************************************
 // To add players using jQuery
@@ -81,6 +80,7 @@ var addImages = function(noc) {
 
 var start = function(){//get new Cards by pressing start button 
 		if (gameIsRunning) { return ;}
+		startClock(true);
 		var player = parseInt($("#nop").val());
 		addPlayers(player);	
 		var chooseSet = $("#set").val();//parseInt(prompt("0:all,1:JS,2:PC,3:Py,4:Ru"),10);	
@@ -138,6 +138,7 @@ function setBack() {
 	pairsFound = 0,cardsHidden = [];
 	$('#game_board_frame').empty();
 	$('#game_info_frame').empty();
+	stopClock(true);
 }
 // Created due to D.R.Y.
 
