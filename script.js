@@ -149,7 +149,7 @@ function reset(noc){// Game over!?
 		$('#game_board_frame').empty();
 		$('#game_info_frame').empty();
 		//alert("press start to play again");
-		if(confirm('Congratulations! You won.\nWould you like to play again?')){
+		if(confirm('Congratulations! You won.\nWould you like to play again?')){ //need to declare the Winner in Multiplayer
     		start();	
 		}
 	}
@@ -219,7 +219,7 @@ $(document).on('click',".card_frame",function(){
 				cardsHidden.forEach(function(value,index){
 					cardsHidden[index].hidden = true;
 				});
-			},200);         
+			},200);
 		}
         nextPlayer();
 		lock = true;
