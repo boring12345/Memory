@@ -167,7 +167,7 @@ function reset(noc){// Game over!?
 		for(var i=1;i<parseInt($("#nop").val())+1;i++){ 
 			playerScore = parseInt($('#player'+i+'_matched').html());
 			if(highscore == playerScore){
-					winner+= "and Player"+i;
+					winner+= " and Player"+i;
 			}
 			if(highscore < playerScore){
 					highscore = playerScore;
