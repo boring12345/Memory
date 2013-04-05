@@ -30,7 +30,7 @@ body {
 
 #game_frame {
 	width: 993px;
-	height: 575px; /*550*/
+	height: 600px; /*550*/
 	margin-top: 3px;
 	border-style: ridge;
 	border-width: 6px;
@@ -109,4 +109,8 @@ div.player_frame {
 	font-size: 16px;
 	font-family: Helvetica,Arial,sans-serif;
 	margin-top: 20px;
+}
+
+#clock div{
+	display:inline;
 }

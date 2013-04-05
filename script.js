@@ -1,9 +1,10 @@
 //------------------------------------ Global variables-------------------------------
 // Is there a way to avoid such things?
+	var minID,secID;
     var cardsHidden = [];
     var pairsFound = 0;
     var currentPlayer = 1;
-    var lock = false; //to only allow 3 card clicks per players turn
+	var gameIsRunning = false, lock = false; //to only allow 3 card clicks per players turn
     var all = ["23andmeAPI.png", "AddressBook.png", "BitlyAPI.png", "Blackjack.png", "Blackjack2.png", "Blackjack3.png", "BoxAPI.png", "CashRegister.png",
     	      "DiceGame.png", "DiceGame2.png", "DwollaAPI.png", "EasyPostAPI.png", "EvernoteAPI.png", "Fifty.png", "FireBaseAPI.png", "First.png", "FiveHundred.png",
 			  "FizzBuzz.png", "WePayAPI.png", "FizzBuzz2.png", "Functions.png", "GiltAPI.png", "HelloNewYork.png", "HTML5.png", "HTML5old.png", "IfElse.png",
@@ -21,9 +22,8 @@
    					"SendGridAPI.png", "TwilioAPI.png", "TwitterAPI.png", "WePayAPI.png"]; 
     var set = [all,jsCards,pointCards,pythonCards,rubyCards];
     var setUpCard = ["Code.png","Code.png","JQuery.png","Python.png","Ruby.png"]
-    var upCard;// =setUpCard[chooseSet];
-    var cards =[];// set[chooseSet];
-/*--------------------------------------Clock (not used yet)--------------------------- 
+    var upCard, cards =[];// set[chooseSet];
+///*--------------------------------------Clock (not used yet)--------------------------- 
 // Starts the minutes of the clock
 var startMin = function() {
     minID = setInterval(function(){
@@ -53,9 +53,9 @@ var stopClock = function(bool) {
 var startClock = function(bool) {
     if (bool)
         stopClock();
-    startMS(), startSec(), startMin();
+    /*startMS(),*/ startSec(), startMin();
 };
-*/
+//*/
 
 //********************************************** Building the game frame **************************************************************
 // To add players using jQuery
@@ -71,7 +71,11 @@ var addPlayers = function(nop) {
 var addImages = function(noc) {
     $('#game_board_frame').append($('<div class="game_board_spacer"></div>'))
     for (var i = 1; i < 2*noc+1; i++) {
+<<<<<<< HEAD
         var div = '<div id="card_' + i + '" class="card_frame"><a target="_blank"><img src="Badges/'+upCard+'" alt="code"></a></div>';
+=======
+        var div = '<div id="card_' + i + '" class="card_frame"><a target="_blank"><img src="Badges/Code.png" alt="code"></a></div>';
+>>>>>>> master
         $('#game_board_frame').append($(div));
         if (i % 6 === 0)
             $('#game_board_frame').append($('<div class="game_board_spacer"></div>'))
@@ -79,6 +83,8 @@ var addImages = function(noc) {
 };
 
 var start = function(){//get new Cards by pressing start button 
+		if (gameIsRunning) { return ;}
+		startClock(true);
 		var player = parseInt($("#nop").val());
 		addPlayers(player);	
 		var chooseSet = $("#set").val();//parseInt(prompt("0:all,1:JS,2:PC,3:Py,4:Ru"),10);	
@@ -87,6 +93,7 @@ var start = function(){//get new Cards by pressing start button
 		var noc = cards.length>=12 ? 12:cards.length;
 		addImages(noc);
         cardsHidden = HideCards(noc);
+		gameIsRunning = true;
 };
 //+++++++++++++++++++++++++++++++++++++++++++ Preparing the cards ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //------------------------------------------- Image Constructor ---------------------------------------------------------------------- 
@@ -127,6 +134,18 @@ function HideCards(noc){
     }    
     return cardsHidden; 
 }
+
+//------------------------------------------------- SetBack function -------------------------------------------------------------------------
+// Will be called from reset() and when clicking on quit
+function setBack() {
+	gameIsRunning = false;
+	pairsFound = 0,cardsHidden = [];
+	$('#game_board_frame').empty();
+	$('#game_info_frame').empty();
+	stopClock(true);
+}
+// Created due to D.R.Y.
+
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //*****************************************************************************************************************************************
 
@@ -144,12 +163,23 @@ function hiddenCounter(array){ //counts how many cards are hidden
 }
 
 function reset(noc){// Game over!?
-	if(pairsFound == noc){
-		pairsFound = 0,cardsHidden = [];
-		$('#game_board_frame').empty();
-		$('#game_info_frame').empty();
+	if(pairsFound == noc){		
 		//alert("press start to play again");
-		if(confirm('Congratulations! You won.\nWould you like to play again?')){ //need to declare the Winner in Multiplayer
+		var winner = "";
+		var playerScore = 0;
+	    var highscore = 0;
+		for(var i=1;i<parseInt($("#nop").val())+1;i++){ 
+			playerScore = parseInt($('#player'+i+'_matched').html());
+			if(highscore == playerScore){
+					winner+= " and Player"+i;
+			}
+			if(highscore < playerScore){
+					highscore = playerScore;
+					winner = "Player"+i;
+			}			
+		}
+		setBack();
+		if(confirm('Congratulations, '+winner+'. You won!\nWould you like to play again?')){ //need to declare the Winner in Multiplayer
     		start();	
 		}
 	}
@@ -168,9 +198,7 @@ $(document).ready(function(){
 	//player = player>4?4:player;
    	$("#start").click(start);
 	$("#quit").click(function(){
-			pairsFound = 0,cardsHidden = [];
-			$('#game_board_frame').empty();
-			$('#game_info_frame').empty();
+			setBack();
 	});
 	alert("Get your settings ready. Press start to begin!");
 });
@@ -187,8 +215,9 @@ $(document).on('click',".card_frame",function(){
 		card.hidden = false;
 		lock = false;
 	}
-	if(counter == 2 && !lock){ // or hiddenCounter(cardsHidden) == 2
+	if(hiddenCounter(cardsHidden) == 2 && !lock){ // or counter  == 2
 		var array = [];
+		var again = false;
         var turns = $('#player'+currentPlayer+'_score').html(); 
         turns++;
         $('#player'+currentPlayer+'_score').html(" "+turns); 
@@ -198,13 +227,25 @@ $(document).on('click',".card_frame",function(){
 				}
 		});
 		if(array[0].getSrc() ==array[1].getSrc()){
-			console.log("hit");
+<<<<<<< HEAD
+			again = true;
             var pairsMatched = $('#player'+currentPlayer+'_matched').html(); 
             pairsMatched++;
             $('#player'+currentPlayer+'_matched').html(" "+pairsMatched); 
 			array.forEach(function(value,index){
 				$(array[index].getPlace()).fadeTo("normal",0);		
 				array[index].fadedOut = true;
+=======
+			$(array[0].id).hide(250); //what's best to remove them? Maybe add a class and vanish via css to keep the order?
+			$(array[1].id).hide(250);
+			pairsFound++; // Why is this triggered if you click too fast?
+			reset();
+		}
+		setTimeout(function(){
+			$(".card_frame img").attr("src","Badges/Code.png");			
+			cardsHidden.forEach(function(value,index){
+				cardsHidden[index].hidden = true;
+>>>>>>> master
 			});
 			cardsHidden.forEach(function(value,index){ //to avoid scoring points in the 800ms fade out
 				cardsHidden[index].hidden = true;
@@ -219,11 +260,11 @@ $(document).on('click',".card_frame",function(){
 				cardsHidden.forEach(function(value,index){
 					cardsHidden[index].hidden = true;
 				});
-			},200);
+			},1000);
 		}
-        nextPlayer();
+		if(!again){
+        	nextPlayer();
+		}
 		lock = true;
-        //console.log(currentPlayer);   
 	}
 });
-
