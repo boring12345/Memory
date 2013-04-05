@@ -45,7 +45,7 @@ var startSec = function() {
 // Optional parameter, if true, resets the clock
 var stopClock = function(bool) {
     if (bool)
-        $('#min').text('00'),$(".seperator").text(" : "), $('#sec').text('00');
+        $('#min').text('00'), $('#sec').text('00');
     clearInterval(minID), clearInterval(secID);
 };
 
@@ -159,10 +159,23 @@ function hiddenCounter(array){ //counts how many cards are hidden
 }
 
 function reset(noc){// Game over!?
-	if(pairsFound == noc){
-		setBack();
+	if(pairsFound == noc){		
 		//alert("press start to play again");
-		if(confirm('Congratulations! You won.\nWould you like to play again?')){ //need to declare the Winner in Multiplayer
+		var winner = "";
+		var playerScore = 0;
+	    var highscore = 0;
+		for(var i=1;i<parseInt($("#nop").val())+1;i++){ 
+			playerScore = parseInt($('#player'+i+'_matched').html());
+			if(highscore == playerScore){
+					winner+= "and Player"+i;
+			}
+			if(highscore < playerScore){
+					highscore = playerScore;
+					winner = "Player"+i;
+			}			
+		}
+		setBack();
+		if(confirm('Congratulations! '+winner+' you won.\nWould you like to play again?')){ //need to declare the Winner in Multiplayer
     		start();	
 		}
 	}
@@ -198,7 +211,7 @@ $(document).on('click',".card_frame",function(){
 		card.hidden = false;
 		lock = false;
 	}
-	if(counter == 2 && !lock){ // or hiddenCounter(cardsHidden) == 2
+	if(hiddenCounter(cardsHidden) == 2 && !lock){ // or counter  == 2
 		var array = [];
 		var again = false;
         var turns = $('#player'+currentPlayer+'_score').html(); 
@@ -231,7 +244,7 @@ $(document).on('click',".card_frame",function(){
 				cardsHidden.forEach(function(value,index){
 					cardsHidden[index].hidden = true;
 				});
-			},200);
+			},1000);
 		}
 		if(!again){
         	nextPlayer();
