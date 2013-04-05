@@ -80,7 +80,7 @@ var addImages = function(noc) {
 };
 
 var start = function(){//get new Cards by pressing start button 
-		if(gameIsRunning) { return ;}
+		if (gameIsRunning) { return ;}
 		var player = parseInt($("#nop").val());
 		addPlayers(player);	
 		var chooseSet = $("#set").val();//parseInt(prompt("0:all,1:JS,2:PC,3:Py,4:Ru"),10);	
@@ -130,6 +130,17 @@ function HideCards(noc){
     }    
     return cardsHidden; 
 }
+
+//------------------------------------------------- SetBack function -------------------------------------------------------------------------
+// Will be called from reset() and when clicking on quit
+function setBack() {
+	gameIsRunning = false;
+	pairsFound = 0,cardsHidden = [];
+	$('#game_board_frame').empty();
+	$('#game_info_frame').empty();
+}
+// Created due to D.R.Y.
+
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //*****************************************************************************************************************************************
 
@@ -148,10 +159,7 @@ function hiddenCounter(array){ //counts how many cards are hidden
 
 function reset(noc){// Game over!?
 	if(pairsFound == noc){
-		gameIsRunning = false;
-		pairsFound = 0,cardsHidden = [];
-		$('#game_board_frame').empty();
-		$('#game_info_frame').empty();
+		setBack();
 		//alert("press start to play again");
 		if(confirm('Congratulations! You won.\nWould you like to play again?')){
     		start();	
@@ -172,10 +180,7 @@ $(document).ready(function(){
 	//player = player>4?4:player;
    	$("#start").click(start);
 	$("#quit").click(function(){
-			gameIsRunning = false;
-			pairsFound = 0,cardsHidden = [];
-			$('#game_board_frame').empty();
-			$('#game_info_frame').empty();
+			setBack();
 	});
 	alert("Get your settings ready. Press start to begin!");
 });
@@ -231,5 +236,3 @@ $(document).on('click',".card_frame",function(){
         //console.log(currentPlayer);   
 	}
 });
-
-// To do: Write an empty function
