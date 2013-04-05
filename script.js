@@ -199,6 +199,7 @@ $(document).on('click',".card_frame",function(){
 	}
 	if(counter == 2 && !lock){ // or hiddenCounter(cardsHidden) == 2
 		var array = [];
+		var again = false;
         var turns = $('#player'+currentPlayer+'_score').html(); 
         turns++;
         $('#player'+currentPlayer+'_score').html(" "+turns); 
@@ -208,7 +209,7 @@ $(document).on('click',".card_frame",function(){
 				}
 		});
 		if(array[0].getSrc() ==array[1].getSrc()){
-			console.log("hit");
+			again = true;
             var pairsMatched = $('#player'+currentPlayer+'_matched').html(); 
             pairsMatched++;
             $('#player'+currentPlayer+'_matched').html(" "+pairsMatched); 
@@ -231,8 +232,9 @@ $(document).on('click',".card_frame",function(){
 				});
 			},200);
 		}
-        nextPlayer();
+		if(!again){
+        	nextPlayer();
+		}
 		lock = true;
-        //console.log(currentPlayer);   
 	}
 });
