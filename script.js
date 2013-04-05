@@ -71,11 +71,7 @@ var addPlayers = function(nop) {
 var addImages = function(noc) {
     $('#game_board_frame').append($('<div class="game_board_spacer"></div>'))
     for (var i = 1; i < 2*noc+1; i++) {
-<<<<<<< HEAD
         var div = '<div id="card_' + i + '" class="card_frame"><a target="_blank"><img src="Badges/'+upCard+'" alt="code"></a></div>';
-=======
-        var div = '<div id="card_' + i + '" class="card_frame"><a target="_blank"><img src="Badges/Code.png" alt="code"></a></div>';
->>>>>>> master
         $('#game_board_frame').append($(div));
         if (i % 6 === 0)
             $('#game_board_frame').append($('<div class="game_board_spacer"></div>'))
@@ -227,7 +223,6 @@ $(document).on('click',".card_frame",function(){
 				}
 		});
 		if(array[0].getSrc() ==array[1].getSrc()){
-<<<<<<< HEAD
 			again = true;
             var pairsMatched = $('#player'+currentPlayer+'_matched').html(); 
             pairsMatched++;
@@ -235,17 +230,6 @@ $(document).on('click',".card_frame",function(){
 			array.forEach(function(value,index){
 				$(array[index].getPlace()).fadeTo("normal",0);		
 				array[index].fadedOut = true;
-=======
-			$(array[0].id).hide(250); //what's best to remove them? Maybe add a class and vanish via css to keep the order?
-			$(array[1].id).hide(250);
-			pairsFound++; // Why is this triggered if you click too fast?
-			reset();
-		}
-		setTimeout(function(){
-			$(".card_frame img").attr("src","Badges/Code.png");			
-			cardsHidden.forEach(function(value,index){
-				cardsHidden[index].hidden = true;
->>>>>>> master
 			});
 			cardsHidden.forEach(function(value,index){ //to avoid scoring points in the 800ms fade out
 				cardsHidden[index].hidden = true;
