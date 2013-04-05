@@ -175,7 +175,7 @@ function reset(noc){// Game over!?
 			}			
 		}
 		setBack();
-		if(confirm('Congratulations! '+winner+' you won.\nWould you like to play again?')){ //need to declare the Winner in Multiplayer
+		if(confirm('Congratulations! '+winner+'. You won.\nWould you like to play again?')){ //need to declare the Winner in Multiplayer
     		start();	
 		}
 	}
