@@ -30,7 +30,7 @@ body {
 
 #game_frame {
 	width: 993px;
-	height: 550px;
+	height: 575px; /*550*/
 	margin-top: 3px;
 	border-style: ridge;
 	border-width: 6px;

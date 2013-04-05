@@ -2,27 +2,45 @@
 <!-- Draft HTML file for Codecademy, Advanced JavaScript Coders, Game Month, Memory Game -->
 <html lang="en">
 	<head>
-		<meta charset="utf-8">
+		<meta charset="utf-8" />
 		<title>Codecademy Memory Game</title>
-		<link type="text/css" rel="stylesheet" href="stylesheet.css">
-		<link href="http://fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+		<link type="text/css" rel="stylesheet" href="stylesheet.css" />
+		<link href="http://fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css" />
 		<script src="jquery-1.9.1.min.js"></script>
 		<!--<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>-->
 		<script type="text/javascript" src="script.js"></script>
+		<link rel="icon" href="favicon.ico"/>
 	</head>
-	<body>
+	<body>		
 		<div id="game_title_wrapper">
 			<h1 id="game_title">Codecademy Memory</h1>
 		</div>
 		<div id="game_frame">
 			<div id="game_board_frame">
 				<div class="game_board_spacer"></div>
+				<noscript> <h1> Please enable JavaScript to play the game! :-) </h1> </noscript>
 			</div>
 			<div id="game_info_frame">
 			</div>
 			<div id="control_frame">
 				<button id="start" value="Start">Start</button>
-				<button id="quit" value="Quit">Quit</button>		
+				<button id="quit" value="Quit">Quit</button>
+				
+				<label>Number of Players:</label>
+				<select id="nop">
+               	   	  <option value="1" selected>1</option>
+					  <option value="2">2</option>
+					  <option value="3">3</option>
+				      <option value="4">4</option>
+			    </select>
+			    <label>Set:</label>
+				<select id="set">
+               	   	  <option value="0" selected>all</option>
+					  <option value="1">JavaScript</option>
+					  <option value="2">Pointcards</option>
+				      <option value="3">Python</option>
+				      <option value="4">Ruby</option>
+           		</select>
 			</div>
 		</div>
 	</body>
