@@ -3,6 +3,7 @@
     var cardsHidden = [];
     var pairsFound = 0;
     var currentPlayer = 1;
+	var gameIsRunning = false;
     var lock = false; //to only allow 3 card clicks per players turn
     var all = ["23andmeAPI.png", "AddressBook.png", "BitlyAPI.png", "Blackjack.png", "Blackjack2.png", "Blackjack3.png", "BoxAPI.png", "CashRegister.png",
     	      "DiceGame.png", "DiceGame2.png", "DwollaAPI.png", "EasyPostAPI.png", "EvernoteAPI.png", "Fifty.png", "FireBaseAPI.png", "First.png", "FiveHundred.png",
@@ -79,6 +80,7 @@ var addImages = function(noc) {
 };
 
 var start = function(){//get new Cards by pressing start button 
+		if (gameIsRunning) { return ;}
 		var player = parseInt($("#nop").val());
 		addPlayers(player);	
 		var chooseSet = $("#set").val();//parseInt(prompt("0:all,1:JS,2:PC,3:Py,4:Ru"),10);	
@@ -87,6 +89,7 @@ var start = function(){//get new Cards by pressing start button
 		var noc = cards.length>=12 ? 12:cards.length;
 		addImages(noc);
         cardsHidden = HideCards(noc);
+		gameIsRunning = true;
 };
 //+++++++++++++++++++++++++++++++++++++++++++ Preparing the cards ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //------------------------------------------- Image Constructor ---------------------------------------------------------------------- 
@@ -127,6 +130,17 @@ function HideCards(noc){
     }    
     return cardsHidden; 
 }
+
+//------------------------------------------------- SetBack function -------------------------------------------------------------------------
+// Will be called from reset() and when clicking on quit
+function setBack() {
+	gameIsRunning = false;
+	pairsFound = 0,cardsHidden = [];
+	$('#game_board_frame').empty();
+	$('#game_info_frame').empty();
+}
+// Created due to D.R.Y.
+
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //*****************************************************************************************************************************************
 
@@ -145,9 +159,7 @@ function hiddenCounter(array){ //counts how many cards are hidden
 
 function reset(noc){// Game over!?
 	if(pairsFound == noc){
-		pairsFound = 0,cardsHidden = [];
-		$('#game_board_frame').empty();
-		$('#game_info_frame').empty();
+		setBack();
 		//alert("press start to play again");
 		if(confirm('Congratulations! You won.\nWould you like to play again?')){ //need to declare the Winner in Multiplayer
     		start();	
@@ -168,9 +180,7 @@ $(document).ready(function(){
 	//player = player>4?4:player;
    	$("#start").click(start);
 	$("#quit").click(function(){
-			pairsFound = 0,cardsHidden = [];
-			$('#game_board_frame').empty();
-			$('#game_info_frame').empty();
+			setBack();
 	});
 	alert("Get your settings ready. Press start to begin!");
 });
@@ -226,4 +236,3 @@ $(document).on('click',".card_frame",function(){
         //console.log(currentPlayer);   
 	}
 });
-
