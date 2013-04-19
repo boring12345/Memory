@@ -101,6 +101,9 @@ function Image(number,src){
     this.getPlace =  function(){ //the image inside the card_frame of id 
         return this.id+ " img";
     }
+	this.getNumber = function(){
+			return number;
+	}
     this.hidden = true;
     this.fadedOut = false;	
 }
@@ -187,7 +190,55 @@ var nextPlayer = function(){
     if (currentPlayer > parseInt($("#nop").val())) { currentPlayer = 1;}
 };
 
-//-------------------------------------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------- Artifical Intelligence (or at least a non-human opponent :D) -------------------------------------
+function AI(){
+	var queue = [];
+	var queue = [];
+	this.forget = function(){ //the queue array is limited to the last e.g. 7 cards
+    	if(queue.length>7)
+    	queue.shift();//shift deletes the 1 item of an array (and returns it)
+    	//e.g. [1,2,3].shift() --> [2,3]
+	};
+	this.learn = function(input){
+    	console.log(input.getSrc());
+    	queue.push(input); //whenever a card is revealed store its position in queue
+	};
+
+	this.check = function(){
+    	for(var i=0;i<queue.length;i++){
+        	for(var j = i+1;j<queue.length;j++){
+            	if(queue[i].getSrc()== queue[j].getSrc()){
+                	return found(i,j);
+            	}
+        	}
+    	}
+    	return false;
+	};
+
+	this.found = function(i,j){//deletes a pair when found
+		var pair = [];
+    	pair.push(queue.splice(j,1)[0].getNumber());//j before i to keep the order in the array
+    	pair.push(queue.splice(i,1)[1].getNumber());//splice returns the object in an array!!
+    	return pair;    	
+	};
+	this.turn = function(){
+		if(check() && check()[0].fadedOut == false){
+			var pair = check();
+			turn(pair[0]);
+			turn(pair[1]);	
+		}
+		else{
+			var ran1 = Math.floor(Math.random()*24+1);
+			var ran2 = Math.floor(Math.random()*24+1);
+			turn(ran1);
+			turn(ran2);
+		}
+	};
+}
+
+
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------------
 
 $(document).ready(function(){	
 	//var player = parseInt(prompt("How many players do we have today?"));
@@ -198,18 +249,17 @@ $(document).ready(function(){
 	});
 	alert("Get your settings ready. Press start to begin!");
 });
-  
 
-
-    //toggles between code.png and the hidden card
-$(document).on('click',".card_frame",function(){    
+var turn = function(cid){ //cid means card_id and is number or a numerical string from "1" to "24" 
 	var counter = hiddenCounter(cardsHidden);
-	var id = this.id.split("card_").splice(1);
+	var id = cid;	
 	var card = cardsHidden[id-1];
     if(counter<2 && !card.fadedOut){ 
        	$(card.getPlace()).attr("src", card.getSrc());
 		card.hidden = false;
 		lock = false;
+		//ai.learn(card);
+		//ai.forget();
 	}
 	if(hiddenCounter(cardsHidden) == 2 && !lock){ // or counter  == 2
 		var array = [];
@@ -251,4 +301,11 @@ $(document).on('click',".card_frame",function(){
 		}
 		lock = true;
 	}
+};
+  
+
+
+    //toggles between code.png and the hidden card
+$(document).on('click',".card_frame",function(){
+	turn(this.id.split("card_").splice(1));
 });
