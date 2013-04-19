@@ -9,3 +9,8 @@ PS: The peterkahl stuff was my fault. I am not Peter Kahl, I just used this mail
 https://help.github.com/articles/keeping-your-email-address-private
 
 ---- Updated, so please add commits in the beta.
+
+
+-- Version 1.0 beta; Find the project [here](http://boring12345.github.com/Memory/). :-)
+
+-- This is a stable version.
