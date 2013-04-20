@@ -14,17 +14,3 @@ https://help.github.com/articles/keeping-your-email-address-private
 -- Version 1.0 beta; Find the project [here](http://boring12345.github.com/Memory/). :-)
 
 -- This is a stable version.
-
-
-Credits
-=======
-
-These are the people, who have contributed to this project:
-
-- **boring12345:** leader and developer
-- **haxor789:** lead developer
-- **hkapur97:** lead developer
-- **DaVinniCode:** developer
-- **Tachos:** UI engineer
-- **mariomarine:** Images
-- **AAM-Smith, Alex C, DeK:** Testing & Helping
