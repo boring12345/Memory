@@ -3,6 +3,7 @@
 	var minID,secID;
     var cardsHidden = [];
     var pairsFound = 0;
+	var players = [];
     var currentPlayer = 1;
 	var gameIsRunning = false, lock = false; //to only allow 3 card clicks per players turn
     var all = ["23andmeAPI.png", "AddressBook.png", "BitlyAPI.png", "Blackjack.png", "Blackjack2.png", "Blackjack3.png", "BoxAPI.png", "CashRegister.png",
@@ -59,9 +60,28 @@ var startClock = function(bool) {
 
 //********************************************** Building the game frame **************************************************************
 // To add players using jQuery
-var addPlayers = function(nop) {
+
+/*var addPlayers = function(nop) { //back-up
     for (var i = 1; i < nop+1; i++) {
         $('#game_info_frame').append($('<div id="player' + i + '_frame" class="player_frame">Player ' + i + '</div>'));
+        $('#player' + i + '_frame').append('<br>Turns taken:<span id="player' +i+ '_score" </span>'); 
+        $('#player' + i + '_frame').append('<br>Pairs Matched:<span id="player' +i+ '_matched" </span>');        
+    }    
+};*/
+
+var addPlayers = function(nop) { //back-up
+		var botCounter = 1
+    for (var i = 1; i < nop+1; i++) {
+		var name = prompt("Please insert first players name or 'bot' to add a non-human opponent");
+		if(name.toLowerCase()=="bot"){
+			name = "Bot "+botCounter;
+			players[i-1] = new AI(i,name);
+			botCounter++;	
+		}
+		else{
+			players[i-1] = new Player(i,name);
+		}
+        $('#game_info_frame').append($('<div id="player' + i + '_frame" class="player_frame">' + players[i-1].name + '</div>'));
         $('#player' + i + '_frame').append('<br>Turns taken:<span id="player' +i+ '_score" </span>'); 
         $('#player' + i + '_frame').append('<br>Pairs Matched:<span id="player' +i+ '_matched" </span>');        
     }    
@@ -190,8 +210,20 @@ var nextPlayer = function(){
     if (currentPlayer > parseInt($("#nop").val())) { currentPlayer = 1;}
 };
 
+//---------------------------------------------------------- Players ------------------------------------------------------------------------------------
+
+function Player(number,name){
+	this.score = 0;
+	this.number = number;
+	this.name = name;
+	this.turns =0;
+}
+//-------------------------------------------------------------------------------------------------------------------------------------------------------
+
 //---------------------------------------------------- Artifical Intelligence (or at least a non-human opponent :D) -------------------------------------
-function AI(){
+function AI(number,name){
+	this.name = name;
+	this.number = number;
 	var queue = [];
 	var queue = [];
 	this.forget = function(){ //the queue array is limited to the last e.g. 7 cards
@@ -236,8 +268,7 @@ function AI(){
 	};
 }
 
-
-
+AI.prototype = new Player();
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
 
 $(document).ready(function(){	
