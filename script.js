@@ -1,10 +1,10 @@
 //------------------------------------ Global variables-------------------------------
 // Is there a way to avoid such things?
-	var minID,secID;
+    var minID,secID;
     var cardsHidden = [];
     var pairsFound = 0;
     var players = [];
-    var currentPlayer = 1;
+    var cp = 1;//currentPlayer
 	var gameIsRunning = false, lock = false; //to only allow 3 card clicks per players turn
     var all = ["23andmeAPI.png", "AddressBook.png", "BitlyAPI.png", "Blackjack.png", "Blackjack2.png", "Blackjack3.png", "BoxAPI.png", "CashRegister.png",
     	      "DiceGame.png", "DiceGame2.png", "DwollaAPI.png", "EasyPostAPI.png", "EvernoteAPI.png", "Fifty.png", "FireBaseAPI.png", "First.png", "FiveHundred.png",
@@ -61,8 +61,9 @@ var startClock = function(bool) {
 //********************************************** Building the game frame **************************************************************
 // To add players using jQuery
 var addPlayers = function(nop) { //back-up
-		var botCounter = 1
-    for (var i = 1; i < nop+1; i++) {
+	var botCounter = 1;
+	players = [];
+   	for (var i = 1; i < nop+1; i++) {
 		var name = prompt("Please insert first players name or 'bot' to add a non-human opponent");
 		if(name.toLowerCase()=="bot"){
 			name = "Bot "+botCounter;
@@ -73,7 +74,7 @@ var addPlayers = function(nop) { //back-up
 			players[i-1] = new Player(i,name);
 		}
         $('#game_info_frame').append($('<div id="player' + i + '_frame" class="player_frame">' + players[i-1].name + '</div>'));
-        $('#player' + i + '_frame').append('<br>Turns taken:<span id="player' +i+ '_score" </span>'); 
+        $('#player' + i + '_frame').append('<br>Turns taken:<span id="player' +i+ '_turns" </span>'); 
         $('#player' + i + '_frame').append('<br>Pairs Matched:<span id="player' +i+ '_matched" </span>');        
     }    
 };
@@ -183,14 +184,14 @@ function reset(noc){// Game over!?
 		var winner = "";
 		var playerScore = 0;
 	    var highscore = 0;
-		for(var i=1;i<parseInt($("#nop").val(), 10)+1;i++){ 
+		for(var i=0;i<players.length;i++){ 
 			playerScore = parseInt($('#player'+i+'_matched').html(), 10);
 			if(highscore == playerScore){
-					winner+= " and Player"+i;
+					winner+= " and "+players[i].name;
 			}
 			if(highscore < playerScore){
 					highscore = playerScore;
-					winner = "Player"+i;
+					winner = players[i].name;
 			}			
 		}
 		setBack();
@@ -202,8 +203,8 @@ function reset(noc){// Game over!?
 
 
 var nextPlayer = function(){
-    currentPlayer++;
-    if (currentPlayer > parseInt($("#nop").val(), 10)) { currentPlayer = 1;}
+    cp++;
+    if (cp > players.length) { cp = 1;}
 };
 
 //---------------------------------------------------------- Players ------------------------------------------------------------------------------------
@@ -213,6 +214,8 @@ function Player(number,name){
 	this.number = number;
 	this.name = name;
 	this.turns =0;
+	this.pairs = 0;
+	this.ai = false;
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -220,6 +223,7 @@ function Player(number,name){
 function AI(number,name){
 	this.name = name;
 	this.number = number;
+	this.ai = true;
 	var queue = [];
 	var queue = [];
 	this.forget = function(){ //the queue array is limited to the last e.g. 7 cards
@@ -286,15 +290,20 @@ var turn = function(cid){ //cid means card_id and is number or a numerical strin
        	$(card.getPlace()).attr("src", card.getSrc());
 		card.hidden = false;
 		lock = false;
+		players.forEach(function(value,index){
+			if(players[index].ai){
+				players[index].learn(card);
+				players[index].forget();
+			}
+		});
 		//ai.learn(card);
 		//ai.forget();
 	}
 	if(hiddenCounter(cardsHidden) == 2 && !lock){ // or counter  == 2
 		var array = [];
 		var again = false;
-        var turns = $('#player'+currentPlayer+'_score').html(); 
-        turns++;
-        $('#player'+currentPlayer+'_score').html(" "+turns); 
+		players[cp-1].turns++;
+        $('#player'+cp+'_turns').html(" "+players[cp-1].turns); 
 		cardsHidden.forEach(function(value,index){
 				if(!cardsHidden[index].hidden){
 					array.push(cardsHidden[index]);	
@@ -302,9 +311,10 @@ var turn = function(cid){ //cid means card_id and is number or a numerical strin
 		});
 		if(array[0].getSrc() ==array[1].getSrc()){
 			again = true;
-            var pairsMatched = $('#player'+currentPlayer+'_matched').html(); 
-            pairsMatched++;
-            $('#player'+currentPlayer+'_matched').html(" "+pairsMatched); 
+            //var pairsMatched = $('#player'+cp+'_matched').html(); 
+            //pairsMatched++;
+			players[cp-1].pairs++;
+            $('#player'+cp+'_matched').html(" "+players[cp-1].pairs); 
 			array.forEach(function(value,index){
 				$(array[index].getPlace()).fadeTo("normal",0);		
 				array[index].fadedOut = true;
@@ -337,3 +347,4 @@ var turn = function(cid){ //cid means card_id and is number or a numerical strin
 $(document).on('click',".card_frame",function(){
 	turn(this.id.split("card_").splice(1));
 });
+
