@@ -64,7 +64,7 @@ var addPlayers = function(nop) { //back-up
 	var botCounter = 1;
 	players = [];
    	for (var i = 1; i < nop+1; i++) {
-		var name = prompt("Please insert first players name or 'bot' to add a non-human opponent");
+		var name = prompt("Please insert your name or 'bot' to add a non-human opponent");
 		if(name.toLowerCase()=="bot"){
 			name = "Bot "+botCounter;
 			players[i-1] = new AI(i,name);
@@ -225,7 +225,14 @@ function AI(number,name){
 	this.number = number;
 	this.ai = true;
 	var queue = [];
-	var queue = [];
+	this.printQueue = function(){//just for debugging purpose
+   	 var q = [];
+    	for(var i=0;i<queue.length;i++){
+        	q[i] = queue[i].getSrc().split("Badges/").splice(1);
+    	}
+    	return q;
+	}
+	
 	this.forget = function(){ //the queue array is limited to the last e.g. 7 cards
     	if(queue.length>7)
     	queue.shift();//shift deletes the 1 item of an array (and returns it)
@@ -236,11 +243,15 @@ function AI(number,name){
     	queue.push(input); //whenever a card is revealed store its position in queue
 	};
 
+	this.shuffle = function(){
+		queue.sort(random);
+	}
+
 	this.check = function(){
     	for(var i=0;i<queue.length;i++){
         	for(var j = i+1;j<queue.length;j++){
             	if(queue[i].getSrc()== queue[j].getSrc()){
-                	return found(i,j);
+                	return this.found(i,j);
             	}
         	}
     	}
@@ -254,8 +265,8 @@ function AI(number,name){
     	return pair;    	
 	};
 	this.turn = function(){
-		if(check() && check()[0].fadedOut == false){
-			var pair = check();
+		var pair = this.check();
+		if(pair && pair[0].fadedOut == false){
 			turn(pair[0]);
 			turn(pair[1]);	
 		}
@@ -273,8 +284,6 @@ AI.prototype = new Player();
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
 
 $(document).ready(function(){	
-	//var player = parseInt(prompt("How many players do we have today?"));
-	//player = player>4?4:player;
    	$("#start").click(start);
 	$("#quit").click(function(){
 			setBack();
@@ -293,11 +302,10 @@ var turn = function(cid){ //cid means card_id and is number or a numerical strin
 		players.forEach(function(value,index){
 			if(players[index].ai){
 				players[index].learn(card);
+				players[index].shuffle(); //to avoid that all bots have the same memory :D 
 				players[index].forget();
 			}
 		});
-		//ai.learn(card);
-		//ai.forget();
 	}
 	if(hiddenCounter(cardsHidden) == 2 && !lock){ // or counter  == 2
 		var array = [];
@@ -338,6 +346,10 @@ var turn = function(cid){ //cid means card_id and is number or a numerical strin
         	nextPlayer();
 		}
 		lock = true;
+		if(players[cp-1].ai){
+			console.log(players[cp-1].printQueue());
+			players[cp-1].turn();
+		}
 	}
 };
   
