@@ -4,6 +4,7 @@
     var cardsHidden = [];
     var pairsFound = 0;
     var players = [];
+	var totalTurns = 0; //just for debugging purpose
     var cp = 1;//currentPlayer
 	var gameIsRunning = false, lock = false; //to only allow 3 card clicks per players turn
     var all = ["23andmeAPI.png", "AddressBook.png", "BitlyAPI.png", "Blackjack.png", "Blackjack2.png", "Blackjack3.png", "BoxAPI.png", "CashRegister.png",
@@ -260,10 +261,22 @@ function AI(number,name){
 
 	this.found = function(i,j){//deletes a pair when found
 		var pair = [];
-    	pair.push(queue.splice(j,1)[0].getNumber());//j before i to keep the order in the array
-    	pair.push(queue.splice(i,1)[1].getNumber());//splice returns the object in an array!!
+		var num1 = queue.splice(j,1)[0].getNumber();
+		var num2 = queue.splice(i,1)[0].getNumber();
+    	pair.push(num1);//j before i to keep the order in the array
+    	pair.push(num2);//splice returns the object in an array!!
     	return pair;    	
 	};
+
+	this.alreadyIn = function(card){
+		for(var i in queue){
+			if(queue[i].getNumber() == card.getNumber()){
+				return true;
+			}
+		}
+		return false;
+	}
+
 	this.turn = function(){
 		var pair = this.check();
 		if(pair && pair[0].fadedOut == false){
@@ -271,10 +284,11 @@ function AI(number,name){
 			turn(pair[1]);	
 		}
 		else{
-			var ran1 = Math.floor(Math.random()*24+1);
-			var ran2 = Math.floor(Math.random()*24+1);
-			turn(ran1);
-			turn(ran2);
+			var ran;
+			for(var i=0;i<2;i++){
+				ran = Math.floor(Math.random()*24+1);
+				turn(ran);
+			}
 		}
 	};
 }
@@ -295,12 +309,15 @@ var turn = function(cid){ //cid means card_id and is number or a numerical strin
 	var counter = hiddenCounter(cardsHidden);
 	var id = cid;	
 	var card = cardsHidden[id-1];
-    if(counter<2 && !card.fadedOut){ 
+    console.log(cp+" "+players[cp-1].ai+" "+totalTurns+" "+card.getNumber());//debugging
+	totalTurns++;//debugging
+	//I think the bot draws to fast and the lock breaks his streak... but I'll have a look at it tomorrow!
+	if(counter<2 && !card.fadedOut){ 
        	$(card.getPlace()).attr("src", card.getSrc());
 		card.hidden = false;
 		lock = false;
 		players.forEach(function(value,index){
-			if(players[index].ai){
+			if(players[index].ai && !players[index].alreadyIn(card)){
 				players[index].learn(card);
 				players[index].shuffle(); //to avoid that all bots have the same memory :D 
 				players[index].forget();
@@ -319,8 +336,6 @@ var turn = function(cid){ //cid means card_id and is number or a numerical strin
 		});
 		if(array[0].getSrc() ==array[1].getSrc()){
 			again = true;
-            //var pairsMatched = $('#player'+cp+'_matched').html(); 
-            //pairsMatched++;
 			players[cp-1].pairs++;
             $('#player'+cp+'_matched').html(" "+players[cp-1].pairs); 
 			array.forEach(function(value,index){
@@ -347,7 +362,7 @@ var turn = function(cid){ //cid means card_id and is number or a numerical strin
 		}
 		lock = true;
 		if(players[cp-1].ai){
-			console.log(players[cp-1].printQueue());
+			alert(players[cp-1].printQueue());
 			players[cp-1].turn();
 		}
 	}
