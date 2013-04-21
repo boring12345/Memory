@@ -4,7 +4,6 @@
     var cardsHidden = [];
     var pairsFound = 0;
     var players = [];
-	var totalTurns = 0; //just for debugging purpose
     var cp = 1;//currentPlayer
 	var gameIsRunning = false, lock = false; //to only allow 3 card clicks per players turn
     var all = ["23andmeAPI.png", "AddressBook.png", "BitlyAPI.png", "Blackjack.png", "Blackjack2.png", "Blackjack3.png", "BoxAPI.png", "CashRegister.png",
@@ -235,12 +234,11 @@ function AI(number,name){
 	}
 	
 	this.forget = function(){ //the queue array is limited to the last e.g. 7 cards
-    	if(queue.length>7)
+    	if(queue.length>10)
     	queue.shift();//shift deletes the 1 item of an array (and returns it)
     	//e.g. [1,2,3].shift() --> [2,3]
 	};
 	this.learn = function(input){
-    	console.log(input.getSrc());
     	queue.push(input); //whenever a card is revealed store its position in queue
 	};
 
@@ -279,17 +277,19 @@ function AI(number,name){
 
 	this.turn = function(){
 		var pair = this.check();
-		if(pair && pair[0].fadedOut == false){
+		if(pair && pair[0].fadedOut == false){//currently not working correctly... :(
 			turn(pair[0]);
 			turn(pair[1]);	
 		}
 		else{
-			var ran;
+			var rand;
+			var last = -1;
 			for(var i=0;i<2;i++){
 				do{
-					ran = Math.floor(Math.random()*24+1);
-				} while(cardsHidden[ran-1].fadedOut);
-				turn(ran);
+					rand = Math.floor(Math.random()*cardsHidden.length+1);
+				} while(cardsHidden[rand-1].fadedOut || rand== last);
+				turn(rand);
+				last = rand;
 			}
 		}
 	};
@@ -311,8 +311,6 @@ var turn = function(cid){ //cid means card_id and is number or a numerical strin
 	var counter = hiddenCounter(cardsHidden);
 	var id = cid;	
 	var card = cardsHidden[id-1];
-    console.log(cp+" "+players[cp-1].ai+" "+totalTurns+" "+card.getNumber()+" "+counter);//debugging
-	totalTurns++;//debugging
 	if(counter<2 && !card.fadedOut){ 
        	$(card.getPlace()).attr("src", card.getSrc());
 		card.hidden = false;
@@ -320,7 +318,7 @@ var turn = function(cid){ //cid means card_id and is number or a numerical strin
 		players.forEach(function(value,index){
 			if(players[index].ai && !players[index].alreadyIn(card)){
 				players[index].learn(card);
-				players[index].shuffle(); //to avoid that all bots have the same memory :D 
+				//players[index].shuffle(); //to avoid that all bots have the same memory :D 
 				players[index].forget();
 			}
 		});
@@ -364,7 +362,6 @@ var turn = function(cid){ //cid means card_id and is number or a numerical strin
 		lock = true;
 		setTimeout(function(){
 			if(players[cp-1].ai){
-				console.log(players[cp-1].printQueue());
 				players[cp-1].turn();
 			}
 		},1000);
