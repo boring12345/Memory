@@ -185,14 +185,14 @@ function reset(noc){// Game over!?
 		var winner = "";
 		var playerScore = 0;
 	    var highscore = 0;
-		for(var i=0;i<players.length;i++){ 
+		for(var i=1;i<players.length+1;i++){ 
 			playerScore = parseInt($('#player'+i+'_matched').html(), 10);
 			if(highscore == playerScore){
-					winner+= " and "+players[i].name;
+					winner+= " and "+players[i-1].name;
 			}
 			if(highscore < playerScore){
 					highscore = playerScore;
-					winner = players[i].name;
+					winner = players[i-1].name;
 			}			
 		}
 		setBack();
@@ -286,7 +286,9 @@ function AI(number,name){
 		else{
 			var ran;
 			for(var i=0;i<2;i++){
-				ran = Math.floor(Math.random()*24+1);
+				do{
+					ran = Math.floor(Math.random()*24+1);
+				} while(cardsHidden[ran-1].fadedOut);
 				turn(ran);
 			}
 		}
@@ -309,9 +311,8 @@ var turn = function(cid){ //cid means card_id and is number or a numerical strin
 	var counter = hiddenCounter(cardsHidden);
 	var id = cid;	
 	var card = cardsHidden[id-1];
-    console.log(cp+" "+players[cp-1].ai+" "+totalTurns+" "+card.getNumber());//debugging
+    console.log(cp+" "+players[cp-1].ai+" "+totalTurns+" "+card.getNumber()+" "+counter);//debugging
 	totalTurns++;//debugging
-	//I think the bot draws to fast and the lock breaks his streak... but I'll have a look at it tomorrow!
 	if(counter<2 && !card.fadedOut){ 
        	$(card.getPlace()).attr("src", card.getSrc());
 		card.hidden = false;
@@ -361,10 +362,13 @@ var turn = function(cid){ //cid means card_id and is number or a numerical strin
         	nextPlayer();
 		}
 		lock = true;
-		if(players[cp-1].ai){
-			alert(players[cp-1].printQueue());
-			players[cp-1].turn();
-		}
+		setTimeout(function(){
+			if(players[cp-1].ai){
+				console.log(players[cp-1].printQueue());
+				players[cp-1].turn();
+			}
+		},1000);
+		
 	}
 };
   
