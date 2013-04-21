@@ -3,7 +3,7 @@
 	var minID,secID;
     var cardsHidden = [];
     var pairsFound = 0;
-	var players = [];
+    var players = [];
     var currentPlayer = 1;
 	var gameIsRunning = false, lock = false; //to only allow 3 card clicks per players turn
     var all = ["23andmeAPI.png", "AddressBook.png", "BitlyAPI.png", "Blackjack.png", "Blackjack2.png", "Blackjack3.png", "BoxAPI.png", "CashRegister.png",
@@ -24,7 +24,8 @@
     var set = [all,jsCards,pointCards,pythonCards,rubyCards];
     var setUpCard = ["Code.png","Code.png","JQuery.png","Python.png","Ruby.png"]
     var upCard, cards =[];// set[chooseSet];
-///*--------------------------------------Clock (not used yet)--------------------------- 
+	
+//-------------------------------------- Clock --------------------------- 
 // Starts the minutes of the clock
 var startMin = function() {
     minID = setInterval(function(){
@@ -56,19 +57,9 @@ var startClock = function(bool) {
         stopClock();
     /*startMS(),*/ startSec(), startMin();
 };
-//*/
 
 //********************************************** Building the game frame **************************************************************
 // To add players using jQuery
-
-/*var addPlayers = function(nop) { //back-up
-    for (var i = 1; i < nop+1; i++) {
-        $('#game_info_frame').append($('<div id="player' + i + '_frame" class="player_frame">Player ' + i + '</div>'));
-        $('#player' + i + '_frame').append('<br>Turns taken:<span id="player' +i+ '_score" </span>'); 
-        $('#player' + i + '_frame').append('<br>Pairs Matched:<span id="player' +i+ '_matched" </span>');        
-    }    
-};*/
-
 var addPlayers = function(nop) { //back-up
 		var botCounter = 1
     for (var i = 1; i < nop+1; i++) {
@@ -100,16 +91,21 @@ var addImages = function(noc) {
 
 var start = function(){//get new Cards by pressing start button 
 		if (gameIsRunning) { return ;}
+		gameIsRunning = true;
+		var chooseSet = parseInt($("#set").val(), 10);
 		startClock(true);
-		var player = parseInt($("#nop").val());
+		if(chooseSet === 5) {  // Credits condition; perhaps we'll have to improve the way of showing credits
+			var creditsText = "<h1> Credits </h1> <p> These are the people, who have contributed to this project: </p> <ul> <li> <strong> boring12345: </strong> leader and developer </li> <li> <strong> haxor789: </strong> lead developer </li> <li> <strong> hkapur97: </strong> lead developer </li> <li> <strong> DaVinniCode: </strong> developer </li> <li> <strong> Tachos: </strong> UI engineer </li> <li> <strong> mariomarine: </strong> Images </li> <li> <strong> AAM-Smith, Alex C, DeK: </strong> Testing & Helping </li>  </ul>";
+			$("#game_board_frame").html(creditsText);
+			return ;
+		}
+		var player = parseInt($("#nop").val(), 10);
 		addPlayers(player);	
-		var chooseSet = $("#set").val();//parseInt(prompt("0:all,1:JS,2:PC,3:Py,4:Ru"),10);	
     	upCard = setUpCard[chooseSet]; 
     	cards  = set[chooseSet].slice();
 		var noc = cards.length>=12 ? 12:cards.length;
 		addImages(noc);
         cardsHidden = HideCards(noc);
-		gameIsRunning = true;
 };
 //+++++++++++++++++++++++++++++++++++++++++++ Preparing the cards ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //------------------------------------------- Image Constructor ---------------------------------------------------------------------- 
@@ -187,8 +183,8 @@ function reset(noc){// Game over!?
 		var winner = "";
 		var playerScore = 0;
 	    var highscore = 0;
-		for(var i=1;i<parseInt($("#nop").val())+1;i++){ 
-			playerScore = parseInt($('#player'+i+'_matched').html());
+		for(var i=1;i<parseInt($("#nop").val(), 10)+1;i++){ 
+			playerScore = parseInt($('#player'+i+'_matched').html(), 10);
 			if(highscore == playerScore){
 					winner+= " and Player"+i;
 			}
@@ -207,7 +203,7 @@ function reset(noc){// Game over!?
 
 var nextPlayer = function(){
     currentPlayer++;
-    if (currentPlayer > parseInt($("#nop").val())) { currentPlayer = 1;}
+    if (currentPlayer > parseInt($("#nop").val(), 10)) { currentPlayer = 1;}
 };
 
 //---------------------------------------------------------- Players ------------------------------------------------------------------------------------
@@ -220,7 +216,7 @@ function Player(number,name){
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
 
-//---------------------------------------------------- Artifical Intelligence (or at least a non-human opponent :D) -------------------------------------
+//---------------------------------------------------- Artifical Intelligence (or at least a non-human opponent :D) (not used yet) -------------------------------------
 function AI(number,name){
 	this.name = name;
 	this.number = number;
@@ -269,6 +265,7 @@ function AI(number,name){
 }
 
 AI.prototype = new Player();
+
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
 
 $(document).ready(function(){	
