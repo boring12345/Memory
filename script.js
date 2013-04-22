@@ -259,8 +259,8 @@ function AI(number,name){
 
 	this.found = function(i,j){//deletes a pair when found
 		var pair = [];
-		var num1 = queue.splice(j,1)[0].getNumber();
-		var num2 = queue.splice(i,1)[0].getNumber();
+		var num1 = queue.splice(j,1)[0]/*.getNumber()*/;
+		var num2 = queue.splice(i,1)[0]/*<.getNumber()*/;
     	pair.push(num1);//j before i to keep the order in the array
     	pair.push(num2);//splice returns the object in an array!!
     	return pair;    	
@@ -277,9 +277,12 @@ function AI(number,name){
 
 	this.turn = function(){
 		var pair = this.check();
-		if(pair && pair[0].fadedOut == false){//currently not working correctly... :(
-			turn(pair[0]);
-			turn(pair[1]);	
+		console.log(pair);
+		console.log(queue);
+		//console.log(pair[0].getNumber());
+		if(pair && pair[0].fadedOut == false){//currently not working correctly... :(			
+			turn(pair[0].getNumber());
+			turn(pair[1].getNumber());	
 		}
 		else{
 			var rand;
