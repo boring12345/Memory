@@ -107,6 +107,9 @@ var start = function(){//get new Cards by pressing start button
 		var noc = cards.length>=12 ? 12:cards.length;
 		addImages(noc);
         cardsHidden = HideCards(noc);
+		if(players[cp-1].ai){
+			players[cp-1].turn();
+		}
 };
 //+++++++++++++++++++++++++++++++++++++++++++ Preparing the cards ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //------------------------------------------- Image Constructor ---------------------------------------------------------------------- 
@@ -277,10 +280,7 @@ function AI(number,name){
 
 	this.turn = function(){
 		var pair = this.check();
-		console.log(pair);
-		console.log(queue);
-		//console.log(pair[0].getNumber());
-		if(pair && pair[0].fadedOut == false){//currently not working correctly... :(			
+		if(pair && pair[0].fadedOut == false){
 			turn(pair[0].getNumber());
 			turn(pair[1].getNumber());	
 		}
