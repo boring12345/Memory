@@ -124,6 +124,8 @@ var start = function(){//get new Cards by pressing start button
 			$('#game_frame').height(Math.sqrt(cards.length*2) * 128 + 100);    */
 			noc = cards.length;
 		}
+		var titleWidth = $('#game_frame').width(); // header width
+		$('#game_title_wrapper').width(titleWidth);
 		addImages(noc);
         cardsHidden = HideCards(noc);
 		if(players[cp-1].ai){
