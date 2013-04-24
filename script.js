@@ -307,29 +307,19 @@ function AI(number,name){
 		for(var i=0;i<2;i++){
 			var pair = this.check();
 		    if(last!=-1 && pair && !pair[0].fadedOut){//if the 1st random draw hits a pair this should get it
-			    console.log("2. pair");
-			    pair.forEach(function(value,index){
-			    	console.log(pair[index].getNumber())
-			    });
-			if(pair[0].getNumber() == last){
-				console.log("if");
+				if(pair[0].getNumber() == last){
 					turn(pair[1].getNumber());					
 				}
 				else{
-					console.log("else");
-					console.log(last);
-					console.log(pair[0].getNumber());
 					turn(pair[0].getNumber());
 				}
 			}
 			else if(pair && !pair[0].fadedOut){//needs to be 2nd as it triggers when the first case is triggered :(
-				console.log("1. pair");
 				turn(pair[0].getNumber());
 				turn(pair[1].getNumber());
 				return ;
 			}			
 			else{
-				console.log("random");
 				var rand;			
 				do{
 					rand = Math.floor(Math.random()*cardsHidden.length+1);
