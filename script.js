@@ -127,7 +127,7 @@ var start = function(){//get new Cards by pressing start button
 		var titleWidth = $('#game_frame').width(); // header width
 		$('#game_title_wrapper').width(titleWidth);
 		addImages(noc);
-        cardsHidden = HideCards(noc);
+        	cardsHidden = HideCards(noc);
 		if(players[cp-1].ai){
 			players[cp-1].turn();
 		}
@@ -135,16 +135,16 @@ var start = function(){//get new Cards by pressing start button
 //+++++++++++++++++++++++++++++++++++++++++++ Preparing the cards ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //------------------------------------------- Image Constructor ---------------------------------------------------------------------- 
 function Image(number,src){
-	this.id = "#card_"+number; //id of the card_frame
+    this.id = "#card_"+number; //id of the card_frame
     this.getSrc = function(){ 
-        return "Badges/"+src;
+       	return "Badges/"+src;
     }
     this.getPlace =  function(){ //the image inside the card_frame of id 
-        return this.id+ " img";
+       	return this.id+ " img";
     }
-	this.getNumber = function(){
-			return number;
-	}
+    this.getNumber = function(){
+	return number;
+    }
     this.hidden = true;
     this.fadedOut = false;	
 }
@@ -219,7 +219,7 @@ function reset(noc){// Game over!?
 			}			
 		}
 		setBack();
-		if(confirm('Congratulations, '+winner+'. You won!\nWould you like to play again?')){ //need to declare the Winner in Multiplayer
+		if(confirm('Congratulations, '+winner+'. You won!\nWould you like to play again?')){ //Maybe mention pairs and turns
     		start();	
 		}
 	}
@@ -234,7 +234,7 @@ var nextPlayer = function(){
 //---------------------------------------------------------- Players ------------------------------------------------------------------------------------
 
 function Player(number,name){
-	this.score = 0;
+	this.score = 0; //to keep track of total wins if player stay the same
 	this.number = number;
 	this.name = name;
 	this.turns =0;
@@ -249,17 +249,17 @@ function AI(number,name){
 	this.number = number;
 	this.ai = true;
 	var queue = [];
-	this.printQueue = function(){//just for debugging purpose
+	/*this.printQueue = function(){//just for debugging purpose
    	 var q = [];
     	for(var i=0;i<queue.length;i++){
         	q[i] = queue[i].getSrc().split("Badges/").splice(1);
     	}
     	return q;
-	}
+	}*/
 	
-	this.forget = function(){ //the queue array is limited to the last e.g. 7 cards
+	this.forget = function(){ //the queue array is limited to the last e.g. 10 cards
     	if(queue.length>10)
-    	queue.shift();//shift deletes the 1 item of an array (and returns it)
+    	queue.shift();//shift deletes the 1st item of an array (and returns it)
     	//e.g. [1,2,3].shift() --> [2,3]
 	};
 	this.learn = function(input){
@@ -273,24 +273,22 @@ function AI(number,name){
 	this.check = function(){
     	for(var i=0;i<queue.length;i++){
         	for(var j = i+1;j<queue.length;j++){
-            	if(queue[i].getSrc()== queue[j].getSrc()){
-                	return this.found(i,j);
-            	}
+            		if(queue[i].getSrc()== queue[j].getSrc()){
+                		return this.found(i,j);
+            		}
         	}
     	}
     	return false;
 	};
 
 	this.found = function(i,j){//deletes a pair when found
-		var pair = [];
-		var num1 = queue.splice(j,1)[0]/*.getNumber()*/;
-		var num2 = queue.splice(i,1)[0]/*<.getNumber()*/;
-    	pair.push(num1);//j before i to keep the order in the array
-    	pair.push(num2);//splice returns the object in an array!!
+		var pair = [];		
+ 		pair.push(queue.splice(j,1)[0]);//j before i to keep the order in the array
+    	pair.push(queue.splice(i,1)[0]);//splice returns the object in an array!!
     	return pair;    	
 	};
 
-	this.alreadyIn = function(card){
+	this.alreadyIn = function(card){ //check function to only store cards which aren't already in the queue
 		for(var i in queue){
 			if(queue[i].getNumber() == card.getNumber()){
 				return true;
@@ -300,15 +298,24 @@ function AI(number,name){
 	}
 
 	this.turn = function(){
-		var pair = this.check();
-		if(pair && pair[0].fadedOut == false){
-			turn(pair[0].getNumber());
-			turn(pair[1].getNumber());	
-		}
-		else{
-			var rand;
-			var last = -1;
-			for(var i=0;i<2;i++){
+		var last = -1;//non reachable start value
+		for(var i=0;i<2;i++){
+			var pair = this.check();
+			if(pair && pair[0].fadedOut == false){
+				turn(pair[0].getNumber());
+				turn(pair[1].getNumber());
+				return ;
+			}
+			else if(last !==-1 && pair){//if the 1st random draw hits a pair this should get it
+				if(pair[0].getNumber == last){
+					turn(pair[1].getNumber());
+				}
+				else{
+					turn(pair[0].getNumber);
+				}
+			}
+			else{
+				var rand;			
 				do{
 					rand = Math.floor(Math.random()*cardsHidden.length+1);
 				} while(cardsHidden[rand-1].fadedOut || rand== last);
