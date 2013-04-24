@@ -309,21 +309,14 @@ function AI(number,name){
 		for(var i=0;i<2;i++){
 			var pair = this.check();
 		    if(last!=-1 && pair){//if the 1st random draw hits a pair this should get it
-				console.log(i+" "+last);
-				pair.forEach(function(value,index){
-					console.log(pair[index].getNumber());		
-				});
-				if(pair[0].getNumber == last){
-					console.log(pair[1].getNumber());
+				if(pair[0].getNumber() == last){
 					turn(pair[1].getNumber());					
 				}
 				else{
-						console.log(pair[1].getNumber());
 					turn(pair[0].getNumber());
 				}
 			}
 			else if(pair && pair[0].fadedOut == false){//needs to be 2nd as it triggers when the first case is triggered :(
-				console.log(last);
 				turn(pair[0].getNumber());
 				turn(pair[1].getNumber());
 				return ;
