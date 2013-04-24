@@ -26,7 +26,7 @@ body {
 	font-family: "Lobster","Helvetica Neue",Helvetica,Arial,sans-serif;
 	font-size: 25px;
 	color: #EEEEEE;
-	text-shadow: #FFF 0px 0px 30px;
+	text-shadow: 2px 3px 3px #666;
 }
 
 #game_frame {
