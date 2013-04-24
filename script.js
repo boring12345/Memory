@@ -81,13 +81,15 @@ var addPlayers = function(nop) { //back-up
 
 // To add images using jQuery
 var addImages = function(noc) {
-    $('#game_board_frame').append($('<div class="game_board_spacer"></div>'))
+    $('#game_board_frame').append($('<div class="game_board_spacer"></div>'));
     for (var i = 1; i < 2*noc+1; i++) {
         var div = '<div id="card_' + i + '" class="card_frame"><a target="_blank"><img src="Badges/'+upCard+'" alt="code"></a></div>';
         $('#game_board_frame').append($(div));
-        var cardsPerRow = parseInt($("#boardSize").val().substring(0,1),10);        
+	var cardsPerRow = parseInt($("#boardSize").val().substring(0,1),10);
+	var rowsOfCards = parseInt($("#boardSize").val().substring(1,2),10);
+	if (!((cardsPerRow*rowsOfCards) <= cards.length)) { cardsPerRow = 6;}
         if (i % cardsPerRow === 0)   
-            $('#game_board_frame').append($('<div class="game_board_spacer"></div>'))
+            $('#game_board_frame').append($('<div class="game_board_spacer"></div>'));
     }
 };
 
@@ -114,6 +116,8 @@ var start = function(){//get new Cards by pressing start button
 			$('#game_frame').width(cardsPerRow * 122 + 243);                       
 			$('#game_board_frame').height(rowsOfCards * 128);  
 			$('#game_frame').height(rowsOfCards * 122 + 100);  
+			console.log("line 117 if statement");
+			console.log(cardsPerRow +" "+"Cards per row...");
 		} else {
 			
 			// Work in progress here... I might just stick with defaulting back to normal board size
@@ -123,6 +127,9 @@ var start = function(){//get new Cards by pressing start button
 			$('#game_board_frame').height(Math.sqrt(cards.length*2) * 128);  
 			$('#game_frame').height(Math.sqrt(cards.length*2) * 128 + 100);    */
 			noc = cards.length;
+
+			console.log("line 127 if statement");
+			console.log(cardsPerRow +" "+"Cards per row...");
 		}
 		var titleWidth = $('#game_frame').width(); // header width
 		$('#game_title_wrapper').width(titleWidth);
