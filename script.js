@@ -32,6 +32,7 @@
     	impossible:12,
     	insane:16
     };
+	//all: 61 pairs, jsCards: 26 pairs, pointCards: 10 pairs, pythonCards: 7 pairs, rubyCards: 12 pairs
 
 //-------------------------------------- Clock --------------------------- 
 // Starts the minutes of the clock
@@ -80,8 +81,8 @@ var addPlayers = function(nop) { //back-up
 				players[i-1].difficulty = name.split(" ")[1];
 			}
 			else {
-				if(!isNaN(mode[name.split(" ")[1])]){
-					players[i-1].difficulty = mode[name.split(" ")[1])];	
+				if(!isNaN(mode[name.split(" ")[1]])){
+					players[i-1].difficulty = mode[name.split(" ")[1]];	
 				}
 				else{
 					players[i-1].difficutly = 7;	
