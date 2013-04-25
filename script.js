@@ -24,7 +24,15 @@
     var set = [all,jsCards,pointCards,pythonCards,rubyCards];
     var setUpCard = ["Code.png","Code.png","JQuery.png","Python.png","Ruby.png"]
     var upCard, cards =[];// set[chooseSet];
-	
+    var mode = {
+    	looser: 0,
+    	easy:5,
+    	medium:7,
+    	hard:9,
+    	impossible:12,
+    	insane:16
+    };
+
 //-------------------------------------- Clock --------------------------- 
 // Starts the minutes of the clock
 var startMin = function() {
@@ -65,9 +73,20 @@ var addPlayers = function(nop) { //back-up
 	players = [];
    	for (var i = 1; i < nop+1; i++) {
 		var name = prompt("Please insert your name or 'bot' to add a non-human opponent");
-		if(name.toLowerCase()=="bot"){
+		if(name.split(" ")[0].toLowerCase()=="bot"){
 			name = "Bot "+botCounter;
 			players[i-1] = new AI(i,name);
+			if(typeof name.split(" ")[1] == "number"){
+				players[i-1].difficulty = name.split(" ")[1];
+			}
+			else {
+				if(!isNaN(mode[name.split(" ")[1])]){
+					players[i-1].difficulty = mode[name.split(" ")[1])];	
+				}
+				else{
+					players[i-1].difficutly = 7;	
+				}				
+			}
 			botCounter++;	
 		}
 		else{
@@ -250,6 +269,7 @@ function Player(number,name){
 
 //---------------------------------------------------- Artifical Intelligence (or at least a non-human opponent :D) (not used yet) -------------------------------------
 function AI(number,name){
+	this.difficulty;
 	this.name = name;
 	this.number = number;
 	this.ai = true;
@@ -263,7 +283,7 @@ function AI(number,name){
 	}*/
 	
 	this.forget = function(){ //the queue array is limited to the last e.g. 10 cards
-    	if(queue.length>10)
+    	if(queue.length>this.difficulty)
     	queue.shift();//shift deletes the 1st item of an array (and returns it)
     	//e.g. [1,2,3].shift() --> [2,3]
 	};
