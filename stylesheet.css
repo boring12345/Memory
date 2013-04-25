@@ -75,7 +75,7 @@ div.game_board_spacer {
 }
 
 #game_info_frame {
-	position: absolute;
+	position: /*absolute*/fixed;
 	width: 170px;
 	height: 430px;
 	margin-left: 10px;
@@ -95,7 +95,7 @@ div.player_frame {
 }
 
 #control_frame {
-	position: absolute;
+	position: /*absolute*/fixed;
 	width: 170px;
 	height: 60px;
 	top: 500px;
