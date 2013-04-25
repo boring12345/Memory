@@ -73,19 +73,21 @@ var addPlayers = function(nop) { //back-up
 	var botCounter = 1;
 	players = [];
    	for (var i = 1; i < nop+1; i++) {
-		var name = prompt("Please insert your name or 'bot' to add a non-human opponent");
+		var name = prompt("Please insert your name or 'bot' to add a non-human opponent");		
 		if(name.split(" ")[0].toLowerCase()=="bot"){
+			var difficulty = name.split(" ")[1];
 			name = "Bot "+botCounter;
 			players[i-1] = new AI(i,name);
-			if(typeof name.split(" ")[1] == "number"){
-				players[i-1].difficulty = name.split(" ")[1];
+			if(!isNaN(difficulty)){
+				console.log("test");
+				players[i-1].difficulty = difficulty;
 			}
 			else {
-				if(!isNaN(mode[name.split(" ")[1]])){
-					players[i-1].difficulty = mode[name.split(" ")[1]];	
+				if(!isNaN(mode[difficulty])){
+					players[i-1].difficulty = mode[difficulty];	
 				}
 				else{
-					players[i-1].difficutly = 7;	
+					players[i-1].difficulty = 7;	
 				}				
 			}
 			botCounter++;	
