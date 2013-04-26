@@ -377,7 +377,7 @@ var turn = function(cid){ //cid means card_id and is number or a numerical strin
 		players.forEach(function(value,index){
 			if(players[index].ai && !players[index].alreadyIn(card)){
 				players[index].learn(card);
-				//players[index].shuffle(); //to avoid that all bots have the same memory :D 
+				players[index].shuffle(); //to avoid that all bots have the same memory :D 
 				players[index].forget();
 			}
 		});
