@@ -102,14 +102,12 @@ var addPlayers = function(nop) { //back-up
 };
 
 // To add images using jQuery
-var addImages = function(noc) {
+var addImages = function(noc,cpr) {
     $('#game_board_frame').append($('<div class="game_board_spacer"></div>'));
     for (var i = 1; i < 2*noc+1; i++) {
         var div = '<div id="card_' + i + '" class="card_frame"><a target="_blank"><img src="Badges/'+upCard+'" alt="code"></a></div>';
         $('#game_board_frame').append($(div));
-	var cardsPerRow = parseInt($("#boardSize").val().substring(0,1),10);
-	var rowsOfCards = parseInt($("#boardSize").val().substring(1,2),10);
-	if (cardsPerRow*rowsOfCards >= (cards.length*2)) {cardsPerRow = 6; console.log("yep");} 
+	var cardsPerRow = cpr;
 	if (i % cardsPerRow === 0)
 		$('#game_board_frame').append($('<div class="game_board_spacer"></div>'));
     }
@@ -131,13 +129,11 @@ var start = function(){//get new Cards by pressing start button
     	cards  = set[chooseSet].slice();
 		var cardsPerRow = parseInt($("#boardSize").val().substring(0,1),10); 
 		var rowsOfCards = parseInt($("#boardSize").val().substring(1,2),10); 
+		if (cards.length*2<=24/*cardsPerRow*rowsOfCards >= (cards.length*2)*/) {cardsPerRow = 6;rowsOfCards = 4; console.log("yep");} 
 		
 		if ((cardsPerRow*rowsOfCards) <= cards.length*2) {
 			noc = (cardsPerRow * rowsOfCards)/2;
-			$('#game_board_frame').width(cardsPerRow * 122);             
-			$('#game_frame').width(cardsPerRow * 122 + 243);                       
-			$('#game_board_frame').height(rowsOfCards * 128);  
-			$('#game_frame').height(rowsOfCards * 122 + 100);  
+
 			console.log("line 117 if statement");
 			console.log(cardsPerRow +" "+"Cards per row...");
 		} else {			
@@ -151,9 +147,14 @@ var start = function(){//get new Cards by pressing start button
 			console.log("line 127 if statement");
 			console.log(cardsPerRow +" "+"Cards per row...");
 		}
+		$('#game_board_frame').width(cardsPerRow * 122);             
+		$('#game_frame').width(cardsPerRow * 122 + 243);                       
+		$('#game_board_frame').height(rowsOfCards * 128);  
+		$('#game_frame').height(rowsOfCards * 122 + 100);  
+		
 		var titleWidth = $('#game_frame').width(); // header width
 		$('#game_title_wrapper').width(titleWidth);
-		addImages(noc);
+		addImages(noc,cardsPerRow);
         	cardsHidden = HideCards(noc);
 		if(players[cp-1].ai){
 			players[cp-1].turn();
