@@ -432,6 +432,8 @@ var turn = function(cid){ //cid means card_id and is number or a numerical strin
 
     //toggles between code.png and the hidden card
 $(document).on('click',".card_frame",function(){
-	turn(this.id.split("card_").splice(1));
+	if(!players[cp-1].ai){// to avoid clicks while AI's turns
+		turn(this.id.split("card_").splice(1));
+	}
 });
 
