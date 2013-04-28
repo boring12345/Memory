@@ -107,8 +107,7 @@ var addImages = function(noc,cpr) {
     for (var i = 1; i < 2*noc+1; i++) {
         var div = '<div id="card_' + i + '" class="card_frame"><a target="_blank"><img src="Badges/'+upCard+'" alt="code"></a></div>';
         $('#game_board_frame').append($(div));
-	var cardsPerRow = cpr;
-	if (i % cardsPerRow === 0)
+	if (i % cpr === 0)
 		$('#game_board_frame').append($('<div class="game_board_spacer"></div>'));
     }
 };
