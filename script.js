@@ -346,7 +346,7 @@ function AI(number,name){
 				var rand;			
 				do{
 					rand = Math.floor(Math.random()*cardsHidden.length+1);
-				} while(cardsHidden[rand-1].fadedOut || this.alreadyIn(cardsHidden[rand-1]) /*rand== last*/);
+				} while(cardsHidden[rand-1].fadedOut || this.alreadyIn(cardsHidden[rand-1]) ||rand == last); //rand == last because looser has no queue
 				turn(rand);
 				last = rand;
 			}
