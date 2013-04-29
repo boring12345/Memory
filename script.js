@@ -83,12 +83,12 @@ var start = function(){//get new Cards by pressing start button
 		startClock(true);
 		var player = parseInt($("#nop").val());
 		addPlayers(player);	
-		var chooseSet = $("#set").val();//parseInt(prompt("0:all,1:JS,2:PC,3:Py,4:Ru"),10);
-		if(chooseSet === 5) {  // Credits condition; perhaps we'll have to improve the way of showing credits
-+      			var creditsText = "<h1> Credits </h1> <p> These are the people, who have contributed to this project: </p> <ul> <li> <strong> boring12345: </strong> leader and developer </li> <li> <strong> haxor789: </strong> lead developer </li> <li> <strong> hkapur97: </strong> lead developer </li> <li> <strong> DaVinniCode: </strong> developer </li> <li> <strong> Tachos: </strong> UI engineer </li> <li> <strong> mariomarine: </strong> Images </li> <li> <strong> AAM-Smith, Alex C, DeK: </strong> Testing & Helping </li>  </ul>";
-+      			$("#game_board_frame").html(creditsText);
-+      			return ;
-+    	} 
+		var chooseSet = parseInt($("#set").val(),10);//parseInt(prompt("0:all,1:JS,2:PC,3:Py,4:Ru"),10);
+	if(chooseSet === 5) {  // Credits condition; perhaps we'll have to improve the way of showing credits
+			var creditsText = "<h1> Credits </h1> <p> These are the people, who have contributed to this project: </p> <ul> <li> <strong> boring12345: </strong> leader and developer </li> <li> <strong> haxor789: </strong> lead developer </li> <li> <strong> hkapur97: </strong> lead developer </li> <li> <strong> DaVinniCode: </strong> developer </li> <li> <strong> Tachos: </strong> UI engineer </li> <li> <strong> mariomarine: </strong> Images </li> <li> <strong> AAM-Smith, Alex C, DeK: </strong> Testing & Helping </li>  </ul>";
+			$("#game_board_frame").html(creditsText);
+			return ;
+		} 
     	upCard = setUpCard[chooseSet]; 
     	cards  = set[chooseSet].slice();
 		var noc = cards.length>=12 ? 12:cards.length;
