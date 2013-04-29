@@ -127,24 +127,20 @@ var start = function(){//get new Cards by pressing start button
     	upCard = setUpCard[chooseSet]; 
     	cards  = set[chooseSet].slice();
 		var cardsPerRow = parseInt($("#boardSize").val().substring(0,1),10); 
-		var rowsOfCards = parseInt($("#boardSize").val().substring(1,2),10); 
-		if (cards.length*2<=24/*cardsPerRow*rowsOfCards >= (cards.length*2)*/) {cardsPerRow = 6;rowsOfCards = 4; console.log("yep");} 
+		var rowsOfCards = parseInt($("#boardSize").val().substring(1,2),10); 		
 		
-		if ((cardsPerRow*rowsOfCards) <= cards.length*2) {
+		if ((cardsPerRow*rowsOfCards) <= cards.length*2) {  // If the set has enough cards to fill the chosen board size.
 			noc = (cardsPerRow * rowsOfCards)/2;
-
-			console.log("line 117 if statement");
-			console.log(cardsPerRow +" "+"Cards per row...");
-		} else {			
-			// Work in progress here... I might just stick with defaulting back to normal board size
-		/*	$('#game_board_frame').width(Math.sqrt(cards.length*2) * 128);             
-			$('#game_frame').width(Math.sqrt(cards.length*2)  * 128 + 243);                       
-			$('#game_board_frame').height(Math.sqrt(cards.length*2) * 128);  
-			$('#game_frame').height(Math.sqrt(cards.length*2) * 128 + 100);    */
-
+//			console.log("in if statement");
+//			console.log(cardsPerRow +" "+"Cards per row...");			
+		}  else if (cards.length*2<=24) {                        // If set is small, just use small board (6x4)
+			noc = cards.length; 
+			cardsPerRow = 6; 
+			rowsOfCards = 4;
+			}  
+		else {					// If set is larger than small board, but smaller than chosen board.
 			noc = cards.length;
-			console.log("line 127 if statement");
-			console.log(cardsPerRow +" "+"Cards per row...");
+//			console.log("in else statement");			
 		}
 		$('#game_board_frame').width(cardsPerRow * 122);             
 		$('#game_frame').width(cardsPerRow * 122 + 243);                       
