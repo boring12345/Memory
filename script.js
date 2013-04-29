@@ -80,6 +80,7 @@ var addImages = function(noc) {
 
 var start = function(){//get new Cards by pressing start button 
 		if (gameIsRunning) { return ;}
+		gameIsRunning = true;
 		startClock(true);
 		var player = parseInt($("#nop").val());
 		addPlayers(player);	
@@ -94,7 +95,6 @@ var start = function(){//get new Cards by pressing start button
 		var noc = cards.length>=12 ? 12:cards.length;
 		addImages(noc);
         cardsHidden = HideCards(noc);
-		gameIsRunning = true;
 };
 //+++++++++++++++++++++++++++++++++++++++++++ Preparing the cards ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //------------------------------------------- Image Constructor ---------------------------------------------------------------------- 
