@@ -213,9 +213,12 @@ function setBack(again) {
 		cp = 1;
 		botCounter = 1;// declared in ui.js
 		playerCounter = 0;//declared in ui.js
-		$('#game_info_frame').append($('<div id="addPlayer" class="player_frame"></div>'));
+		$('#game_info_frame').append('<ul id="sortable"><ul>');
+		$('#sortable').append($('<div id="addPlayer" ></div>'));
 		$('#addPlayer').append('<p><button id="human">Add Player</button></p>'); 
 		$('#addPlayer').append('<p><button id="ai">Add AI</button></p>');
+		aiLock = false;
+		humanLock = false;
 	}
 	/*if(players.length<4){ atm pointless as start is triggered short after this and removes it instantly
 		$('#game_info_frame').append($('<div id="addPlayer" class="player_frame"></div>'));
