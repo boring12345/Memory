@@ -122,8 +122,11 @@ var start = function(){//get new Cards by pressing start button
 			$("#game_board_frame").html(creditsText);
 			return ;
 		}
-		var player = parseInt($("#nop").val(), 10);
-		addPlayers(player);	
+		if(players.length == 0){//As long as the UI is in beta status
+			var player = parseInt($("#nop").val(), 10);
+			addPlayers(player);
+		}
+		$('#addPlayer').remove();			
     	upCard = setUpCard[chooseSet]; 
     	cards  = set[chooseSet].slice();
 		var cardsPerRow = parseInt($("#boardSize").val().substring(0,1),10); 
@@ -200,11 +203,25 @@ function HideCards(noc){
 
 //------------------------------------------------- SetBack function -------------------------------------------------------------------------
 // Will be called from reset() and when clicking on quit
-function setBack() {
+function setBack(again) {
 	gameIsRunning = false;
 	pairsFound = 0,cardsHidden = [];
 	$('#game_board_frame').empty();
-	$('#game_info_frame').empty();
+	if(!again){
+		$('#game_info_frame').empty();
+		players = [];
+		cp = 1;
+		botCounter = 1;// declared in ui.js
+		playerCounter = 0;//declared in ui.js
+		$('#game_info_frame').append($('<div id="addPlayer" class="player_frame"></div>'));
+		$('#addPlayer').append('<p><button id="human">Add Player</button></p>'); 
+		$('#addPlayer').append('<p><button id="ai">Add AI</button></p>');
+	}
+	/*if(players.length<4){ atm pointless as start is triggered short after this and removes it instantly
+		$('#game_info_frame').append($('<div id="addPlayer" class="player_frame"></div>'));
+		$('#addPlayer').append('<p><button id="human">Add Player</button></p>'); 
+		$('#addPlayer').append('<p><button id="ai">Add AI</button></p>');
+	}*/
 	stopClock(true);
 }
 // Created due to D.R.Y.
@@ -241,9 +258,22 @@ function reset(noc){// Game over!?
 					winner = players[i-1].name;
 			}			
 		}
-		setBack();
-		if(confirm('Congratulations, '+winner+'. You won!\nWould you like to play again?')){ //Maybe mention pairs and turns
-    		start();	
+		players.forEach(function(value,index){
+			if(players[index].pairs == highscore){
+				players[index].score++;
+				$('#player'+(index+1)+'_score').html(" "+players[index].score);
+			}	
+		});
+		var again = confirm('Congratulations, '+winner+'. You won!\nWould you like to play again?');
+		setBack(again);
+		if(again){ //Maybe mention pairs and turns
+			players.forEach(function(value, index){
+				players[index].turns = players[index].pairs = 0;//should work, if not 2 seperate lines
+				$('#player'+(index+1)+'_matched').html(" ");
+				$('#player'+(index+1)+'_turns').html(" ");	
+			});
+			cp=1;			
+			start();	
 		}
 	}
 }
@@ -273,13 +303,14 @@ function AI(number,name){
 	this.number = number;
 	this.ai = true;
 	var queue = [];
-	/*this.printQueue = function(){//just for debugging purpose
+
+	this.printQueue = function(){//just for debugging purpose
    	 var q = [];
     	for(var i=0;i<queue.length;i++){
-        	q[i] = queue[i].getSrc().split("Badges/").splice(1);
+        	q[i] = queue[i].getNumber();
     	}
     	return q;
-	}*/
+	}
 	
 	this.forget = function(){ //the queue array is limited to the last e.g. 10 cards
     	if(queue.length>this.difficulty)
@@ -341,7 +372,7 @@ function AI(number,name){
 			else{
 				var rand;			
 				do{
-					rand = Math.floor(Math.random()*cardsHidden.length+1);
+					rand = Math.floor(Math.random()*cardsHidden.length+1);//might be a problem if all remaining cards are in queue!!!
 				} while(cardsHidden[rand-1].fadedOut || this.alreadyIn(cardsHidden[rand-1]) ||rand == last); //rand == last because looser has no queue
 				turn(rand);
 				last = rand;
@@ -432,4 +463,5 @@ $(document).on('click',".card_frame",function(){
 		turn(this.id.split("card_").splice(1));
 	}
 });
+
 
