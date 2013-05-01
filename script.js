@@ -307,7 +307,7 @@ function AI(number,name){
 	this.printQueue = function(){//just for debugging purpose
    	 var q = [];
     	for(var i=0;i<queue.length;i++){
-        	q[i] = queue[i].getNumber();
+        	q[i] = queue[i].getSrc();
     	}
     	return q;
 	}
@@ -353,28 +353,45 @@ function AI(number,name){
 	}
 
 	this.turn = function(){
+		this.printQueue();
+		for(var i=queue.length-1;i>=0;i--){
+			console.log(i+" "+queue.length);
+			if(queue[i].fadedOut){
+				queue.splice(i,1);
+			}
+		}
+		this.printQueue();
 		var last = -1;//non reachable start value
 		for(var i=0;i<2;i++){
 			var pair = this.check();
-		    if(last!=-1 && pair && !pair[0].fadedOut){//if the 1st random draw hits a pair this should get it
+		    if(last!=-1 && pair/* && !pair[0].fadedOut*/){//if the 1st random draw hits a pair this should get it
 				if(pair[0].getNumber() == last){
-					turn(pair[1].getNumber());					
+					console.log("if "+ this.printQueue());					
+					turn(pair[1].getNumber());
+					console.log("done");					
 				}
 				else{
+					console.log("if "+ this.printQueue());
 					turn(pair[0].getNumber());
+					console.log("done");
 				}
 			}
-			else if(pair && !pair[0].fadedOut){//needs to be 2nd as it triggers when the first case is triggered :(
+			else if(pair/* && !pair[0].fadedOut*/){//needs to be 2nd as it triggers when the first case is triggered :(
+				console.log("pair "+this.printQueue());
 				turn(pair[0].getNumber());
 				turn(pair[1].getNumber());
+				console.log("done");
 				return ;
 			}			
 			else{
 				var rand;			
 				do{
-					rand = Math.floor(Math.random()*cardsHidden.length+1);//might be a problem if all remaining cards are in queue!!!
+					rand = Math.floor(Math.random()*cardsHidden.length+1);
+					console.log("random "+rand+" "+this.printQueue());
 				} while(cardsHidden[rand-1].fadedOut || this.alreadyIn(cardsHidden[rand-1]) ||rand == last); //rand == last because looser has no queue
+				console.log("almost");
 				turn(rand);
+				console.log("done");
 				last = rand;
 			}
 		}
