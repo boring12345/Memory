@@ -247,9 +247,11 @@ function hiddenCounter(array){ //counts how many cards are hidden
 function reset(noc){// Game over!?
 	if(pairsFound == noc){		
 		//alert("press start to play again");
+		var secsTaken = parseInt($('#min').text(), 10)*60 + parseInt($('#sec').text(), 10);
+		console.log(secsTaken);
 		var winner = "";
 		var playerScore = 0;
-	    var highscore = 0;
+		var highscore = 0;
 		for(var i=1;i<players.length+1;i++){ 
 			playerScore = parseInt($('#player'+i+'_matched').html(), 10);
 			if(highscore == playerScore){
