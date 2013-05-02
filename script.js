@@ -2,9 +2,11 @@
 // Is there a way to avoid such things?
     var minID,secID;
     var cardsHidden = [];
-    var pairsFound = 0;
+    var pairsFound = 0;    
     var players = [];
     var cp = 1;//currentPlayer
+    var debugMode = false;  // If true, leaves cards uncovered for debugging purposes
+
 	var gameIsRunning = false, lock = false; //to only allow 3 card clicks per players turn
     var all = ["23andmeAPI.png", "AddressBook.png", "BitlyAPI.png", "Blackjack.png", "Blackjack2.png", "Blackjack3.png", "BoxAPI.png", "CashRegister.png",
     	      "DiceGame.png", "DiceGame2.png", "DwollaAPI.png", "EasyPostAPI.png", "EvernoteAPI.png", "Fifty.png", "FireBaseAPI.png", "First.png", "FiveHundred.png",
@@ -133,17 +135,14 @@ var start = function(){//get new Cards by pressing start button
 		var rowsOfCards = parseInt($("#boardSize").val().substring(1,2),10); 		
 		
 		if ((cardsPerRow*rowsOfCards) <= cards.length*2) {  // If the set has enough cards to fill the chosen board size.
-			noc = (cardsPerRow * rowsOfCards)/2;
-//			console.log("in if statement");
-//			console.log(cardsPerRow +" "+"Cards per row...");			
+			noc = (cardsPerRow * rowsOfCards)/2;			
 		}  else if (cards.length*2<=24) {                        // If set is small, just use small board (6x4)
 			noc = cards.length; 
 			cardsPerRow = 6; 
 			rowsOfCards = 4;
 			}  
 		else {					// If set is larger than small board, but smaller than chosen board.
-			noc = cards.length;
-//			console.log("in else statement");			
+			noc = cards.length;		
 		}
 		$('#game_board_frame').width(cardsPerRow * 122);             
 		$('#game_frame').width(cardsPerRow * 122 + 243);                       
@@ -151,9 +150,9 @@ var start = function(){//get new Cards by pressing start button
 		$('#game_frame').height(rowsOfCards * 122 + 100);  
 		
 		var titleWidth = $('#game_frame').width(); // header width
-		$('#game_title_wrapper').width(titleWidth);
-		addImages(noc,cardsPerRow);
-        	cardsHidden = HideCards(noc);
+		$('#game_title_wrapper').width(titleWidth);		
+        		cardsHidden = HideCards(noc);
+        		addImages(noc,cardsPerRow);
 		if(players[cp-1].ai){
 			players[cp-1].turn();
 		}
@@ -296,6 +295,7 @@ function Player(number,name){
 	this.turns =0;
 	this.pairs = 0;
 	this.ai = false;
+	this.scoreMultiplier = 0;
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -419,7 +419,7 @@ var turn = function(cid){ //cid means card_id and is number or a numerical strin
 	var card = cardsHidden[id-1];
 	if(counter<2 && !card.fadedOut){ 
        	$(card.getPlace()).attr("src", card.getSrc());
-		card.hidden = false;
+		card.hidden = false;		
 		lock = false;
 		players.forEach(function(value,index){
 			if(players[index].ai && !players[index].alreadyIn(card)){
@@ -431,7 +431,8 @@ var turn = function(cid){ //cid means card_id and is number or a numerical strin
 	}
 	if(hiddenCounter(cardsHidden) == 2 && !lock){ // or counter  == 2
 		var array = [];
-		var again = false;
+		var again = false;		
+		console.log(players[cp-1].scoreMultiplier);
 		players[cp-1].turns++;
         $('#player'+cp+'_turns').html(" "+players[cp-1].turns); 
 		cardsHidden.forEach(function(value,index){
@@ -441,6 +442,8 @@ var turn = function(cid){ //cid means card_id and is number or a numerical strin
 		});
 		if(array[0].getSrc() ==array[1].getSrc()){
 			again = true;
+			players[cp-1].scoreMultiplier++;
+			console.log(players[cp-1].scoreMultiplier);
 			players[cp-1].pairs++;
             $('#player'+cp+'_matched').html(" "+players[cp-1].pairs); 
 			array.forEach(function(value,index){
@@ -456,14 +459,17 @@ var turn = function(cid){ //cid means card_id and is number or a numerical strin
 		}
 		else{
 			setTimeout(function(){ // maybe search for a smoother fade out
-				$(".card_frame img").attr("src","Badges/"+upCard);			
+				if (!debugMode) {
+					$(".card_frame img").attr("src","Badges/"+upCard);	
+				}		
 				cardsHidden.forEach(function(value,index){
 					cardsHidden[index].hidden = true;
 				});
 			},1000);
 		}
 		if(!again){
-        	nextPlayer();
+			players[cp-1].scoreMultiplier = 0;
+        			nextPlayer();        	
 		}
 		lock = true;
 		setTimeout(function(){
