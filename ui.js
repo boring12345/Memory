@@ -35,13 +35,34 @@ var addPlayer = function(name){ //back-up
  	playerCounter++;        
 };
 
+//-------- sortable -------
 $(document).on('click','#human,#ai',function(){
-	$("#sortable").sortable({"axis":"y",change:function(){
-		//need to change the order in players according to the order displayed
-	}});
+	$("#sortable").sortable({"axis":"y"});
 });
 
+//------ disable sortable / sort players --------
+function swap(){
+	var swap;
+	var count =0;
+	var sub = "";	
+	$('#sortable').sortable('disable');
+	var pf = $('.player_frame');
+	for(id in pf){
+		var getId = pf[id].id;
+		if(getId){
+			sub = getId.substring(6,7);
+			if(sub != players[count].number){
+				swap = players[count];
+				players[count]=players[sub-1];
+				players[sub-1]=swap;
+			}
+			console.log(players[count]);
+			count++;
+		}
+	}
+};
 
+//--------------------------------
 $(document).on('submit','#humanName',function(e){//act like delegate()
 	var name = $('#humanName input:first-child').val();
 	name = (name.toLowerCase()!="bot")?name:"default";

@@ -115,6 +115,7 @@ var addImages = function(noc,cpr) {
 };
 
 var start = function(){//get new Cards by pressing start button 
+		swap();
 		if (gameIsRunning) { return ;}
 		gameIsRunning = true;
 		var chooseSet = parseInt($("#set").val(), 10);
@@ -153,6 +154,7 @@ var start = function(){//get new Cards by pressing start button
 		$('#game_title_wrapper').width(titleWidth);		
         		cardsHidden = HideCards(noc);
         		addImages(noc,cardsPerRow);
+		console.log(players)
 		if(players[cp-1].ai){
 			players[cp-1].turn();
 		}
@@ -252,20 +254,20 @@ function reset(noc){// Game over!?
 		var winner = "";
 		var playerScore = 0;
 		var highscore = 0;
-		for(var i=1;i<players.length+1;i++){ 
-			playerScore = parseInt($('#player'+i+'_matched').html(), 10);
+		for(var i=0;i<players.length;i++){ 
+			playerScore = parseInt($('#player'+players[i].number+'_matched').html(), 10);
 			if(highscore == playerScore){
-					winner+= " and "+players[i-1].name;
+					winner+= " and "+players[i].name;
 			}
 			if(highscore < playerScore){
 					highscore = playerScore;
-					winner = players[i-1].name;
+					winner = players[i].name;
 			}			
 		}
 		players.forEach(function(value,index){
 			if(players[index].pairs == highscore){
 				players[index].score++;
-				$('#player'+(index+1)+'_score').html(" "+players[index].score);
+				$('#player'+players[index].number+'_score').html(" "+players[index].score);
 			}	
 		});
 		var again = confirm('Congratulations, '+winner+'. You won!\nWould you like to play again?');
@@ -273,8 +275,8 @@ function reset(noc){// Game over!?
 		if(again){ //Maybe mention pairs and turns
 			players.forEach(function(value, index){
 				players[index].turns = players[index].pairs = 0;//should work, if not 2 seperate lines
-				$('#player'+(index+1)+'_matched').html(" ");
-				$('#player'+(index+1)+'_turns').html(" ");	
+				$('#player'+players[index].number+'_matched').html(" ");
+				$('#player'+players[index].number+'_turns').html(" ");	
 			});
 			cp=1;			
 			start();	
@@ -371,32 +373,32 @@ function AI(number,name){
 			var pair = this.check();
 		    if(last!=-1 && pair/* && !pair[0].fadedOut*/){//if the 1st random draw hits a pair this should get it
 				if(pair[0].getNumber() == last){
-					console.log("if "+ this.printQueue());					
+					//console.log("if "+ this.printQueue());					
 					turn(pair[1].getNumber());
-					console.log("done");					
+					//console.log("done");					
 				}
 				else{
-					console.log("if "+ this.printQueue());
+					//console.log("if "+ this.printQueue());
 					turn(pair[0].getNumber());
-					console.log("done");
+					//console.log("done");
 				}
 			}
 			else if(pair/* && !pair[0].fadedOut*/){//needs to be 2nd as it triggers when the first case is triggered :(
-				console.log("pair "+this.printQueue());
+				//console.log("pair "+this.printQueue());
 				turn(pair[0].getNumber());
 				turn(pair[1].getNumber());
-				console.log("done");
+				//console.log("done");
 				return ;
 			}			
 			else{
 				var rand;			
 				do{
 					rand = Math.floor(Math.random()*cardsHidden.length+1);
-					console.log("random "+rand+" "+this.printQueue());
+					//console.log("random "+rand+" "+this.printQueue());
 				} while(cardsHidden[rand-1].fadedOut || this.alreadyIn(cardsHidden[rand-1]) ||rand == last); //rand == last because looser has no queue
-				console.log("almost");
+				//console.log("almost");
 				turn(rand);
-				console.log("done");
+				//console.log("done");
 				last = rand;
 			}
 		}
@@ -416,6 +418,7 @@ $(document).ready(function(){
 });
 
 var turn = function(cid){ //cid means card_id and is number or a numerical string from "1" to "24" 
+	console.log(cp+ " "+players[cp-1].number);
 	var counter = hiddenCounter(cardsHidden);
 	var id = cid;	
 	var card = cardsHidden[id-1];
@@ -436,7 +439,7 @@ var turn = function(cid){ //cid means card_id and is number or a numerical strin
 		var again = false;		
 		console.log(players[cp-1].scoreMultiplier);
 		players[cp-1].turns++;
-        $('#player'+cp+'_turns').html(" "+players[cp-1].turns); 
+        $('#player'+players[cp-1].number+'_turns').html(" "+players[cp-1].turns); 
 		cardsHidden.forEach(function(value,index){
 				if(!cardsHidden[index].hidden){
 					array.push(cardsHidden[index]);	
@@ -447,7 +450,7 @@ var turn = function(cid){ //cid means card_id and is number or a numerical strin
 			players[cp-1].scoreMultiplier++;
 			console.log(players[cp-1].scoreMultiplier);
 			players[cp-1].pairs++;
-            $('#player'+cp+'_matched').html(" "+players[cp-1].pairs); 
+            $('#player'+players[cp-1].number+'_matched').html(" "+players[cp-1].pairs); 
 			array.forEach(function(value,index){
 				$(array[index].getPlace()).fadeTo("normal",0);		
 				array[index].fadedOut = true;
