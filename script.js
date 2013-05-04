@@ -27,7 +27,7 @@
     var setUpCard = ["Code.png","Code.png","JQuery.png","Python.png","Ruby.png"]
     var upCard, cards =[];// set[chooseSet];
     var mode = {
-    	looser: 0,
+    	loser: 0,
     	easy:5,
     	medium:7,
     	hard:9,
@@ -115,7 +115,7 @@ var addImages = function(noc,cpr) {
 };
 
 var start = function(){//get new Cards by pressing start button 
-		swap();
+		if(players.length>0) {swap();}
 		if (gameIsRunning) { return ;}
 		gameIsRunning = true;
 		var chooseSet = parseInt($("#set").val(), 10);
@@ -395,7 +395,7 @@ function AI(number,name){
 				do{
 					rand = Math.floor(Math.random()*cardsHidden.length+1);
 					//console.log("random "+rand+" "+this.printQueue());
-				} while(cardsHidden[rand-1].fadedOut || this.alreadyIn(cardsHidden[rand-1]) ||rand == last); //rand == last because looser has no queue
+				} while(cardsHidden[rand-1].fadedOut || this.alreadyIn(cardsHidden[rand-1]) ||rand == last); //rand == last because loser has no queue
 				//console.log("almost");
 				turn(rand);
 				//console.log("done");

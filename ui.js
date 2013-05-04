@@ -63,7 +63,7 @@ function swap(){
 };
 
 //--------------------------------
-$(document).on('submit','#humanName',function(e){//act like delegate()
+$(document).on('submit','#humanName',function(){//act like delegate()
 	var name = $('#humanName input:first-child').val();
 	name = (name.toLowerCase()!="bot")?name:"default";
 	addPlayer(name);
@@ -72,7 +72,7 @@ $(document).on('submit','#humanName',function(e){//act like delegate()
 	//return false;	
 });
 
-$(document).on('submit','#aiDifficulty',function(e){//act like delegate()
+$(document).on('submit','#aiDifficulty',function(){//act like delegate()
 	var name;
 	if($('#difficulty').val() == "custom"){
 		name = 'bot ' +$('#aiDifficulty input:first-child').val();		
@@ -100,7 +100,7 @@ $(document).on('click','#human',function(){//act like delegate()
 $(document).on('click','#ai',function(){//act like delegate()
 	if(!aiLock){
 		$('#addPlayer').before('<div id="addAI" class="player_frame"></div>');
-		var toAppend='<div><label>Difficulty:</label><select id="difficulty"><option value="looser">looser</option><option value="easy">easy</option><option value="medium" selected>medium</option><option value="hard">hard</option><option value="impossible">impossible</option><option value="insane">insane</option><option value="custom">custom</option></select></div>'; 
+		var toAppend='<div><label>Difficulty:</label><select id="difficulty"><option value="loser">loser</option><option value="easy">easy</option><option value="medium" selected>medium</option><option value="hard">hard</option><option value="impossible">impossible</option><option value="insane">insane</option><option value="custom">custom</option></select></div>'; 
 		$('#addAI').append('<form id="aiDifficulty">'+toAppend+'<div><input type="text" value="custom difficulty" /><input type="submit" value="create a bot" /></div>');
 		if(frames = $('.player_frame').length >=4){
 			$('#addPlayer').remove();		
