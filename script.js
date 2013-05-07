@@ -222,10 +222,12 @@ function setBack(again) {
 		aiLock = false;
 		humanLock = false;
 	}
-	else if(players.length<4){ //atm pointless as start is triggered short after this and removes it instantly
-		$('#game_info_frame').append($('<div id="addPlayer" class="player_frame"></div>'));
-		$('#addPlayer').append('<p><button id="human">Add Player</button></p>'); 
-		$('#addPlayer').append('<p><button id="ai">Add AI</button></p>');
+	else{
+		if(players.length<4){ //atm pointless as start is triggered short after this and removes it instantly
+			$('#game_info_frame').append($('<div id="addPlayer" class="player_frame"></div>'));
+			$('#addPlayer').append('<p><button id="human">Add Player</button></p>'); 
+			$('#addPlayer').append('<p><button id="ai">Add AI</button></p>');
+		}
 		$('#sortable').sortable('enable');
 	}
 	
