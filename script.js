@@ -218,14 +218,18 @@ function setBack(again) {
 		$('#sortable').append($('<div id="addPlayer" ></div>'));
 		$('#addPlayer').append('<p><button id="human">Add Player</button></p>'); 
 		$('#addPlayer').append('<p><button id="ai">Add AI</button></p>');
+
 		aiLock = false;
 		humanLock = false;
 	}
-	/*if(players.length<4){ atm pointless as start is triggered short after this and removes it instantly
+	else if(players.length<4){ //atm pointless as start is triggered short after this and removes it instantly
 		$('#game_info_frame').append($('<div id="addPlayer" class="player_frame"></div>'));
 		$('#addPlayer').append('<p><button id="human">Add Player</button></p>'); 
 		$('#addPlayer').append('<p><button id="ai">Add AI</button></p>');
-	}*/
+		$('#sortable').sortable('enable');
+	}
+	
+	
 	stopClock(true);
 }
 // Created due to D.R.Y.
@@ -273,13 +277,16 @@ function reset(noc){// Game over!?
 		var again = confirm('Congratulations, '+winner+'. You won!\nWould you like to play again?');
 		setBack(again);
 		if(again){ //Maybe mention pairs and turns
+			var playerSet = confirm("Same Players?");
 			players.forEach(function(value, index){
 				players[index].turns = players[index].pairs = 0;//should work, if not 2 seperate lines
 				$('#player'+players[index].number+'_matched').html(" ");
 				$('#player'+players[index].number+'_turns').html(" ");	
 			});
-			cp=1;			
-			start();	
+			cp=1;
+			if(playerSet){			
+				start();
+			}	
 		}
 	}
 }
