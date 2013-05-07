@@ -6,8 +6,18 @@ var humanLock = false;
 var addPlayer = function(name){ //back-up
 		//var name = prompt("Please insert your name or 'bot' to add a non-human opponent");		
 		if(name.split(" ")[0].toLowerCase()=="bot"){
-			var difficulty = name.split(" ")[1];
-			name = "Bot "+botCounter +" ("+difficulty+")";
+			name = name.split(" ");
+			name.shift();
+			var difficulty = name[name.length-1];
+			console.log(difficulty);
+			if(name.length>2){
+				name = "Bot "+botCounter
+					   name+=(difficulty=="difficulty")?" (medium)":" ("+difficulty+")";
+				botCounter++;
+			}
+			else{
+				name = name[0]+" ("+difficulty+")";
+			}
 			players[playerCounter] = new AI(playerCounter+1,name);
 			if(!isNaN(difficulty)){
 				console.log(difficulty);
@@ -21,7 +31,6 @@ var addPlayer = function(name){ //back-up
 					players[playerCounter].difficulty = 7;	
 				}				
 			}
-			botCounter++;
 			$('#addAI').remove();	
 		}
 		else{
@@ -63,7 +72,7 @@ function swap(){
 };
 
 //--------------------------------
-$(document).on('submit','#humanName',function(){//act like delegate()
+$(document).on('submit','#humanName',function(e){//act like delegate()
 	var name = $('#humanName input:first-child').val();
 	name = (name.toLowerCase()!="bot")?name:"default";
 	addPlayer(name);
@@ -72,13 +81,13 @@ $(document).on('submit','#humanName',function(){//act like delegate()
 	//return false;	
 });
 
-$(document).on('submit','#aiDifficulty',function(){//act like delegate()
+$(document).on('submit','#aiDifficulty',function(e){//act like delegate()
 	var name;
 	if($('#difficulty').val() == "custom"){
 		name = 'bot ' +$('#aiDifficulty input:first-child').val();		
 	}
 	else{
-		name = 'bot '+$('#difficulty').val();
+		name = 'bot '+$('#aiDifficulty input:first-child').val()+' '+$('#difficulty').val();
 	}
 	console.log(name);
 	addPlayer(name);
@@ -101,7 +110,7 @@ $(document).on('click','#ai',function(){//act like delegate()
 	if(!aiLock){
 		$('#addPlayer').before('<div id="addAI" class="player_frame"></div>');
 		var toAppend='<div><label>Difficulty:</label><select id="difficulty"><option value="loser">loser</option><option value="easy">easy</option><option value="medium" selected>medium</option><option value="hard">hard</option><option value="impossible">impossible</option><option value="insane">insane</option><option value="custom">custom</option></select></div>'; 
-		$('#addAI').append('<form id="aiDifficulty">'+toAppend+'<div><input type="text" value="custom difficulty" /><input type="submit" value="create a bot" /></div>');
+		$('#addAI').append('<form id="aiDifficulty">'+toAppend+'<div><input type="text" value="name and/or difficulty" /><input type="submit" value="create a bot" /></div>');
 		if(frames = $('.player_frame').length >=4){
 			$('#addPlayer').remove();		
 		}
