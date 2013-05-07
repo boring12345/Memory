@@ -10,9 +10,9 @@ var addPlayer = function(name){ //back-up
 			name.shift();
 			var difficulty = name[name.length-1];
 			console.log(difficulty);
-			if(name.length>2){
+			if(name.length != 2 || name[1] == ""){
 				name = "Bot "+botCounter
-					   name+=(difficulty=="difficulty")?" (medium)":" ("+difficulty+")";
+				name+=(difficulty=="difficulty" || difficulty=="")?" (medium)":" ("+difficulty+")";
 				botCounter++;
 			}
 			else{
