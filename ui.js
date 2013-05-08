@@ -1,10 +1,10 @@
 //------------------------------------- Adding Player GUI ------------------
+var idCounter =0;
 var botCounter = 1;
 var playerCounter = 0;
-var aiLock = false;
-var humanLock = false;
-var addPlayer = function(name){ //back-up
-		//var name = prompt("Please insert your name or 'bot' to add a non-human opponent");		
+//var aiLock = false;
+//var humanLock = false;
+var addPlayer = function(name,id){
 		if(name.split(" ")[0].toLowerCase()=="bot"){
 			name = name.split(" ");
 			name.shift();
@@ -35,17 +35,17 @@ var addPlayer = function(name){ //back-up
 					players[playerCounter].name = name;	
 				}				
 			}
-			$('#addAI').remove();	
+			$(/*'#addAI'*/'#'+id).remove();	
 		}
 		else{
 			players[playerCounter] = new Player(playerCounter+1,name);
-			$('#addHuman').remove();
+			$(/*'#addHuman'*/'#'+id).remove();
 		}
         $('#sortable').append($('<div id="player' + (playerCounter+1) + '_frame" class="player_frame">' + players[playerCounter].name + '</div>'));
         $('#player' + (playerCounter+1) + '_frame').append('<br>Turns taken:<span id="player' +(playerCounter+1)+ '_turns" </span>'); 
         $('#player' + (playerCounter+1) + '_frame').append('<br>Pairs Matched:<span id="player' +(playerCounter+1)+ '_matched" </span>');
       	$('#player' + (playerCounter+1) + '_frame').append('<br>Score:<span id="player' +(playerCounter+1)+ '_score" </span>'); 	
- 	playerCounter++;        
+ 	playerCounter++;  
 };
 
 //-------- sortable -------
@@ -79,7 +79,7 @@ function swap(){
 $(document).on('submit','#humanName',function(e){//act like delegate()
 	var name = $('#humanName input:first-child').val();
 	name = (name.toLowerCase()!="bot")?name:"default";
-	addPlayer(name);
+	addPlayer(name,$(this).closest('div').attr('id'));
 	humanLock = false;
 	e.preventDefault();
 	//return false;	
@@ -94,36 +94,38 @@ $(document).on('submit','#aiDifficulty',function(e){//act like delegate()
 		name = 'bot '+$('#aiDifficulty input:first-child').val()+' '+$('#difficulty').val();
 	}
 	console.log(name);
-	addPlayer(name);
+	addPlayer(name,$(this).closest('div').attr('id'));
 	aiLock = false;
 	e.preventDefault();
 });
 
 $(document).on('click','#human',function(){//act like delegate()
-	if(!humanLock){
-		$('#addPlayer').before('<div id="addHuman" class="player_frame"></div>');
-		$('#addHuman').append('Please insert your name<form id="humanName"><div><input type="text" /><input type="submit" value="create your Player" /></div>');
+//	if(!humanLock){
+		$('#addPlayer').before($('<div/>').addClass('player_frame').attr('id','addHuman'+idCounter));//'<div id="addHuman" class="player_frame"></div>');
+		$('#addHuman'+idCounter).append('Please insert your name<form id="humanName"><div><input type="text" /><input type="submit" value="create your Player" /></div>');
+		idCounter++;
 		if(frames = $('.player_frame').length >=4){
 			$('#addPlayer').remove();		
 		}
-		humanLock = true;
-	}
+//		humanLock = true;
+//	}
 });
 
 $(document).on('click','#ai',function(){//act like delegate()
-	if(!aiLock){
-		$('#addPlayer').before('<div id="addAI" class="player_frame"></div>');
+//	if(!aiLock){
+		$('#addPlayer').before($('<div/>').addClass('player_frame').attr('id','addAI'+idCounter));//'<div id="addAI" class="player_frame"></div>');
 		var toAppend='<div><label>Difficulty:</label><select id="difficulty"><option value="loser">loser</option><option value="easy">easy</option><option value="medium" selected>medium</option><option value="hard">hard</option><option value="impossible">impossible</option><option value="insane">insane</option><option value="custom">custom</option></select></div>'; 
-		$('#addAI').append('<form id="aiDifficulty">'+toAppend+'<div><input type="text" value="name and/or difficulty" /><input type="submit" value="create a bot" /></div>');
+		$('#addAI'+idCounter).append('<form id="aiDifficulty">'+toAppend+'<div><input type="text" value="name and/or difficulty" /><input type="submit" value="create a bot" /></div>');
+		idCounter++;
 		if(frames = $('.player_frame').length >=4){
 			$('#addPlayer').remove();		
 		}
-		aiLock = true;
-	}	
+//		aiLock = true;
+//	}	
 });
 
 $(document).ready(function(){
-	$('#game_info_frame').append('<ul id="sortable"><ul>');
+	$('#game_info_frame').append($('<ul/>').attr('id','sortable'));//'<ul id="sortable"><ul>');
 	$('#sortable').append($('<div id="addPlayer"></div>'));
 	$('#addPlayer').append('<p><button id="human">Add Player</button></p>'); 
 	$('#addPlayer').append('<p><button id="ai">Add AI</button></p>');
