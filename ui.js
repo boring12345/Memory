@@ -11,7 +11,7 @@ var addPlayer = function(name){ //back-up
 			var difficulty = name[name.length-1];
 			console.log(difficulty);
 			if(name.length != 2 || name[1] == ""){
-				name = "Bot "+botCounter
+				name = "Bot "+botCounter;
 				name+=(difficulty=="difficulty" || difficulty=="")?" (medium)":" ("+difficulty+")";
 				botCounter++;
 			}
@@ -32,7 +32,6 @@ var addPlayer = function(name){ //back-up
 					name = name.split(" ");
 					name[name.length-1] = "(medium)";
 					name = name.join(" ");
-					alert(name);
 					players[playerCounter].name = name;	
 				}				
 			}
