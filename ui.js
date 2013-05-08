@@ -8,7 +8,7 @@ var addPlayer = function(name){ //back-up
 		if(name.split(" ")[0].toLowerCase()=="bot"){
 			name = name.split(" ");
 			name.shift();
-			var difficulty = isNaN(name[name.length-1])?"medium":name[name.length-1];
+			var difficulty = name[name.length-1];
 			console.log(difficulty);
 			if(name.length != 2 || name[1] == ""){
 				name = "Bot "+botCounter
@@ -28,7 +28,12 @@ var addPlayer = function(name){ //back-up
 					players[playerCounter].difficulty = mode[difficulty];	
 				}
 				else{
-					players[playerCounter].difficulty = 7;	
+					players[playerCounter].difficulty = 7;
+					name = name.split(" ");
+					name[name.length-1] = "(medium)";
+					name = name.join(" ");
+					alert(name);
+					players[playerCounter].name = name;	
 				}				
 			}
 			$('#addAI').remove();	
