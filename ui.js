@@ -11,9 +11,14 @@ var addPlayer = function(name,id){
 			var difficulty = name[name.length-1];
 			console.log(difficulty);
 			if(name.length != 2 || name[1] == ""){
-				name = "Bot "+botCounter;
+				if(name.length==1 && isNaN(name[0]) && isNaN(mode[name[0]])){
+					name = name[0];
+				}
+				else{
+					name = "Bot "+botCounter;
+					botCounter++;
+				}
 				name+=(difficulty=="difficulty" || difficulty=="")?" (medium)":" ("+difficulty+")";
-				botCounter++;
 			}
 			else{
 				name = name[0]+" ("+difficulty+")";
