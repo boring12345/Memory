@@ -52,7 +52,7 @@ var addPlayer = function(name,id){
 			players.push(new Player(playerNum+1,name));
 			$(/*'#addHuman'*/'#'+id).remove();
 		}
-        $('#sortable').append($('<div id="player' + (playerNum+1) + '_frame" class="player_frame">' + players[playerNum].name + '</div>'));
+        $('#sortable').append($('<div id="player' + (playerNum+1) + '_frame" class="player_frame">' + players[players.length-1/*playerNum*/].name + '</div>'));
         $('#player' + (playerNum+1) + '_frame').append('<div class="duringGame">Turns taken:<span id="player' +(playerNum+1)+ '_turns" </span></div>'); 
         $('#player' + (playerNum+1) + '_frame').append('<div class="duringGame">Pairs  Matched:<span id="player' +(playerNum+1)+ '_matched" </span></div>');
       	$('#player' + (playerNum+1) + '_frame').append('<div>Score:<span id="player' +(playerNum+1)+ '_score"> 0</span></div>'); 	
