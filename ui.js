@@ -1,10 +1,14 @@
 //------------------------------------- Adding Player GUI ------------------
 var idCounter =0;
 var botCounter = 1;
-var playerCounter = 0;
+var possibleNums = [0,1,2,3];
 //var aiLock = false;
 //var humanLock = false;
 var addPlayer = function(name,id){
+		console.log("botCounter: "+botCounter);
+		var playerNum = possibleNums.shift();
+		console.log("playerNum: "+playerNum);
+		console.log("possibleNums: "+possibleNums);
 		if(name.split(" ")[0].toLowerCase()=="bot"){
 			name = name.split(" ");
 			name.shift();
@@ -23,34 +27,37 @@ var addPlayer = function(name,id){
 			else{
 				name = name[0]+" ("+difficulty+")";
 			}
-			players[playerCounter] = new AI(playerCounter+1,name);
+			//players[playerNum] = new AI(playerNum+1,name);
+			players.push(new AI(playerNum+1,name));
 			if(!isNaN(difficulty)){
 				console.log(difficulty);
-				players[playerCounter].difficulty = difficulty;
+				players[players.length-1/*playerNum*/].difficulty = difficulty;
 			}
 			else {
 				if(!isNaN(mode[difficulty])){
-					players[playerCounter].difficulty = mode[difficulty];	
+					players[players.length-1/*playerNum*/].difficulty = mode[difficulty];	
 				}
 				else{
-					players[playerCounter].difficulty = 7;
+					players[players.length-1/*playerNum*/].difficulty = 7;
 					name = name.split(" ");
 					name[name.length-1] = "(medium)";
 					name = name.join(" ");
-					players[playerCounter].name = name;	
+					players[players.length-1/*playerNum*/].name = name;	
 				}				
 			}
 			$(/*'#addAI'*/'#'+id).remove();	
 		}
 		else{
-			players[playerCounter] = new Player(playerCounter+1,name);
+			//players[playerNum] = new Player(playerNum+1,name);
+			players.push(new Player(playerNum+1,name));
 			$(/*'#addHuman'*/'#'+id).remove();
 		}
-        $('#sortable').append($('<div id="player' + (playerCounter+1) + '_frame" class="player_frame">' + players[playerCounter].name + '</div>'));
-        $('#player' + (playerCounter+1) + '_frame').append('<br>Turns taken:<span id="player' +(playerCounter+1)+ '_turns" </span>'); 
-        $('#player' + (playerCounter+1) + '_frame').append('<br>Pairs Matched:<span id="player' +(playerCounter+1)+ '_matched" </span>');
-      	$('#player' + (playerCounter+1) + '_frame').append('<br>Score:<span id="player' +(playerCounter+1)+ '_score" </span>'); 	
- 	playerCounter++;  
+        $('#sortable').append($('<div id="player' + (playerNum+1) + '_frame" class="player_frame">' + players[playerNum].name + '</div>'));
+        $('#player' + (playerNum+1) + '_frame').append('<div class="duringGame">Turns taken:<span id="player' +(playerNum+1)+ '_turns" </span></div>'); 
+        $('#player' + (playerNum+1) + '_frame').append('<div class="duringGame">Pairs  Matched:<span id="player' +(playerNum+1)+ '_matched" </span></div>');
+      	$('#player' + (playerNum+1) + '_frame').append('<div>Score:<span id="player' +(playerNum+1)+ '_score"> 0</span></div>'); 	
+      	$('#player' + (playerNum+1) + '_frame').append('<div><button class="delete" value="Delete">Delete</button></div>');
+		$('.duringGame').hide();
 };
 
 //-------- sortable -------
@@ -79,6 +86,25 @@ function swap(){
 		}
 	}
 };
+
+$(document).on('click','.delete',function(e){
+	var toBeRemoved = $(this).closest('.player_frame').attr('id');
+	var id = parseInt(toBeRemoved.match(/[1-4]/)[0],10)-1;
+	possibleNums.unshift(id);
+	console.log("possibleNums: "+possibleNums);
+	for(var i=0;i<players.length;i++){
+		if(players[i].number == (id+1)){
+			var index = i;
+			break;
+		}
+	}
+	console.log("Index: "+index);
+	players.splice(index,1);
+	$('#'+toBeRemoved).remove();
+	$('#addPlayer').show();
+	e.preventDefault();
+});
+
 
 //--------------------------------
 $(document).on('submit','#humanName',function(e){//act like delegate()
@@ -110,7 +136,7 @@ $(document).on('click','#human',function(){//act like delegate()
 		$('#addHuman'+idCounter).append('Please insert your name<form id="humanName"><div><input type="text" /><input type="submit" value="create your Player" /></div>');
 		idCounter++;
 		if(frames = $('.player_frame').length >=4){
-			$('#addPlayer').remove();		
+			$('#addPlayer').hide();	//hidden instead of remove !?	
 		}
 //		humanLock = true;
 //	}
@@ -123,7 +149,7 @@ $(document).on('click','#ai',function(){//act like delegate()
 		$('#addAI'+idCounter).append('<form id="aiDifficulty">'+toAppend+'<div><input type="text" value="name and/or difficulty" /><input type="submit" value="create a bot" /></div>');
 		idCounter++;
 		if(frames = $('.player_frame').length >=4){
-			$('#addPlayer').remove();		
+			$('#addPlayer').hide(); //hidden instead of remove !?		
 		}
 //		aiLock = true;
 //	}	

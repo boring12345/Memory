@@ -129,8 +129,14 @@ var start = function(){//get new Cards by pressing start button
 			var player = parseInt($("#nop").val(), 10);
 			addPlayers(player);
 		}
-		$('#addPlayer').remove();			
-    	upCard = setUpCard[chooseSet]; 
+		
+		//------------------------------- UI Changes ----------------------
+		$('#addPlayer').hide();
+		$('.delete').hide();		
+   		$('.duringGame').show();
+		//------------------------------------------------------------------------------------------
+
+		upCard = setUpCard[chooseSet]; 
     	cards  = set[chooseSet].slice();
 		var cardsPerRow = parseInt($("#boardSize").val().substring(0,1),10); 
 		var rowsOfCards = parseInt($("#boardSize").val().substring(1,2),10); 		
@@ -213,7 +219,7 @@ function setBack(again) {
 		players = [];
 		cp = 1;
 		botCounter = 1;// declared in ui.js
-		playerCounter = 0;//declared in ui.js
+		possibleNums = [0,1,2,3];
 		$('#game_info_frame').append('<ul id="sortable"><ul>');
 		$('#sortable').append($('<div id="addPlayer" ></div>'));
 		$('#addPlayer').append('<p><button id="human">Add Player</button></p>'); 
@@ -224,10 +230,10 @@ function setBack(again) {
 	}
 	else{
 		if(players.length<4){ //atm pointless as start is triggered short after this and removes it instantly
-			$('#game_info_frame').append($('<div id="addPlayer" class="player_frame"></div>'));
-			$('#addPlayer').append('<p><button id="human">Add Player</button></p>'); 
-			$('#addPlayer').append('<p><button id="ai">Add AI</button></p>');
+			$('#addPlayer').show();
 		}
+		$('.duringGame').hide();
+		$('.delete').show();
 		$('#sortable').sortable('enable');
 	}
 	
