@@ -68,27 +68,36 @@ $(document).on('click','#human,#ai',function(){
 //------ disable sortable / sort players --------
 function swap(){
 	var swap;
-	var count =0;
-	var sub = "";	
+	var sub = 0;
+	var pi = 0;
 	$('#sortable').sortable('disable');
-	var pf = $('.player_frame');
-	for(id in pf){
+	var pf = $('.player_frame').filter(function() {
+        return this.id.match(/player._frame/);
+    });
+
+	var indices = [];
+	for(var i=0;i<players.length;i++){
+		indices.push(players[i].number);
+	}
+	
+	for(var id = 0;id<players.length;id++){
 		var getId = pf[id].id;
 		if(getId){
-			sub = getId.substring(6,7);
-			if(sub != players[count].number){
-				swap = players[count];
-				players[count]=players[sub-1];
-				players[sub-1]=swap;
+			sub = parseInt(getId.match(/[1-4]/)[0],10);
+			console.log("sub: " +sub);
+			if(sub != players[id].number){
+				pi = indices.indexOf(sub);//playersIndex
+				swap = players[id];
+				players[id]=players[pi];
+				players[pi]=swap;
 			}
-			console.log(players[count]);
-			count++;
 		}
 	}
 };
 
 $(document).on('click','.delete',function(e){
 	var toBeRemoved = $(this).closest('.player_frame').attr('id');
+	console.log("toBeRemoved: "+toBeRemoved)
 	var id = parseInt(toBeRemoved.match(/[1-4]/)[0],10)-1;
 	possibleNums.unshift(id);
 	console.log("possibleNums: "+possibleNums);
@@ -100,6 +109,7 @@ $(document).on('click','.delete',function(e){
 	}
 	console.log("Index: "+index);
 	players.splice(index,1);
+	console.log(players)
 	$('#'+toBeRemoved).remove();
 	$('#addPlayer').show();
 	e.preventDefault();

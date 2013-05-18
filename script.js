@@ -134,7 +134,7 @@ var start = function(){//get new Cards by pressing start button
 		$('#addPlayer').hide();
 		$('.delete').hide();		
    		$('.duringGame').show();
-		//------------------------------------------------------------------------------------------
+		//-------------------------------------------------------------------------------------
 
 		upCard = setUpCard[chooseSet]; 
     	cards  = set[chooseSet].slice();
@@ -282,7 +282,7 @@ function reset(noc){// Game over!?
 				$('#player'+players[index].number+'_score').html(" "+players[index].score);
 			}	
 		});
-		var again = confirm('Congratulations, '+winner+'. You won!\nWould you like to play again?');
+		var again = confirm('Congratulations, '+winner+'. You won with '+highscore+' pairs!\nWould you like to play again?');
 		setBack(again);
 		if(again){ //Maybe mention pairs and turns
 			var playerSet = confirm("Same Players?");
@@ -318,7 +318,7 @@ function Player(number,name){
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
 
-//---------------------------------------------------- Artifical Intelligence (or at least a non-human opponent :D) (not used yet) -------------------------------------
+//---------------------------------------------------- Artifical Intelligence (or at least a non-human opponent :D)  -------------------------------------
 function AI(number,name){
 	this.difficulty;
 	this.name = name;
