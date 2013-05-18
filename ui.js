@@ -72,21 +72,25 @@ $(document).on('click','#human,#ai',function(){
 function swap(){
 	$('#sortable').sortable('disable');
 	var id = [];	//frame id's
+	var pi = [];	//players indices
+	var so = [];	//starting order
 	var pf = $('.player_frame').filter(function() {
         return this.id.match(/player._frame/);
     });
 	for(var i=0;i<players.length;i++){
 		id.push(parseInt(pf[i].id.match(/[1-4]/)[0],10)-1);
+		pi.push(players[i].number);
 	}
-	console.log(id);
+	for(i=0;i<players.length;i++){
+		so[i] = pi.indexOf(i+1);
+	}
 	
 	orderedArray= function(arr,order){
     	return  order.map(function(itm){return arr[itm];});
 	};
 	
-	console.log(players);
-	players = orderedArray(players,id);
-	console.log(players);
+	players = orderedArray(players,so);		//provides starting order 1,2,3,4
+	players = orderedArray(players,id);		//changes to 'real' order
 };
 
 $(document).on('click','.delete',function(e){
