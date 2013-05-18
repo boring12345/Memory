@@ -70,6 +70,7 @@ $(document).on('click','#human,#ai',function(){
 
 //------ disable sortable / sort players --------
 function swap(){
+	$('#sortable').sortable('disable');
 	var id = [];	//frame id's
 	var pf = $('.player_frame').filter(function() {
         return this.id.match(/player._frame/);
@@ -86,44 +87,7 @@ function swap(){
 	console.log(players);
 	players = orderedArray(players,id);
 	console.log(players);
-
-	/*
-	console.log("-------------------swap--------------------");
-	var swap;
-	var sub = 0;
-	var pi = 0;
-	$('#sortable').sortable('disable');
-	var pf = $('.player_frame').filter(function() {
-        return this.id.match(/player._frame/);
-    });
-
-	var indices = [];
-	for(var i=0;i<players.length;i++){
-		indices.push(players[i].number);
-	}
-	console.log(indices);
-	console.log(players);
-	console.log(pf)
-	console.log("before");
-	
-	for(var id = 0;id<players.length;id++){
-		var getId = pf[id].id;
-		if(getId){
-			sub = parseInt(getId.match(/[1-4]/)[0],10);
-			console.log("sub: " +sub);
-			if(sub != players[id].number){
-				pi = indices.indexOf(sub);//playersIndex
-				swap = players[id];
-				players[id]=players[pi];
-				players[pi]=swap;
-			}
-		}
-	}
-	console.log(indices);
-	console.log(players);
-	console.log(pf)
-	console.log("after");
-*/};
+};
 
 $(document).on('click','.delete',function(e){
 	var toBeRemoved = $(this).closest('.player_frame').attr('id');
