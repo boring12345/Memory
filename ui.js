@@ -1,6 +1,7 @@
 //------------------------------------- Adding Player GUI ------------------
 var idCounter =0;
 var botCounter = 1;
+var playerCounter = 1
 var possibleNums = [0,1,2,3];
 //var aiLock = false;
 //var humanLock = false;
@@ -49,6 +50,10 @@ var addPlayer = function(name,id){
 		}
 		else{
 			//players[playerNum] = new Player(playerNum+1,name);
+			if(name == ""){
+				name = "Player "+playerCounter;
+				playerCounter++;
+			}
 			players.push(new Player(playerNum+1,name));
 			$(/*'#addHuman'*/'#'+id).remove();
 		}
