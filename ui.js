@@ -28,28 +28,26 @@ var addPlayer = function(name,id){
 			else{
 				name = name[0]+" ("+difficulty+")";
 			}
-			//players[playerNum] = new AI(playerNum+1,name);
 			players.push(new AI(playerNum+1,name));
 			if(!isNaN(difficulty)){
 				console.log(difficulty);
-				players[players.length-1/*playerNum*/].difficulty = difficulty;
+				players[players.length-1].difficulty = difficulty;
 			}
 			else {
 				if(!isNaN(mode[difficulty])){
-					players[players.length-1/*playerNum*/].difficulty = mode[difficulty];	
+					players[players.length-1].difficulty = mode[difficulty];	
 				}
 				else{
-					players[players.length-1/*playerNum*/].difficulty = 7;
+					players[players.length-1].difficulty = 7;
 					name = name.split(" ");
 					name[name.length-1] = "(medium)";
 					name = name.join(" ");
-					players[players.length-1/*playerNum*/].name = name;	
+					players[players.length-1].name = name;	
 				}				
 			}
 			$(/*'#addAI'*/'#'+id).remove();	
 		}
 		else{
-			//players[playerNum] = new Player(playerNum+1,name);
 			if(name == ""){
 				name = "Player "+playerCounter;
 				playerCounter++;
@@ -72,6 +70,25 @@ $(document).on('click','#human,#ai',function(){
 
 //------ disable sortable / sort players --------
 function swap(){
+	var id = [];	//frame id's
+	var pf = $('.player_frame').filter(function() {
+        return this.id.match(/player._frame/);
+    });
+	for(var i=0;i<players.length;i++){
+		id.push(parseInt(pf[i].id.match(/[1-4]/)[0],10)-1);
+	}
+	console.log(id);
+	
+	orderedArray= function(arr,order){
+    	return  order.map(function(itm){return arr[itm];});
+	};
+	
+	console.log(players);
+	players = orderedArray(players,id);
+	console.log(players);
+
+	/*
+	console.log("-------------------swap--------------------");
 	var swap;
 	var sub = 0;
 	var pi = 0;
@@ -84,6 +101,10 @@ function swap(){
 	for(var i=0;i<players.length;i++){
 		indices.push(players[i].number);
 	}
+	console.log(indices);
+	console.log(players);
+	console.log(pf)
+	console.log("before");
 	
 	for(var id = 0;id<players.length;id++){
 		var getId = pf[id].id;
@@ -98,7 +119,11 @@ function swap(){
 			}
 		}
 	}
-};
+	console.log(indices);
+	console.log(players);
+	console.log(pf)
+	console.log("after");
+*/};
 
 $(document).on('click','.delete',function(e){
 	var toBeRemoved = $(this).closest('.player_frame').attr('id');
