@@ -151,10 +151,8 @@ var start = function(){//get new Cards by pressing start button
 		else {					// If set is larger than small board, but smaller than chosen board.
 			noc = cards.length;		
 		}
-		$('#game_board_frame').width(cardsPerRow * 122);             
-		$('#game_frame').width(cardsPerRow * 122 + 243);                       
-		$('#game_board_frame').height(rowsOfCards * 128);  
-		$('#game_frame').height(rowsOfCards * 122 + 100);  
+		$('#game_board_frame').css({'width':cardsPerRow * 122,'height':rowsOfCards * 128});
+		$('#game_frame').css({'width':cardsPerRow * 122 + 243,'height':rowsOfCards * 122 + 100});
 		
 		var titleWidth = $('#game_frame').width(); // header width
 		$('#game_title_wrapper').width(titleWidth);		
