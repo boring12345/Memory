@@ -153,6 +153,7 @@ var start = function(){//get new Cards by pressing start button
 		}
 		$('#game_board_frame').css({'width':cardsPerRow * 122,'height':rowsOfCards * 128});
 		$('#game_frame').css({'width':cardsPerRow * 122 + 243,'height':rowsOfCards * 122 + 100});
+		$('body').css({'left': 0,'margin-left':(screen.width-(cardsPerRow * 122 + 243))/2});
 		
 		var titleWidth = $('#game_frame').width(); // header width
 		$('#game_title_wrapper').width(titleWidth);		
