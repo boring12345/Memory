@@ -153,8 +153,11 @@ var start = function(){//get new Cards by pressing start button
 		}
 		$('#game_board_frame').css({'width':cardsPerRow * 122,'height':rowsOfCards * 128});
 		$('#game_frame').css({'width':cardsPerRow * 122 + 243,'height':rowsOfCards * 122 + 100});
+		//to be removed if a better way is found!
+		var margin = 1000<(cardsPerRow * 122 +243)?(screen.width-(cardsPerRow * 122 + 243))/2:(screen.width-1000)/2;
+		margin = margin>0?margin:0;
 		$('body').css({'left': 0,'margin-left':(screen.width-(cardsPerRow * 122 + 243))/2});
-		
+		//-------------------------------------------------
 		var titleWidth = $('#game_frame').width(); // header width
 		$('#game_title_wrapper').width(titleWidth);		
         		cardsHidden = HideCards(noc);
