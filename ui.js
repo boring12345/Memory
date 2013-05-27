@@ -56,9 +56,9 @@ var addPlayer = function(name,id){
 			$(/*'#addHuman'*/'#'+id).remove();
 		}
         $('#sortable').append($('<div id="player' + (playerNum+1) + '_frame" class="player_frame">' + players[players.length-1/*playerNum*/].name + '</div>'));
-        $('#player' + (playerNum+1) + '_frame').append('<div class="duringGame">Turns taken:<span id="player' +(playerNum+1)+ '_turns" </span></div>'); 
-        $('#player' + (playerNum+1) + '_frame').append('<div class="duringGame">Pairs  Matched:<span id="player' +(playerNum+1)+ '_matched" </span></div>');
-      	$('#player' + (playerNum+1) + '_frame').append('<div>Score:<span id="player' +(playerNum+1)+ '_score"> 0</span></div>'); 	
+        $('#player' + (playerNum+1) + '_frame').append('<div class="duringGame">Turns taken:<span id="player' +(playerNum+1)+ '_turns"> 0</span></div>'); 
+        $('#player' + (playerNum+1) + '_frame').append('<div class="duringGame">Pairs  Matched:<span id="player' +(playerNum+1)+ '_matched"> 0</span></div>');
+      	$('#player' + (playerNum+1) + '_frame').append('<div>Wins:<span id="player' +(playerNum+1)+ '_score"> 0</span> Points:<span id="player'+(playerNum+1)+'_points"> 0</span></div>'); 	
       	$('#player' + (playerNum+1) + '_frame').append('<div><button class="delete" value="Delete">Delete</button></div>');
 		$('.duringGame').hide();
 };

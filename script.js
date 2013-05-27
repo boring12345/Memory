@@ -268,6 +268,8 @@ function reset(noc){// Game over!?
 		var winner = "";
 		var playerScore = 0;
 		var highscore = 0;
+		var highPoints = 0;
+
 		for(var i=0;i<players.length;i++){ 
 			playerScore = parseInt($('#player'+players[i].number+'_matched').html(), 10);
 			if(highscore == playerScore){
@@ -276,6 +278,7 @@ function reset(noc){// Game over!?
 			if(highscore < playerScore){
 					highscore = playerScore;
 					winner = players[i].name;
+					highPoints = parseInt($('#player'+players[i].number+'_points').html(), 10);
 			}			
 		}
 		players.forEach(function(value,index){
@@ -284,14 +287,15 @@ function reset(noc){// Game over!?
 				$('#player'+players[index].number+'_score').html(" "+players[index].score);
 			}	
 		});
-		var again = confirm('Congratulations, '+winner+'. You won with '+highscore+' pairs!\nWould you like to play again?');
+		var again = confirm('Congratulations, '+winner+'. You won with '+highscore+' pairs, and '+highPoints+' points!\nWould you like to play again?');
 		setBack(again);
 		if(again){ //Maybe mention pairs and turns
 			var playerSet = confirm("Same Players?");
 			players.forEach(function(value, index){
 				players[index].turns = players[index].pairs = 0;//should work, if not 2 seperate lines
-				$('#player'+players[index].number+'_matched').html(" ");
-				$('#player'+players[index].number+'_turns').html(" ");	
+				$('#player'+players[index].number+'_matched').html(" 0");
+				$('#player'+players[index].number+'_points').html(" 0");
+				$('#player'+players[index].number+'_turns').html(" 0");	
 			});
 			cp=1;
 			if(playerSet){			
@@ -311,6 +315,7 @@ var nextPlayer = function(){
 
 function Player(number,name){
 	this.score = 0; //to keep track of total wins if player stay the same
+	this.points = 0;
 	this.number = number;
 	this.name = name;
 	this.turns =0;
@@ -462,9 +467,11 @@ var turn = function(cid){ //cid means card_id and is number or a numerical strin
 					array.push(cardsHidden[index]);	
 				}
 		});
-		if(array[0].getSrc() ==array[1].getSrc()){
+		if(array[0].getSrc() ==array[1].getSrc()){      // if player made a match
 			again = true;
 			players[cp-1].scoreMultiplier++;
+			players[cp-1].points = players[cp-1].points + Math.pow(players[cp-1].scoreMultiplier,2)
+			$('#player'+players[cp-1].number+'_points').html(" "+players[cp-1].points); 
 			console.log(players[cp-1].scoreMultiplier);
 			players[cp-1].pairs++;
             $('#player'+players[cp-1].number+'_matched').html(" "+players[cp-1].pairs); 
