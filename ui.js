@@ -72,15 +72,33 @@ $(document).on('click','#human,#ai',function(){
 function swap(){
 	$('#sortable').sortable('disable');
 	var id = [];	//frame id's
+	if(players.length === 1)
+		return ;
 	var pi = [];	//players indices
 	var so = [];	//starting order
-	var pf = $('.player_frame').filter(function() {
+	var pf = $('.player_frame').filter(function() { //player frame
         return this.id.match(/player._frame/);
     });
 	for(var i=0;i<players.length;i++){
 		id.push(parseInt(pf[i].id.match(/[1-4]/)[0],10)-1);
 		pi.push(players[i].number);
 	}
+	(function rangeSort(){
+		var num = players.length-1;
+		idtmp = [];
+		pitmp = [];
+		idtmp.length = players.length;
+		pitmp.length = players.length;
+		for(var i=0;i<players.length;i++){
+			idtmp[id.indexOf(Math.max.apply(null,id))]=num;			
+			pitmp[pi.indexOf(Math.max.apply(null,pi))]=num+1;
+			id[id.indexOf(Math.max.apply(null,id))]=0;
+			pi[pi.indexOf(Math.max.apply(null,pi))]=0;
+			num--;
+		}
+		id = idtmp;
+		pi = pitmp;
+	})();
 	for(i=0;i<players.length;i++){
 		so[i] = pi.indexOf(i+1);
 	}
