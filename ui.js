@@ -85,8 +85,8 @@ function swap(){
 	}
 	(function rangeSort(){
 		var num = players.length-1;
-		idtmp = [];
-		pitmp = [];
+		var idtmp = [];
+		var pitmp = [];
 		idtmp.length = players.length;
 		pitmp.length = players.length;
 		for(var i=0;i<players.length;i++){
