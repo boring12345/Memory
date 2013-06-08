@@ -114,7 +114,13 @@ var addImages = function(noc,cpr) {
     }
 };
 
-var start = function(){//get new Cards by pressing start button 
+var start = function(){//get new Cards by pressing start button
+	    if(players.length == 0){//As long as the UI is in beta status
+			//var player = parseInt($("#nop").val(), 10);
+			//addPlayers(player);
+			return;
+		}
+		$('#game_board_frame').empty();	
 		if(players.length>0) {swap();}
 		if (gameIsRunning) { return ;}
 		var chooseSet = parseInt($("#set").val(), 10);
@@ -123,11 +129,7 @@ var start = function(){//get new Cards by pressing start button
 			var creditsText = "<h1> Credits </h1> <p> These are the people, who have contributed to this project: </p> <ul> <li> <strong> boring12345: </strong> leader and developer </li> <li> <strong> haxor789: </strong> main lead developer </li> <li> <strong> hkapur97: </strong> lead developer </li> <li> <strong> DaVinniCode: </strong> lead developer </li> <li> <strong> Tachos: </strong> UI engineer </li> <li> <strong> mariomarine: </strong> Images </li> <li> <strong> AAM-Smith, Alex C, DeK: </strong> Testing & Helping </li>  </ul>";
 			$("#game_board_frame").html(creditsText);
 			return ;
-		}
-		if(players.length == 0){//As long as the UI is in beta status
-			var player = parseInt($("#nop").val(), 10);
-			addPlayers(player);
-		}
+		}		
 		gameIsRunning = true;
 		
 		//------------------------------- UI Changes ----------------------
@@ -436,7 +438,7 @@ $(document).ready(function(){
 	$("#quit").click(function(){
 			setBack();
 	});
-	alert("Get your settings ready. Press start to begin!");
+	$("#game_board_frame").html('<p style="font-size:30px;vertical-align:middle;text-align:center"><strong>Get your settings ready. Press start to begin!</strong></p>');
 });
 
 var turn = function(cid){ //cid means card_id and is number or a numerical string from "1" to "24" 
