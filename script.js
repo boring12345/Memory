@@ -34,7 +34,7 @@
     	impossible:12,
     	insane:16
     };
-	//all: 61 pairs, jsCards: 26 pairs, pointCards: 10 pairs, pythonCards: 7 pairs, rubyCards: 12 pairs
+	//all: 63 pairs, jsCards: 27 pairs, pointCards: 10 pairs, pythonCards: 8 pairs, rubyCards: 12 pairs
 
 //-------------------------------------- Clock --------------------------- 
 // Starts the minutes of the clock
