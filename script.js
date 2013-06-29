@@ -36,6 +36,15 @@
     };
 	//all: 63 pairs, jsCards: 27 pairs, pointCards: 10 pairs, pythonCards: 8 pairs, rubyCards: 12 pairs
 
+
+///*--------------------------------------Misc. functions--------------------------------
+
+function escapeHTML(string){
+    var pre = document.createElement('pre');
+    var text = document.createTextNode(string);
+    pre.appendChild(text);
+    return pre.innerHTML;
+}
 //-------------------------------------- Clock --------------------------- 
 // Starts the minutes of the clock
 var startMin = function() {
@@ -319,7 +328,7 @@ function Player(number,name){
 	this.score = 0; //to keep track of total wins if player stay the same
 	this.points = 0;
 	this.number = number;
-	this.name = name;
+	this.name = escapeHTML(name);
 	this.turns =0;
 	this.pairs = 0;
 	this.ai = false;
@@ -330,7 +339,7 @@ function Player(number,name){
 //---------------------------------------------------- Artifical Intelligence (or at least a non-human opponent :D)  -------------------------------------
 function AI(number,name){
 	this.difficulty;
-	this.name = name;
+	this.name = escapeHTML(name);
 	this.number = number;
 	this.ai = true;
 	var queue = [];
