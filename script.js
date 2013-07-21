@@ -34,8 +34,17 @@
     	impossible:12,
     	insane:16
     };
-	//all: 61 pairs, jsCards: 26 pairs, pointCards: 10 pairs, pythonCards: 7 pairs, rubyCards: 12 pairs
+	//all: 63 pairs, jsCards: 27 pairs, pointCards: 10 pairs, pythonCards: 8 pairs, rubyCards: 12 pairs
 
+
+///*--------------------------------------Misc. functions--------------------------------
+
+function escapeHTML(string){
+    var pre = document.createElement('pre');
+    var text = document.createTextNode(string);
+    pre.appendChild(text);
+    return pre.innerHTML;
+}
 //-------------------------------------- Clock --------------------------- 
 // Starts the minutes of the clock
 var startMin = function() {
@@ -119,6 +128,7 @@ var addImages = function(noc,cpr) {
 };
 
 var start = function(){//get new Cards by pressing start button
+		if (gameIsRunning) { return ;}
 	    var chooseSet = parseInt($("#set").val(), 10);
 		if(players.length == 0 && chooseSet!=5){//As long as the UI is in beta status
 			//var player = parseInt($("#nop").val(), 10);
@@ -126,8 +136,7 @@ var start = function(){//get new Cards by pressing start button
 			return;
 		}
 		$('#game_board_frame').empty();	
-		if(players.length>0) {swap();}
-		if (gameIsRunning) { return ;}		
+		if(players.length>0) {swap();}		
 		startClock(true);
 		if(chooseSet === 5) {  // Credits condition; perhaps we'll have to improve the way of showing credits
 			var creditsText = "<h1> Credits </h1> <p> These are the people, who have contributed to this project: </p> <ul> <li> <strong> boring12345: </strong> leader and developer </li> <li> <strong> haxor789: </strong> main lead developer </li> <li> <strong> hkapur97: </strong> lead developer </li> <li> <strong> DaVinniCode: </strong> lead developer </li> <li> <strong> Tachos: </strong> UI engineer </li> <li> <strong> mariomarine: </strong> Images </li> <li> <strong> AAM-Smith, Alex C, DeK: </strong> Testing & Helping </li>  </ul>";
@@ -323,7 +332,7 @@ function Player(number,name){
 	this.score = 0; //to keep track of total wins if player stay the same
 	this.points = 0;
 	this.number = number;
-	this.name = name;
+	this.name = escapeHTML(name);
 	this.turns =0;
 	this.pairs = 0;
 	this.ai = false;
@@ -334,7 +343,7 @@ function Player(number,name){
 //---------------------------------------------------- Artifical Intelligence (or at least a non-human opponent :D)  -------------------------------------
 function AI(number,name){
 	this.difficulty;
-	this.name = name;
+	this.name = escapeHTML(name);
 	this.number = number;
 	this.ai = true;
 	var queue = [];
