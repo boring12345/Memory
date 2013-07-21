@@ -52,6 +52,10 @@ var startSec = function() {
         var previous = +$('#sec').text();
         var next = previous === 59 ? 0 : previous + 1;
         $('#sec').text(next > 9 ? next : '0' + next);
+		if(players.length===1 && next%30 === 0){ //Score Reduction!
+			players[0].points -=players[0].points > 0? 5:0;
+			$('#player'+players[0].number+'_points').html(" "+players[0].points);
+		}
     }, 1000);
 };
 
@@ -472,7 +476,7 @@ var turn = function(cid){ //cid means card_id and is number or a numerical strin
 		if(array[0].getSrc() ==array[1].getSrc()){      // if player made a match
 			again = true;
 			players[cp-1].scoreMultiplier++;
-			players[cp-1].points = players[cp-1].points + Math.pow(players[cp-1].scoreMultiplier,2)
+			players[cp-1].points += Math.pow(players[cp-1].scoreMultiplier,2)*10;
 			$('#player'+players[cp-1].number+'_points').html(" "+players[cp-1].points); 
 			console.log(players[cp-1].scoreMultiplier);
 			players[cp-1].pairs++;
