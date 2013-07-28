@@ -83,39 +83,6 @@ var startClock = function(bool) {
 };
 
 //********************************************** Building the game frame **************************************************************
-// To add players using jQuery
-var addPlayers = function(nop) { //back-up
-	var botCounter = 1;
-	players = [];
-   	for (var i = 1; i < nop+1; i++) {
-		var name = prompt("Please insert your name or 'bot' to add a non-human opponent");		
-		if(name.split(" ")[0].toLowerCase()=="bot"){
-			var difficulty = name.split(" ")[1];
-			name = "Bot "+botCounter;
-			players[i-1] = new AI(i,name);
-			if(!isNaN(difficulty)){
-				console.log("test");
-				players[i-1].difficulty = difficulty;
-			}
-			else {
-				if(!isNaN(mode[difficulty])){
-					players[i-1].difficulty = mode[difficulty];	
-				}
-				else{
-					players[i-1].difficulty = 7;	
-				}				
-			}
-			botCounter++;	
-		}
-		else{
-			players[i-1] = new Player(i,name);
-		}
-        $('#game_info_frame').append($('<div id="player' + i + '_frame" class="player_frame">' + players[i-1].name + '</div>'));
-        $('#player' + i + '_frame').append('<br>Turns taken:<span id="player' +i+ '_turns" </span>'); 
-        $('#player' + i + '_frame').append('<br>Pairs Matched:<span id="player' +i+ '_matched" </span>');        
-    }    
-};
-
 // To add images using jQuery
 var addImages = function(noc,cpr) {
     $('#game_board_frame').append($('<div class="game_board_spacer"></div>'));
@@ -131,8 +98,6 @@ var start = function(){//get new Cards by pressing start button
 		if (gameIsRunning) { return ;}
 	    var chooseSet = parseInt($("#set").val(), 10);
 		if(players.length == 0 && chooseSet!=5){//As long as the UI is in beta status
-			//var player = parseInt($("#nop").val(), 10);
-			//addPlayers(player);
 			return;
 		}
 		$('#game_board_frame').empty();	
@@ -177,7 +142,6 @@ var start = function(){//get new Cards by pressing start button
 		$('#game_title_wrapper').width(titleWidth);		
         		cardsHidden = HideCards(noc);
         		addImages(noc,cardsPerRow);
-		console.log(players)
 		if(players[cp-1].ai){
 			players[cp-1].turn();
 		}
@@ -246,7 +210,7 @@ function setBack(again) {
 		humanLock = false;
 	}
 	else{
-		if(players.length<4){ //atm pointless as start is triggered short after this and removes it instantly
+		if(players.length<4){
 			$('#addPlayer').show();
 		}
 		$('.duringGame').hide();
@@ -276,9 +240,7 @@ function hiddenCounter(array){ //counts how many cards are hidden
 
 function reset(noc){// Game over!?
 	if(pairsFound == noc){		
-		//alert("press start to play again");
 		var secsTaken = parseInt($('#min').text(), 10)*60 + parseInt($('#sec').text(), 10);
-		console.log(secsTaken);
 		var winner = "";
 		var playerScore = 0;
 		var highscore = 0;
@@ -303,10 +265,10 @@ function reset(noc){// Game over!?
 		});
 		var again = confirm('Congratulations, '+winner+'. You won with '+highscore+' pairs, and '+highPoints+' points!\nWould you like to play again?');
 		setBack(again);
-		if(again){ //Maybe mention pairs and turns
+		if(again){ 
 			var playerSet = confirm("Same Players?");
 			players.forEach(function(value, index){
-				players[index].turns = players[index].pairs = 0;//should work, if not 2 seperate lines
+				players[index].turns = players[index].pairs = 0;
 				$('#player'+players[index].number+'_matched').html(" 0");
 				$('#player'+players[index].number+'_points').html(" 0");
 				$('#player'+players[index].number+'_turns').html(" 0");	
@@ -347,13 +309,14 @@ function AI(number,name){
 	this.ai = true;
 	var queue = [];
 
-	this.printQueue = function(){//just for debugging purpose
+	//just for debugging purpose
+	/*this.printQueue = function(){
    	 var q = [];
     	for(var i=0;i<queue.length;i++){
         	q[i] = queue[i].getSrc();
     	}
     	return q;
-	}
+	}*/
 	
 	this.forget = function(){ //the queue array is limited to the last e.g. 10 cards
     	if(queue.length>this.difficulty)
@@ -361,7 +324,7 @@ function AI(number,name){
     	//e.g. [1,2,3].shift() --> [2,3]
 	};
 	this.learn = function(input){
-    	queue.push(input); //whenever a card is revealed store its position in queue
+    	queue.push(input);
 	};
 
 	this.shuffle = function(){
@@ -398,7 +361,6 @@ function AI(number,name){
 	this.turn = function(){
 		this.printQueue();
 		for(var i=queue.length-1;i>=0;i--){
-			console.log(i+" "+queue.length);
 			if(queue[i].fadedOut){
 				queue.splice(i,1);
 			}
@@ -407,34 +369,25 @@ function AI(number,name){
 		var last = -1;//non reachable start value
 		for(var i=0;i<2;i++){
 			var pair = this.check();
-		    if(last!=-1 && pair/* && !pair[0].fadedOut*/){//if the 1st random draw hits a pair this should get it
+		    if(last!=-1 && pair){//if the 1st random draw hits a pair this should get it
 				if(pair[0].getNumber() == last){
-					//console.log("if "+ this.printQueue());					
 					turn(pair[1].getNumber());
-					//console.log("done");					
 				}
 				else{
-					//console.log("if "+ this.printQueue());
 					turn(pair[0].getNumber());
-					//console.log("done");
 				}
 			}
-			else if(pair/* && !pair[0].fadedOut*/){//needs to be 2nd as it triggers when the first case is triggered :(
-				//console.log("pair "+this.printQueue());
+			else if(pair){
 				turn(pair[0].getNumber());
 				turn(pair[1].getNumber());
-				//console.log("done");
 				return ;
 			}			
 			else{
 				var rand;			
 				do{
 					rand = Math.floor(Math.random()*cardsHidden.length+1);
-					//console.log("random "+rand+" "+this.printQueue());
 				} while(cardsHidden[rand-1].fadedOut || this.alreadyIn(cardsHidden[rand-1]) ||rand == last); //rand == last because loser has no queue
-				//console.log("almost");
 				turn(rand);
-				//console.log("done");
 				last = rand;
 			}
 		}
@@ -454,7 +407,6 @@ $(document).ready(function(){
 });
 
 var turn = function(cid){ //cid means card_id and is number or a numerical string from "1" to "24" 
-	console.log(cp+ " "+players[cp-1].number);
 	var counter = hiddenCounter(cardsHidden);
 	var id = cid;	
 	var card = cardsHidden[id-1];
@@ -473,7 +425,6 @@ var turn = function(cid){ //cid means card_id and is number or a numerical strin
 	if(hiddenCounter(cardsHidden) == 2 && !lock){ // or counter  == 2
 		var array = [];
 		var again = false;		
-		console.log(players[cp-1].scoreMultiplier);
 		players[cp-1].turns++;
         $('#player'+players[cp-1].number+'_turns').html(" "+players[cp-1].turns); 
 		cardsHidden.forEach(function(value,index){
@@ -486,7 +437,6 @@ var turn = function(cid){ //cid means card_id and is number or a numerical strin
 			players[cp-1].scoreMultiplier++;
 			players[cp-1].points += Math.pow(players[cp-1].scoreMultiplier,2)*10;
 			$('#player'+players[cp-1].number+'_points').html(" "+players[cp-1].points); 
-			console.log(players[cp-1].scoreMultiplier);
 			players[cp-1].pairs++;
             $('#player'+players[cp-1].number+'_matched').html(" "+players[cp-1].pairs); 
 			array.forEach(function(value,index){
