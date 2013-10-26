@@ -359,13 +359,13 @@ function AI(number,name){
 	}
 
 	this.turn = function(){
-		this.printQueue();
+		//this.printQueue();
 		for(var i=queue.length-1;i>=0;i--){
 			if(queue[i].fadedOut){
 				queue.splice(i,1);
 			}
 		}
-		this.printQueue();
+		//this.printQueue();
 		var last = -1;//non reachable start value
 		for(var i=0;i<2;i++){
 			var pair = this.check();
