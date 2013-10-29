@@ -13,7 +13,7 @@ https://help.github.com/articles/keeping-your-email-address-private
 
 -- Version 2.0 RC 1; Find the project [here](http://boring12345.github.com/Memory/). :-)
 
--- This is a testing version.
+-- This is a release candidate.
 
 
 Credits
