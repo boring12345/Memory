@@ -6,8 +6,9 @@
 		<title>Codecademy Memory Game</title>
 		<link type="text/css" rel="stylesheet" href="stylesheet.css" />
 		<link href="http://fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css" />
-		<script src="jquery-1.9.1.min.js"></script>
-		<!--<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>-->
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script> 
+		<script type="text/javascript" src="ui.js"></script>
 		<script type="text/javascript" src="script.js"></script>
 		<link rel="icon" href="favicon.ico"/>
 	</head>
@@ -25,14 +26,6 @@
 			<div id="control_frame">
 				<button id="start" value="Start">Start</button>
 				<button id="quit" value="Quit">Quit</button>
-				
-				<label>Number of Players:</label>
-				<select id="nop">
-               	   	  <option value="1" selected>1</option>
-					  <option value="2">2</option>
-					  <option value="3">3</option>
-				      <option value="4">4</option>				       
-			    </select>
 			    <label>Set:</label>
 				<select id="set">
                	   	  <option value="0" selected>all</option>
@@ -40,9 +33,19 @@
 					  <option value="2">Pointcards</option>
 				      <option value="3">Python</option>
 				      <option value="4">Ruby</option>
-				      <option value="5">Credits</option>
+					  <option value="5">Credits</option>
            		</select>
-				<div id="clock">
+           			<div id="sizeList"><label>Size:</label>
+           			<select id="boardSize">
+           				<option value="64" selected>6 x 4 (12 pairs)</option>
+           				<option value="65" selected>6 x 5 (15 pairs)</option>
+           				<option value="66" selected>6 x 6 (18 pairs)</option>
+           				<option value="76" selected>7 x 6 (21 pairs)</option>
+           				<option value="86" selected>8 x 6 (24 pairs)</option>
+           				<option value="87" selected>8 x 7 (28 pairs)</option>
+           			</select>
+           			</div>           			
+				<div id="clock"><label>Game Timer: </label>
 						<div id="min">00</div>
 						<div> : </div>
 						<div id="sec">00</div>

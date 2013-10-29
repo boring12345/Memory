@@ -26,6 +26,7 @@ body {
 	font-family: "Lobster","Helvetica Neue",Helvetica,Arial,sans-serif;
 	font-size: 25px;
 	color: #EEEEEE;
+	text-shadow: 2px 3px 3px #666;
 }
 
 #game_frame {
@@ -82,7 +83,7 @@ div.game_board_spacer {
 	padding: 5px;
 }
 
-div.player_frame {
+div.player_frame, #addPlayer {
 	width: 160px;
 	height: 90px;
 	border-style: groove;
@@ -97,7 +98,7 @@ div.player_frame {
 	position: absolute;
 	width: 170px;
 	height: 60px;
-	top: 510px;
+	top: 500px;
 	margin-left: 10px;
 	margin-top: 10px;
 	padding: 5px;
@@ -113,4 +114,9 @@ div.player_frame {
 
 #clock div{
 	display:inline;
+}
+
+ul#sortable{
+	 margin: 0;
+	 padding-left: 0;
 }
